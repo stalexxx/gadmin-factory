@@ -1,0 +1,71 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+        >
+
+    <ui:with field="msg" type="com.ifree.common.gwt.client.ui.constants.BaseMessages"/>
+
+
+    <b:Navbar ui:field="navbar" position="FIXED_TOP" addStyleNames="toolbar" >
+        <!--<b:NavbarHeader>
+            <b:NavbarBrand>Genome</b:NavbarBrand>
+        </b:NavbarHeader>
+-->
+
+
+        <b:NavbarCollapse>
+
+
+            <b:NavbarNav pull="LEFT" ui:field="listItemContainer">
+
+            </b:NavbarNav>
+
+            <b:NavbarForm pull="RIGHT">
+                <b:InputGroup addStyleNames="pull-right" ui:field="searchAddOn">
+                    <b:InputGroupButton>
+                        <b:Anchor icon="SEARCH" ui:field="extendSearch" iconSize="TIMES2" visible="false"/>
+                    </b:InputGroupButton>
+
+
+                    <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}"/>
+
+
+                    <b:InputGroupButton>
+                        <b:Anchor icon="ANDROID" ui:field="remove" iconSize="LARGE"/>
+                    </b:InputGroupButton>
+                </b:InputGroup>
+
+            </b:NavbarForm>
+
+        </b:NavbarCollapse>
+        <!--<b:NavForm size="1"/>-->
+
+    </b:Navbar>
+
+
+<!--
+    <g:FlowPanel addStyleNames="well clearfix">
+        <g:FlowPanel ui:field="panel" addStyleNames="pull-left margin-right-5"/>
+
+
+        <g:FlowPanel addStyleNames="pull-right ">
+            <b:InputGroup addStyleNames="pull-right" ui:field="searchAddOn">
+                <b:InputGroupButton>
+                    <b:Anchor icon="SEARCH" ui:field="extendSearch" iconSize="TIMES2" visible="false"/>
+                </b:InputGroupButton>
+
+
+                <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}"/>
+
+
+                <b:InputGroupButton>
+                    <b:Anchor icon="ANDROID" ui:field="remove" iconSize="LARGE"/>
+                </b:InputGroupButton>
+            </b:InputGroup>
+
+            <g:FlowPanel ui:field="pagerContainer" addStyleNames="pull-left margin-right-5"/>
+        </g:FlowPanel>
+
+    </g:FlowPanel>
+-->
+</ui:UiBinder>
