@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>ru.befree.common</groupId>
+        <artifactId>infrastucture-gwt</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+
+    </parent>
+
+
+    <groupId>ru.befree.common</groupId>
+    <artifactId>commons-gwt</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+
+
+    <properties>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+
+
+        <version.jackson-mapper>1.9.12</version.jackson-mapper>
+
+
+
+        <resteasy.version>3.0.2.Final</resteasy.version>
+    </properties>
+
+
+    <dependencies>
+
+        <!-- REST -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson-provider</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-guice</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-spring</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+
+        <!-- Infrastructure -->
+
+
+
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${version.jackson-mapper}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-mvp-client</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <!-- <dependency>
+             <groupId>com.arcbees</groupId>
+             <artifactId>guicy-resteasy</artifactId>
+             <version>${version.gwtp}</version>
+         </dependency>
+ -->
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rest</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rpc-client</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+
+        <dependency>
+
+
+
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rpc-server-spring</artifactId>
+            <version>${version.gwtp}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-web</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-processors</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-tester</artifactId>
+            <version>${version.gwtp}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Google Web Toolkit dependencies -->
+
+        <!-- <dependency>
+             <groupId>com.google.gwt</groupId>
+             <artifactId>gwt-codeserver</artifactId>
+             <version>${version.gwt}</version>
+         </dependency>-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+
+        <!--<dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-codeserver</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+
+
+        <!-- Request Factory-->
+
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-server</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-apt</artifactId>
+            <version>${version.gwt}</version>
+            <scope>compile</scope>
+        </dependency>
+-->
+
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3</artifactId>
+            <version>${version.gwt.bootstrap3}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3-extras</artifactId>
+            <version>${version.gwt.bootstrap3}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.github.gwtbootstrap</groupId>
+            <artifactId>gwt-bootstrap</artifactId>
+            <version>${version.gwt.bootstrap}</version>
+        </dependency>
+-->
+        <!-- DI dependencies -->
+
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>${version.gin}</version>
+        </dependency>
+
+
+    </dependencies>
+
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>target/generated-sources/annotations</directory>
+                <includes>
+                    <include>**/*.java</include>
+
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+
+                <includes>
+                    <include>**/*.java</include>
+                    <include>**/*.gwt.xml</include>
+                </includes>
+            </resource>
+        </resources>
+
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${version.maven-build-helper-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/annotations</source>
+                                <source>${project.build.directory}/generated-sources/gwt</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${version.gwt}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+<!--
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        &lt;!&ndash; here the phase you need &ndash;&gt;
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/java</directory>
+                                    <includes>
+                                        <include>**/*.java</include>
+                                        <include>**/*.gwt.xml</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/non-packaged-resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+-->
+        </plugins>
+    </build>
+</project>
