@@ -12,7 +12,6 @@
 
     </parent>
 
-
     <groupId>com.ifree.common</groupId>
     <artifactId>commons-gwt</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -20,7 +19,6 @@
 
 
     <properties>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
 
 
         <version.jackson-mapper>1.9.12</version.jackson-mapper>
