@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.ifree.maven</groupId>
+        <artifactId>parent</artifactId>
+        <version>2.2</version>
+    </parent>
+
+    <modules>
+        <module>commons</module>
+    </modules>
+
+
+    <groupId>com.ifree.common</groupId>
+    <artifactId>infrastucture-gwt</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <version.gwt>2.6.0</version.gwt>
+        <version.gwtp>1.2.1</version.gwtp>
+        <version.gin>2.1.2</version.gin>
+        <version.gwt.bootstrap>2.3.2.0</version.gwt.bootstrap>
+        <version.gwt.bootstrap3>0.6</version.gwt.bootstrap3>
+        <version.arcbees-core>1.0-SNAPSHOT</version.arcbees-core>
+
+
+
+        <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
+        <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
+
+
+        <version.maven-processor-plugin>2.0.5</version.maven-processor-plugin>
+        <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
+        <!--<maven.javadoc.skip>true</maven.javadoc.skip>-->
+
+    </properties>
+
+</project>
