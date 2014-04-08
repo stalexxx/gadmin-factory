@@ -10,9 +10,7 @@
         <version>2.2</version>
     </parent>
 
-    <modules>
-        <module>commons</module>
-    </modules>
+
 
 
     <groupId>com.ifree.common</groupId>
