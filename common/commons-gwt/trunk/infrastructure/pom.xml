@@ -39,4 +39,11 @@
 
     </properties>
 
+
+    <scm>
+        <connection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</connection>
+        <developerConnection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</developerConnection>
+        <url>https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</url>
+    </scm>
+
 </project>

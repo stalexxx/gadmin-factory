@@ -302,4 +302,10 @@
 -->
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</connection>
+        <developerConnection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</developerConnection>
+        <url>https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</url>
+    </scm>
 </project>
