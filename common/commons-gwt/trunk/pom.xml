@@ -22,9 +22,9 @@
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
-        <developerConnection>scm:svn:https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
-        <url>https://https://dev.i-free.ru/svn/common/commons-gwt/trunk/</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/</url>
     </scm>
 
 
