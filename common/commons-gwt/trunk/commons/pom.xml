@@ -9,7 +9,7 @@
         <groupId>com.ifree.common</groupId>
         <artifactId>infrastucture-gwt</artifactId>
         <version>1.0.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../infrastructure/pom.xml</relativePath>
 
     </parent>
 
