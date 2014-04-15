@@ -157,7 +157,11 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
 
     protected CellTable<T> createDataGrid() {
-        cellTable = new CellTable<T>(pageSize(), resources, this);
+        if (resources != null) {
+            cellTable = new CellTable<T>(pageSize(), resources, this);
+        } else {
+            cellTable = new CellTable<T>(pageSize(), this);
+        }
         cellTable.setAutoHeaderRefreshDisabled(true);
         cellTable.setAutoFooterRefreshDisabled(true);
 
@@ -165,7 +169,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         cellTable.setBordered(true);
         cellTable.setCondensed(true);
 //        cellTable.setHover(true);
-
 
 
         SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
