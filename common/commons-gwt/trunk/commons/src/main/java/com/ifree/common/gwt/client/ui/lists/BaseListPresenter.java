@@ -138,4 +138,24 @@ public abstract class BaseListPresenter<T,
     public void onSelectionChange(SelectionChangeEvent event) {
         onSelectionChanged(getSelectedObject());
     }
+
+    @Override
+    public void onView(T selectedObject) {
+
+    }
+
+    @Override
+    public void onEdit(T selectedObject) {
+
+    }
+
+    @Override
+    public void onRemove(T selectedObject) {
+
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
 }

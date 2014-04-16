@@ -6,15 +6,17 @@
 package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.base.Function;
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.cell.client.AbstractSafeHtmlCell;
-import com.google.gwt.cell.client.EditTextCell;
-import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
@@ -26,8 +28,13 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import org.gwtbootstrap3.client.ui.CellTable;
+import org.gwtbootstrap3.client.ui.constants.ElementTags;
+import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.constants.Styles;
 
+import javax.inject.Inject;
 import java.util.Date;
 
 /**
@@ -48,9 +55,9 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     //protected SimplePager pager;
 
-   /* @Inject
+    @Inject
     protected BaseTemplates templates;
-    *//*===========================================[ CONSTRUCTORS ]=================*/
+    /*===========================================[ CONSTRUCTORS ]=================*/
 
     protected BaseListGrid(CellTable.Resources resources) {
         this.resources = resources;
@@ -107,8 +114,26 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     protected static <T> void addTextColumn(CellTable<T> dataGrid, Column<T, String> column, String header, int width, boolean sortable, String dataStore) {
         addColumn(dataGrid, column, header, width, sortable, dataStore);
     }
+
     protected static <T> void addDateColumn(CellTable<T> dataGrid, Column<T, Date> column, String header, int width, boolean sortable, String dataStore) {
         addColumn(dataGrid, column, header, width, sortable, dataStore);
+    }
+
+    protected <T> void addBooleanColumn(CellTable<T> dataGrid, final Function<T, Boolean> column,
+                                        final IconType yes, final IconType no, String header, int width, boolean sortable, String dataStore) {
+        addSafeHtmlColumn(dataGrid, new AbstractSafeHtmlRenderer<T>() {
+            @Override
+            public SafeHtml render(T object) {
+                Boolean b = column.apply(object);
+                if (b != null) {
+                    return templates.icon(Styles.FONT_AWESOME_BASE,
+                            b ? yes.getCssName() : no.getCssName());
+
+                } else {
+                    return SafeHtmlUtils.EMPTY_SAFE_HTML;
+                }
+            }
+        }, header, width, sortable, dataStore);
     }
 
 
