@@ -34,6 +34,9 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("Редактировать")
     String edit();
 
+    @DefaultMessage("Просмотреть")
+    String view();
+
     @DefaultMessage("Отменить")
     String cancel();
 
