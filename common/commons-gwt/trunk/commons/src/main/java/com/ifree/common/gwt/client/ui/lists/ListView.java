@@ -37,4 +37,9 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
     void updateToolbar();
 
     void firstPage();
+
+    void updateControls(M selectedObject);
+
+    void updateHeader(String displayHeader);
+
 }

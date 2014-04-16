@@ -15,12 +15,15 @@ import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
+import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
 import com.ifree.common.gwt.client.ui.grids.PagingSortingFilteringDataProvider;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
+import com.ifree.common.gwt.client.ui.utils.ViewHeaderResolver;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
 import com.ifree.common.gwt.shared.loader.PagingLoadResult;
@@ -37,7 +40,7 @@ import javax.annotation.Nullable;
 public abstract class BaseListPresenter<T,
                                         Filter_ extends BaseFilter,
                                         View_ extends ListView<T, Filter_>,
-                                        Proxy_ extends Proxy<?>
+                                        Proxy_ extends ProxyPlace<?>
                                         >
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler, SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ > {
@@ -51,8 +54,12 @@ public abstract class BaseListPresenter<T,
     @Inject
     protected RestDispatch restDispatch;
 
+    @Inject
+    protected ViewHeaderResolver headerResolver;
+
     protected final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     protected final PagingSortingFilteringDataProvider<T, Filter_> provider;
+
 
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
@@ -84,8 +91,6 @@ public abstract class BaseListPresenter<T,
     }
 
 
-
-
     @Override
     protected void onUnbind() {
         provider.removeDataDisplay(getView().getGridDataDisplay());
@@ -98,6 +103,16 @@ public abstract class BaseListPresenter<T,
 
         getView().setupRoles(currentUser.getRoles());
         getView().updateToolbar();
+
+
+        getView().updateHeader(getDisplayHeader());
+    }
+
+    private String getDisplayHeader() {
+        Proxy_ proxy = getProxy();
+        String nameToken = proxy.getNameToken();
+        return headerResolver.resolve(nameToken);
+
     }
 
     protected void update() {
@@ -136,7 +151,9 @@ public abstract class BaseListPresenter<T,
 
     @Override
     public void onSelectionChange(SelectionChangeEvent event) {
-        onSelectionChanged(getSelectedObject());
+        T selectedObject = getSelectedObject();
+        onSelectionChanged(selectedObject);
+        getView().updateControls(selectedObject);
     }
 
     @Override
@@ -158,4 +175,6 @@ public abstract class BaseListPresenter<T,
     public void onCreate() {
 
     }
+
+
 }
