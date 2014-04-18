@@ -15,13 +15,11 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.AbstractPager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.InputGroup;
-import org.gwtbootstrap3.client.ui.NavbarNav;
-import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import java.util.Iterator;
@@ -56,6 +54,8 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     InputGroup searchAddOn;
     @UiField
     NavbarNav listItemContainer;
+    @UiField
+    Column filterPanel;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -71,7 +71,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
         remove.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                PerformFilterEvent.fire(BaseToolbar.this, (String) null);
+                PerformFilterEvent.fire(BaseToolbar.this, new BaseFilter() );
                 search.setValue(null);
                 search.setEnabled(true);
             }
@@ -80,7 +80,8 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
         search.addKeyUpHandler(new KeyUpHandler() {
             @Override
             public void onKeyUp(KeyUpEvent event) {
-                PerformFilterEvent.fire(BaseToolbar.this, search.getText());
+                PerformFilterEvent.fire(BaseToolbar.this, new BaseFilter(search.getText()));
+
             }
         });
     }
@@ -147,6 +148,12 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     /*===========================================[ INNER CLASSES ]================*/
 
     private static final Binder binder = GWT.create(Binder.class);
+
+    public void setFilterPanel(IsWidget panel) {
+        filterPanel.setVisible(true);
+        filterPanel.add(panel);
+    }
+
     @SuppressWarnings("PackageVisibleInnerClass")
     interface Binder extends UiBinder<Widget, BaseToolbar> {
 

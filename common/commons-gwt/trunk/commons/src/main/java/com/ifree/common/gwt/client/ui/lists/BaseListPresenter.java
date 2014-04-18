@@ -13,11 +13,13 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
 import com.ifree.common.gwt.client.ui.grids.PagingSortingFilteringDataProvider;
@@ -43,7 +45,8 @@ public abstract class BaseListPresenter<T,
                                         Proxy_ extends ProxyPlace<?>
                                         >
         extends Presenter<View_, Proxy_>
-        implements ColumnSortEvent.Handler, SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ > {
+        implements ColumnSortEvent.Handler,
+        SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ >, PerformFilterEvent.PerformFilterHandler {
 
     @Inject
     protected PlaceManager placeManager;
@@ -133,14 +136,17 @@ public abstract class BaseListPresenter<T,
         return null;
     }
 
+
     @Override
-    public void onPerformFilter(Filter_ filter) {
-        provider.setFilter(filter);
+    public void onPerformFilter(PerformFilterEvent filter) {
+        provider.setFilter((Filter_)filter.getFilter());
 
         getView().firstPage();
 
         loader.load();
     }
+
+
 
     @Override
     public void onColumnSort(ColumnSortEvent event) {

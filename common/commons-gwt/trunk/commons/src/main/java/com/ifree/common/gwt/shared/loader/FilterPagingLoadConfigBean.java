@@ -17,15 +17,15 @@ import java.util.List;
  */
 public class FilterPagingLoadConfigBean extends PagingLoadConfigBean implements FilterPagingLoadConfig {
 
-  private List<FilterConfig> filterConfigs = new ArrayList<FilterConfig>();
+  private List<FilterConfigBean> filterConfigs = new ArrayList<FilterConfigBean>();
   
   @Override
-  public List<FilterConfig> getFilters() {
+  public List<FilterConfigBean> getFilters() {
     return filterConfigs;
   }
 
   @Override
-  public void setFilters(List<FilterConfig> filters) {
+  public void setFilters(List<FilterConfigBean> filters) {
     this.filterConfigs = filters;
   }
 

@@ -9,9 +9,11 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.view.client.HasData;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
@@ -92,7 +94,10 @@ public abstract class BaseListView<
 
     @Override
     public void firstPage() {
-        getDataGrid().getPager().firstPage();
+        SimplePager pager = getDataGrid().getPager();
+        if (pager != null) {
+            pager.firstPage();
+        }
     }
 
     @Override
@@ -134,5 +139,9 @@ public abstract class BaseListView<
     protected HasEnabled getCreateControl() {
         return null;
 
+    }
+
+    protected  _Filter castFilter(BaseFilter filter) {
+        return (_Filter) filter;
     }
 }

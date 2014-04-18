@@ -12,20 +12,20 @@ import com.ifree.common.gwt.client.ui.application.Filter;
  * @since 24.09.13
  */
 public class BaseFilter implements Filter {
-    private String nameFilter;
+    private String name;
 
     public BaseFilter() {
     }
 
-    public BaseFilter(String nameFilter) {
-        setNameFilter(nameFilter);
+    public BaseFilter(String name) {
+        setName(name);
     }
 
-    public String getNameFilter() {
-        return nameFilter;
+    public String getName() {
+        return name;
     }
 
-    public void setNameFilter(String nameFilter) {
-        this.nameFilter = nameFilter;
+    public void setName(String name) {
+        this.name = name;
     }
 }

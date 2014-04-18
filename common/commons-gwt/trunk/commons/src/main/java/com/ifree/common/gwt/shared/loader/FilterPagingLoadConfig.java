@@ -19,12 +19,12 @@ public interface FilterPagingLoadConfig extends PagingLoadConfig {
    * 
    * @return the list of filters
    */
-  List<FilterConfig> getFilters();
+  List<FilterConfigBean> getFilters();
 
   /**
    * Sets the list of filters for this load config.
    * 
    * @param filters the list of filters
    */
-  void setFilters(List<FilterConfig> filters);
+  void setFilters(List<FilterConfigBean> filters);
 }
