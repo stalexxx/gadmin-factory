@@ -123,6 +123,9 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("Очистить")
     String clear();
 
+    @DefaultMessage("Описание")
+    String description();
+
 }
 
 

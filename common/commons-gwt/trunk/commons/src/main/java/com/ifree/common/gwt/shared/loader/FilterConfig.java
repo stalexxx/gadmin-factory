@@ -7,11 +7,13 @@
  */
 package com.ifree.common.gwt.shared.loader;
 
+import java.io.Serializable;
+
 /**
  * A filter configuration interface. Encapsulates state information needed for
  * filtering, including field name, type, value and comparison.
  */
-public interface FilterConfig {
+public interface FilterConfig extends Serializable {
 
   /**
    * Returns the type of filter comparison.

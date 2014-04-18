@@ -155,7 +155,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
 
         void setFilter(F filter);
         
-        List<FilterConfig> build();
+        List<FilterConfigBean> build();
     }
     
     public static class DefaultFilterConfigBuilder implements FilterConfigBuilder<BaseFilter> {
@@ -168,13 +168,13 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
         }
 
         @Override
-        public List<FilterConfig> build() {
-            final List<FilterConfig> filterConfigs = Lists.newArrayList();
+        public List<FilterConfigBean> build() {
+            final List<FilterConfigBean> filterConfigs = Lists.newArrayList();
 
             if (filter != null) {
-                final String nameFilter = filter.getNameFilter();
+                final String nameFilter = filter.getName();
                 if (nameFilter != null && !nameFilter.isEmpty()) {
-                    FilterConfig fc = new FilterConfigBean();
+                    FilterConfigBean fc = new FilterConfigBean();
                     fc.setValue(nameFilter);
 
                     filterConfigs.add(fc);
