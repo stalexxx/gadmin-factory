@@ -5,6 +5,7 @@
 
 package com.ifree.common.gwt.client.ui.grids;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.view.client.AsyncDataProvider;
@@ -15,7 +16,6 @@ import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.SortDir;
-import com.ifree.common.gwt.shared.SortInfo;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
     private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     private ProvidesKey<T> providesKey;
     
-    private List<SortInfo> sortInfoList = Lists.newArrayList();
+    private List<SortInfoBean> sortInfoList = Lists.newArrayList();
     private List<T> currentData;
 
     private final FilterConfigBuilder<F> filterConfigBuilder;
@@ -63,7 +63,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
 
     /*===========================================[ CLASS METHODS ]================*/
 
-    public void pushSortingInfo(SortInfo sortInfo) {
+    public void pushSortingInfo(SortInfoBean sortInfo) {
         if (sortInfoList == null) {
             sortInfoList = Lists.newArrayList();
         }
@@ -76,12 +76,14 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
     }
     public void setSorting(ColumnSortList sorting) {
 
-        List<SortInfo> list = Lists.newArrayList();
+        List<SortInfoBean> list = Lists.newArrayList();
 
         for (int i = 0; i < sorting.size(); i++) {
             ColumnSortList.ColumnSortInfo columnSortInfo = sorting.get(i);
 
             String field = columnSortInfo.getColumn().getDataStoreName();
+
+            Preconditions.checkNotNull(field);
 
             list.add(new SortInfoBean(field, columnSortInfo.isAscending() ? SortDir.ASC : SortDir.DESC));
         }
@@ -135,7 +137,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
     @Override
     public void onBeforeLoad(BeforeLoadEvent<FilterPagingLoadConfig> event) {
         FilterPagingLoadConfig loadConfig = event.getLoadConfig();
-                
+
         loadConfig.setFilters(filterConfigBuilder.build());
 
         loadConfig.setSortInfo(sortInfoList);

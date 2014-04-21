@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.ifree.common.gwt.shared.SortInfo;
+import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
@@ -79,10 +79,10 @@ public abstract class BaseDataProxy<T>
 
     private String filter;
 
-    private SortInfo defaultSortInfo;
+    private SortInfoBean defaultSortInfo;
 
 
-    public void setDefaultSortInfo(SortInfo defaultSortInfo) {
+    public void setDefaultSortInfo(SortInfoBean defaultSortInfo) {
         this.defaultSortInfo = defaultSortInfo;
     }
 

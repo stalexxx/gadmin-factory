@@ -7,7 +7,7 @@
  */
 package com.ifree.common.gwt.shared.loader;
 
-import com.ifree.common.gwt.shared.SortInfo;
+import com.ifree.common.gwt.shared.SortInfoBean;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class ListLoader<C extends ListLoadConfig, D extends ListLoadResult<?>> extends Loader<C, D> {
   private boolean remoteSort;
-  private final List<SortInfo> sortInfo = new ArrayList<SortInfo>();
+  private final List<SortInfoBean> sortInfo = new ArrayList<SortInfoBean>();
 
   /**
    * Creates a new loader instance with the given proxy. A reader is not
@@ -59,7 +59,7 @@ public class ListLoader<C extends ListLoadConfig, D extends ListLoadResult<?>> e
    * @param index the position of the sort info in the list of sort info
    * @param sortInfo the sort info to add
    */
-  public void addSortInfo(int index, SortInfo sortInfo) {
+  public void addSortInfo(int index, SortInfoBean sortInfo) {
     this.sortInfo.add(index, sortInfo);
   }
 
@@ -69,7 +69,7 @@ public class ListLoader<C extends ListLoadConfig, D extends ListLoadResult<?>> e
    * 
    * @param sortInfo the sort info to add
    */
-  public void addSortInfo(SortInfo sortInfo) {
+  public void addSortInfo(SortInfoBean sortInfo) {
     this.sortInfo.add(sortInfo);
   }
 
@@ -89,7 +89,7 @@ public class ListLoader<C extends ListLoadConfig, D extends ListLoadResult<?>> e
    * 
    * @return an immutable collection of the current sort settings
    */
-  public List<? extends SortInfo> getSortInfo() {
+  public List<SortInfoBean> getSortInfo() {
     return Collections.unmodifiableList(sortInfo);
   }
 
@@ -108,7 +108,7 @@ public class ListLoader<C extends ListLoadConfig, D extends ListLoadResult<?>> e
    * 
    * @param lastSort the sort info to remove
    */
-  public void removeSortInfo(SortInfo lastSort) {
+  public void removeSortInfo(SortInfoBean lastSort) {
     sortInfo.remove(lastSort);
   }
 

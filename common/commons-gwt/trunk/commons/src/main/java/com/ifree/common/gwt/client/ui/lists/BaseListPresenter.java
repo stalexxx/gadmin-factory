@@ -13,12 +13,9 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
-import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.client.proxy.Proxy;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
@@ -77,9 +74,7 @@ public abstract class BaseListPresenter<T,
         return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, createFilterConfigBuilder());
     }
 
-    protected BaseFilterConfigBuilder<Filter_> createFilterConfigBuilder() {
-        return new BaseFilterConfigBuilder<Filter_>();
-    }
+    protected abstract BaseFilterConfigBuilder<Filter_> createFilterConfigBuilder();
 
     @Override
     protected void onBind() {

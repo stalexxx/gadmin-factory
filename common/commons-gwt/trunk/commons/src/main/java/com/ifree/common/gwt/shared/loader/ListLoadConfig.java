@@ -7,7 +7,7 @@
  */
 package com.ifree.common.gwt.shared.loader;
 
-import com.ifree.common.gwt.shared.SortInfo;
+import com.ifree.common.gwt.shared.SortInfoBean;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,10 +21,10 @@ public interface ListLoadConfig extends Serializable {
   /**
    * Returns the sort info.
    */
-  List<? extends SortInfo> getSortInfo();
+  List<SortInfoBean> getSortInfo();
 
   /**
    * Sets the sort info.
    */
-  void setSortInfo(List<? extends SortInfo> info);
+  void setSortInfo(List<SortInfoBean> info);
 }
