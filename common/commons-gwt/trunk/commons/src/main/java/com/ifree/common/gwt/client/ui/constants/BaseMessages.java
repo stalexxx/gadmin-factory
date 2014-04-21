@@ -78,6 +78,8 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("Общие")
     String general();
 
+    @DefaultMessage("Сбросить")
+    String reset();
 
 
 

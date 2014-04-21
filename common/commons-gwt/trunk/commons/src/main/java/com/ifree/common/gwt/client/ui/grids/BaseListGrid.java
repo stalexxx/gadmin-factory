@@ -14,18 +14,17 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.IdentityColumn;
-import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.client.ui.fields.BaseField;
+import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.CellTable;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
@@ -100,11 +99,20 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         addColumn(dataGrid, column, header, width, sortable, dataStore);
     }
 
+    protected void addTextColumn(CellTable<T> dataGrid, final ValueProvider<T, String> valueProvider, String header, int width, boolean sortable) {
+        addColumn(dataGrid, new TextColumn<T>() {
+            @Override
+            public String getValue(T object) {
+                return valueProvider.getValue(object);
+            }
+        }, header, width, sortable, valueProvider.getPath());
+    }
+
     protected void addDateColumn(CellTable<T> dataGrid, Column<T, Date> column, String header, int width, boolean sortable, String dataStore) {
         addColumn(dataGrid, column, header, width, sortable, dataStore);
     }
 
-    protected void addBooleanColumn(CellTable<T> dataGrid, final BaseField<T, Boolean> field,
+    protected void addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
                                     final IconType yes, final IconType no, String header, int width, boolean sortable) {
         addSafeHtmlColumn(dataGrid, new AbstractSafeHtmlRenderer<T>() {
             @Override
@@ -168,7 +176,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     protected CellTable<T> createDataGrid() {
         if (resources != null) {
-            cellTable = new CellTable<T>(pageSize(), resources, this);
+            cellTable = new CellTable<T>(pageSize(), resources, this, new Label());
         } else {
             cellTable = new CellTable<T>(pageSize(), this);
         }
