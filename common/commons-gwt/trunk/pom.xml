@@ -16,13 +16,13 @@
 
     <groupId>com.ifree.common</groupId>
     <artifactId>commons-gwt-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/</url>
     </scm>
 
 
