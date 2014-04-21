@@ -24,6 +24,7 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.client.ui.fields.BaseField;
+import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.CellTable;
 import org.gwtbootstrap3.client.ui.constants.IconType;
@@ -49,14 +50,16 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     protected CellTable<T> cellTable;
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
+    private ModelKeyProvider<T> keyProvider;
     //protected SimplePager pager;
 
     @Inject
     protected BaseTemplates templates;
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    protected BaseListGrid(CellTable.Resources resources) {
+    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key) {
         this.resources = resources;
+        keyProvider = key;
     }
 
     protected void addTextEditColumn(CellTable<T> dataGrid,
@@ -104,6 +107,16 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             @Override
             public String getValue(T object) {
                 return valueProvider.getValue(object);
+            }
+        }, header, width, sortable, valueProvider.getPath());
+    }
+
+
+    protected void addIntegerColumn(CellTable<T> dataGrid, final ValueProvider<T, Integer> valueProvider, String header, int width, boolean sortable) {
+        addColumn(dataGrid, new TextColumn<T>() {
+            @Override
+            public String getValue(T object) {
+                return String.valueOf(valueProvider.getValue(object));
             }
         }, header, width, sortable, valueProvider.getPath());
     }
@@ -232,6 +245,12 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     public void setSelection(T newSelection) {
         selectionModel.setSelected(newSelection, true);
+    }
+
+
+    @Override
+    public Object getKey(T item) {
+        return keyProvider.getKey(item);
     }
 
 
