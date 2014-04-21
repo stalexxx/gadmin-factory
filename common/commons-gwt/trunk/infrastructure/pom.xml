@@ -22,7 +22,8 @@
         <version.gwtp>1.2.1</version.gwtp>
         <version.gin>2.1.2</version.gin>
         <version.gwt.bootstrap>2.3.2.0</version.gwt.bootstrap>
-        <version.gwt.bootstrap3>0.6</version.gwt.bootstrap3>
+        <version.gwt.bootstrap3>0.7-SNAPSHOT</version.gwt.bootstrap3>
+        <!--<version.gwt.bootstrap3>0.6</version.gwt.bootstrap3>-->
         <version.arcbees-core>1.0-SNAPSHOT</version.arcbees-core>
 
 

@@ -25,6 +25,11 @@
 
     <entry-point class='com.ifree.common.gwt.client.CommonGwt'/>
 
+
+    <generate-with class="com.ifree.common.gwt.rebind.PropertyAccessGenerator">
+        <when-type-assignable class="com.ifree.common.gwt.shared.PropertyAccess" />
+    </generate-with>
+
     <source path="client" />
     <source path="shared" />
 </module>

@@ -8,6 +8,7 @@ package com.ifree.common.gwt.client.ui.grids;
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.fields.BaseField;
+import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.*;
 
 import java.util.List;
@@ -21,14 +22,15 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
     protected F filter;
 
     private static FilterHelper writer = new FilterHelper();
-    private final BaseField defaultField;
 
-    public BaseFilterConfigBuilder(BaseField defaultField) {
+    private ValueProvider<?, ?> defaultField;
+
+    public BaseFilterConfigBuilder(ValueProvider<?, ?> defaultField) {
         this.defaultField = defaultField;
     }
 
     public BaseFilterConfigBuilder() {
-        defaultField = null;
+
     }
 
 
@@ -58,7 +60,7 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     }
 
-    protected static  <V>  void addField(List<FilterConfigBean> filterConfigs, BaseField field, V value) {
+    protected  static <V> void addField(List<FilterConfigBean> filterConfigs, ValueProvider<?, V> field, V value) {
         writer.appendTo(filterConfigs, field, value);
     }
 

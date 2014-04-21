@@ -2,6 +2,7 @@ package com.ifree.common.gwt.shared.loader;
 
 import com.google.gwt.text.shared.Parser;
 import com.ifree.common.gwt.client.ui.fields.BaseField;
+import com.ifree.common.gwt.shared.ValueProvider;
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -34,7 +35,7 @@ public class FilterHelper {
 
 
 
-    public <V> FilterConfigBean createConfig(BaseField field, V value) {
+    public <V> FilterConfigBean createConfig(ValueProvider field, V value) {
         FilterConfigBean configBean = new FilterConfigBean();
 
         configBean.setField(field.getPath());
@@ -56,7 +57,7 @@ public class FilterHelper {
         return configBean;
     }
 
-    public <V> void appendTo(Collection<FilterConfigBean> collection, BaseField field, V value) {
+    public <V> void appendTo(Collection<FilterConfigBean> collection, ValueProvider field, V value) {
         collection.add(createConfig(field, value));
     }
 
