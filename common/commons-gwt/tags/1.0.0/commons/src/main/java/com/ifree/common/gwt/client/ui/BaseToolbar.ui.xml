@@ -1,0 +1,106 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+        >
+
+    <ui:with field="msg" type="com.ifree.common.gwt.client.ui.constants.BaseMessages"/>
+
+
+    <ui:style>
+
+
+        .footer_space {
+            height: 150px;
+            width: 100%;
+        }
+
+        .alert_panel {
+            bottom: 50px;
+
+        }
+
+        .left_panel {
+            position: fixed;
+            z-index: 3000;
+            right: 0;
+            bottom: 50px;
+            top: 40px;
+            background-color: #4E5D6C;
+
+            vertical-align: top;
+        }
+
+
+    </ui:style>
+    <g:FlowPanel>
+        <b:Navbar ui:field="navbar" position="FIXED_TOP" addStyleNames="toolbar">
+            <!--<b:NavbarHeader>
+                <b:NavbarBrand>Genome</b:NavbarBrand>
+            </b:NavbarHeader>
+    -->
+
+            <b:NavbarCollapse>
+
+
+                <b:NavbarNav pull="LEFT" ui:field="listItemContainer">
+
+                </b:NavbarNav>
+
+                <b:NavbarForm pull="RIGHT">
+                    <b:InputGroup addStyleNames="pull-right" ui:field="searchAddOn">
+                        <b:InputGroupButton>
+                            <b:Anchor icon="SEARCH" ui:field="extendSearch" iconSize="TIMES2" visible="false"/>
+                        </b:InputGroupButton>
+
+
+                        <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}"/>
+
+
+                        <b:InputGroupButton>
+                            <b:Anchor icon="ANDROID" ui:field="remove" iconSize="LARGE"/>
+                        </b:InputGroupButton>
+                    </b:InputGroup>
+
+                </b:NavbarForm>
+
+            </b:NavbarCollapse>
+            <!--<b:NavForm size="1"/>-->
+
+
+        </b:Navbar>
+
+
+        <!--
+            <g:FlowPanel addStyleNames="well clearfix">
+                <g:FlowPanel ui:field="panel" addStyleNames="pull-left margin-right-5"/>
+
+
+                <g:FlowPanel addStyleNames="pull-right ">
+                    <b:InputGroup addStyleNames="pull-right" ui:field="searchAddOn">
+                        <b:InputGroupButton>
+                            <b:Anchor icon="SEARCH" ui:field="extendSearch" iconSize="TIMES2" visible="false"/>
+                        </b:InputGroupButton>
+
+
+                        <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}"/>
+
+
+                        <b:InputGroupButton>
+                            <b:Anchor icon="ANDROID" ui:field="remove" iconSize="LARGE"/>
+                        </b:InputGroupButton>
+                    </b:InputGroup>
+
+                    <g:FlowPanel ui:field="pagerContainer" addStyleNames="pull-left margin-right-5"/>
+                </g:FlowPanel>
+
+            </g:FlowPanel>
+
+        -->
+
+
+        <b:Column size="MD_2" addStyleNames="{style.left_panel}" ui:field="filterPanel" visible="false">
+        </b:Column>
+    </g:FlowPanel>
+</ui:UiBinder>
