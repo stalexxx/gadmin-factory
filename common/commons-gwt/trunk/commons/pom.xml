@@ -6,14 +6,14 @@
     <parent>
         <groupId>com.ifree.common</groupId>
         <artifactId>infrastucture-gwt</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../infrastructure/pom.xml</relativePath>
 
     </parent>
 
     <groupId>com.ifree.common</groupId>
     <artifactId>commons-gwt</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
 
 
@@ -305,8 +305,8 @@
 
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/commons</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/commons</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/commons</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</url>
     </scm>
 </project>

@@ -14,7 +14,7 @@
 
     <groupId>com.ifree.common</groupId>
     <artifactId>infrastucture-gwt</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -39,9 +39,9 @@
 
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/infrastructure</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/infrastructure</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.0/infrastructure</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</url>
     </scm>
 
 </project>
