@@ -7,7 +7,6 @@
  */
 package com.ifree.common.gwt.shared.loader;
 
-import com.ifree.common.gwt.shared.SortInfo;
 import com.ifree.common.gwt.shared.SortInfoBean;
 
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class ListLoadConfigBean implements ListLoadConfig {
    * 
    * @param info the sort information
    */
-  public ListLoadConfigBean(List<SortInfo> info) {
+  public ListLoadConfigBean(List<SortInfoBean> info) {
     setSortInfo(info);
   }
 
@@ -52,9 +51,9 @@ public class ListLoadConfigBean implements ListLoadConfig {
   }
 
   @Override
-  public void setSortInfo(List<? extends SortInfo> info) {
+  public void setSortInfo(List<SortInfoBean> info) {
     sortInfo.clear();
-    for (SortInfo i : info) {
+    for (SortInfoBean i : info) {
       if (i instanceof SortInfoBean) {
         sortInfo.add((SortInfoBean) i);
       } else {

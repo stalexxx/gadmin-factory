@@ -304,6 +304,8 @@
         </plugins>
     </build>
 
+
+
     <scm>
         <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</connection>
         <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/</developerConnection>

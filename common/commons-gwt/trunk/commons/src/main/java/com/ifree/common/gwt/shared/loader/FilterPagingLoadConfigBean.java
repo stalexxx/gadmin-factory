@@ -7,7 +7,6 @@
  */
 package com.ifree.common.gwt.shared.loader;
 
-import com.ifree.common.gwt.shared.SortInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,8 @@ public class FilterPagingLoadConfigBean extends PagingLoadConfigBean implements 
     this.filterConfigs = filters;
   }
 
-    @Override
+    /*@Override
     public void setSortInfo(List<? extends SortInfo> info) {
-
-    }
+        int i = 0;
+    }*/
 }

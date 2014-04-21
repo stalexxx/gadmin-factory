@@ -7,7 +7,6 @@ package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.base.Function;
 import com.google.gwt.cell.client.*;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -26,6 +25,7 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
+import com.ifree.common.gwt.client.ui.fields.BaseField;
 import org.gwtbootstrap3.client.ui.CellTable;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
@@ -37,6 +37,7 @@ import java.util.Date;
  * @author Alexander Ostrovskiy (a.ostrovskiy)
  * @since 08.07.13
  */
+@SuppressWarnings("UnusedDeclaration")
 public abstract class BaseListGrid<T> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T> {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
@@ -47,7 +48,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     protected SingleSelectionModel<T> selectionModel;
 
-    protected CellTable cellTable;
+    protected CellTable<T> cellTable;
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     //protected SimplePager pager;
 
@@ -59,7 +60,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         this.resources = resources;
     }
 
-    protected static <T> void addTextEditColumn(CellTable<T> dataGrid,
+    protected void addTextEditColumn(CellTable<T> dataGrid,
                                                 FieldUpdater<T, String> updater,
                                                 final Function<T, String> valueGetter,
                                                 String header,
@@ -85,15 +86,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-        /**
-         * @param dataGrid
-         * @param abstractCell
-         * @param header
-         * @param width
-         * @param sortable
-         * @param dataStore    used if sortable true. Means sorting column (in DB) na,e
-         */
-    protected static <T> void addIdentityColumn(CellTable<T> dataGrid, AbstractCell<T> abstractCell, String header, int width, boolean sortable, String dataStore) {
+    protected void addIdentityColumn(CellTable<T> dataGrid, AbstractCell<T> abstractCell, String header, int width, boolean sortable, String dataStore) {
         Column<T, T> column = new IdentityColumn<T>(abstractCell);
 
 
@@ -103,24 +96,20 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         column.setDataStoreName(dataStore);
     }
 
-    /**
-     * @param dataGrid
-     * @param column
-     */
-    protected static <T> void addTextColumn(CellTable<T> dataGrid, Column<T, String> column, String header, int width, boolean sortable, String dataStore) {
+    protected void addTextColumn(CellTable<T> dataGrid, Column<T, String> column, String header, int width, boolean sortable, String dataStore) {
         addColumn(dataGrid, column, header, width, sortable, dataStore);
     }
 
-    protected static <T> void addDateColumn(CellTable<T> dataGrid, Column<T, Date> column, String header, int width, boolean sortable, String dataStore) {
+    protected void addDateColumn(CellTable<T> dataGrid, Column<T, Date> column, String header, int width, boolean sortable, String dataStore) {
         addColumn(dataGrid, column, header, width, sortable, dataStore);
     }
 
-    protected <T> void addBooleanColumn(CellTable<T> dataGrid, final Function<T, Boolean> column,
-                                        final IconType yes, final IconType no, String header, int width, boolean sortable, String dataStore) {
+    protected void addBooleanColumn(CellTable<T> dataGrid, final BaseField<T, Boolean> field,
+                                    final IconType yes, final IconType no, String header, int width, boolean sortable) {
         addSafeHtmlColumn(dataGrid, new AbstractSafeHtmlRenderer<T>() {
             @Override
             public SafeHtml render(T object) {
-                Boolean b = column.apply(object);
+                Boolean b = field.getValue(object);
                 if (b != null) {
                     return templates.icon(Styles.FONT_AWESOME_BASE,
                             b ? yes.getCssName() : no.getCssName());
@@ -129,7 +118,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
                     return SafeHtmlUtils.EMPTY_SAFE_HTML;
                 }
             }
-        }, header, width, sortable, dataStore);
+        }, header, width, sortable, field.getPath());
     }
 
 
@@ -192,8 +181,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 //        cellTable.setHover(true);
 
 
-        SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        /*pager = new CustomPager(pagerResources);
+       /* SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+        pager = new CustomPager(pagerResources);
         //pager = new NumberedPager();
         pager.addStyleName(Styles.PULL_LEFT);
         pager.setDisplay(cellTable);
@@ -227,13 +216,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     public SimplePager getPager() {
         return null;
-    }
-
-    public int getGridBottom() {
-        int absoluteTop = getAbsoluteTop();
-        int offsetHeight = getOffsetHeight();
-        int absBottom = absoluteTop + offsetHeight;
-        return absBottom;
     }
 
     public boolean isSelected(T item) {

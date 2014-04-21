@@ -7,6 +7,7 @@ package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.BaseFilter;
+import com.ifree.common.gwt.client.ui.fields.BaseField;
 import com.ifree.common.gwt.shared.loader.*;
 
 import java.util.List;
@@ -20,6 +21,15 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
     protected F filter;
 
     private static FilterHelper writer = new FilterHelper();
+    private final BaseField defaultField;
+
+    public BaseFilterConfigBuilder(BaseField defaultField) {
+        this.defaultField = defaultField;
+    }
+
+    public BaseFilterConfigBuilder() {
+        defaultField = null;
+    }
 
 
     @Override
@@ -33,7 +43,9 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
         final List<FilterConfigBean> filterConfigs = Lists.newArrayList();
 
         if (filter != null) {
-            writer.appendTo(filterConfigs, "name", filter.getName());
+            if (defaultField != null) {
+                writer.appendTo(filterConfigs, defaultField, filter.getName());
+            }
 
             addCustomFields(filterConfigs);
         }
@@ -46,13 +58,10 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     }
 
-    protected static  <V>  void addField(List<FilterConfigBean> filterConfigs, String field, V value) {
+    protected static  <V>  void addField(List<FilterConfigBean> filterConfigs, BaseField field, V value) {
         writer.appendTo(filterConfigs, field, value);
     }
 
 
-    protected static void addField(List<FilterConfigBean> filterConfigs, String value, Enum field) {
-        addField(filterConfigs, value, field.name());
 
-    }
 }
