@@ -13,6 +13,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
+import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,7 +24,6 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
-import com.ifree.common.gwt.client.ui.fields.BaseField;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.CellTable;
@@ -112,7 +112,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected void addIntegerColumn(CellTable<T> dataGrid, final ValueProvider<T, Integer> valueProvider, String header, int width, boolean sortable) {
+    protected void addIntegerColumn(CellTable<T> dataGrid, final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
@@ -121,8 +121,25 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         }, header, width, sortable, valueProvider.getPath());
     }
 
-    protected void addDateColumn(CellTable<T> dataGrid, Column<T, Date> column, String header, int width, boolean sortable, String dataStore) {
-        addColumn(dataGrid, column, header, width, sortable, dataStore);
+    protected <V> void addRenderedColumn(CellTable<T> dataGrid, final ValueProvider<T, V> valueProvider, final Renderer<V> renderer,
+                                         String header, int width, boolean sortable) {
+        addColumn(dataGrid, new TextColumn<T>() {
+            @Override
+            public String getValue(T object) {
+                return renderer.render(valueProvider.getValue(object));
+            }
+        }, header, width, sortable, valueProvider.getPath());
+    }
+
+
+
+    protected void addDateColumn(CellTable<T> dataGrid, final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
+        addColumn(dataGrid, new TextColumn<T>() {
+            @Override
+            public String getValue(T object) {
+                return String.valueOf(provider.getValue(object));
+            }
+        }, header, width, sortable, provider.getPath());
     }
 
     protected void addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
@@ -246,7 +263,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     public void setSelection(T newSelection) {
         selectionModel.setSelected(newSelection, true);
     }
-
 
     @Override
     public Object getKey(T item) {

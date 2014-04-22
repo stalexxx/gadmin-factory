@@ -42,4 +42,5 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void updateHeader(String displayHeader);
 
+    void setFilter(F filter);
 }

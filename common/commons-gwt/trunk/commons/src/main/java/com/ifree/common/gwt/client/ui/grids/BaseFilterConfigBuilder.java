@@ -5,12 +5,17 @@
 
 package com.ifree.common.gwt.client.ui.grids;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.fields.BaseField;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -55,6 +60,7 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
         return filterConfigs;
 
     }
+
 
     protected void addCustomFields(List<FilterConfigBean> filterConfigs) {
 
