@@ -16,12 +16,15 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
 import com.ifree.common.gwt.client.ui.grids.PagingSortingFilteringDataProvider;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
+import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
 import com.ifree.common.gwt.client.ui.utils.ViewHeaderResolver;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
@@ -89,6 +92,7 @@ public abstract class BaseListPresenter<T,
     }
 
 
+
     @Override
     protected void onUnbind() {
         provider.removeDataDisplay(getView().getGridDataDisplay());
@@ -97,6 +101,9 @@ public abstract class BaseListPresenter<T,
     @Override
     protected void onReveal() {
         super.onReveal();
+
+        setupFilter();
+
         update();
 
         getView().setupRoles(currentUser.getRoles());
@@ -104,6 +111,21 @@ public abstract class BaseListPresenter<T,
 
 
         getView().updateHeader(getDisplayHeader());
+
+
+
+    }
+
+    private void setupFilter() {
+        PlaceRequest request = placeManager.getCurrentPlaceRequest();
+        String filter = request.getParameter(BaseNameTokes.FILTER, null);
+        AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
+        if (filterHandler != null && filter != null) {
+            Filter_ filter_ = filterHandler.convertToObject(filter);
+            provider.setFilter(filter_);
+            getView().setFilter(filter_);
+        }
+
     }
 
     private String getDisplayHeader() {
@@ -116,7 +138,6 @@ public abstract class BaseListPresenter<T,
     protected void update() {
         loader.load();
     }
-
 
 
     @Nullable
@@ -133,15 +154,33 @@ public abstract class BaseListPresenter<T,
 
 
     @Override
-    public void onPerformFilter(PerformFilterEvent filter) {
-        provider.setFilter((Filter_)filter.getFilter());
+    public void onPerformFilter(PerformFilterEvent filterEvent) {
+        Filter_ filter = (Filter_) filterEvent.getFilter();
+        provider.setFilter(filter);
 
         getView().firstPage();
 
         loader.load();
+
+        AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
+        if (filterHandler != null) {
+            PlaceRequest currentPlaceRequest = placeManager.getCurrentPlaceRequest();
+
+
+            PlaceRequest.Builder builder = new PlaceRequest.Builder()
+                    .nameToken(currentPlaceRequest.getNameToken());
+            if (filter != null) {
+                String filterString = filterHandler.convertToString(filter);
+                builder.with(BaseNameTokes.FILTER, filterString).build();
+            }
+
+            placeManager.updateHistory(builder.build(), true);
+        }
+
     }
 
 
+    protected abstract AbstractFilterHandler<Filter_> getFilterHandler();
 
     @Override
     public void onColumnSort(ColumnSortEvent event) {

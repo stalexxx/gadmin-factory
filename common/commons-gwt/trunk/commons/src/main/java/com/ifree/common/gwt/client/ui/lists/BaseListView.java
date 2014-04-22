@@ -10,6 +10,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.view.client.HasData;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -35,6 +36,9 @@ public abstract class BaseListView<
 
     @UiField
     public PageHeader header;
+
+    protected TakesValue<_Filter> filterPanel;
+
 
 
     protected BaseListView() {
@@ -120,6 +124,17 @@ public abstract class BaseListView<
     public void updateHeader(String displayHeader) {
         header.setText(displayHeader);
     }
+
+    @Override
+    public void setFilter(_Filter filter) {
+        TakesValue<_Filter> filterPeer = getFilterPeer();
+        if (filterPeer != null) {
+            filterPeer.setValue(filter);
+        }
+    }
+
+    protected abstract TakesValue<_Filter> getFilterPeer();
+
 
     protected HasEnabled getViewControl() {
         return null;

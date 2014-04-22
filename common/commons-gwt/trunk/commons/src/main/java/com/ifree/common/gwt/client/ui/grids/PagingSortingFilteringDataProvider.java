@@ -5,6 +5,8 @@
 
 package com.ifree.common.gwt.client.ui.grids;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.cellview.client.ColumnSortList;
@@ -151,6 +153,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
         loader.load(visibleRange.getStart(), visibleRange.getLength());
     }
 
+
     /*===========================================[ INNER CLASSES ]================*/
 
     public interface FilterConfigBuilder<F extends Filter> {
@@ -158,33 +161,11 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
         void setFilter(F filter);
         
         List<FilterConfigBean> build();
+
+
+
     }
     
-    public static class DefaultFilterConfigBuilder implements FilterConfigBuilder<BaseFilter> {
 
-        private BaseFilter filter;
-
-        @Override
-        public void setFilter(BaseFilter filter) {
-            this.filter = filter;
-        }
-
-        @Override
-        public List<FilterConfigBean> build() {
-            final List<FilterConfigBean> filterConfigs = Lists.newArrayList();
-
-            if (filter != null) {
-                final String nameFilter = filter.getName();
-                if (nameFilter != null && !nameFilter.isEmpty()) {
-                    FilterConfigBean fc = new FilterConfigBean();
-                    fc.setValue(nameFilter);
-
-                    filterConfigs.add(fc);
-                }
-            }
-
-            return filterConfigs;
-        }
-    }
 
 }

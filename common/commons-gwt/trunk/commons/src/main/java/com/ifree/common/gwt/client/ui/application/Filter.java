@@ -10,4 +10,5 @@ package com.ifree.common.gwt.client.ui.application;
  * @since 24.09.13
  */
 public interface Filter {
+
 }

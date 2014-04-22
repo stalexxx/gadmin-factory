@@ -11,4 +11,5 @@ package com.ifree.common.gwt.client.ui.constants;
  */
 public interface BaseNameTokes {
     String ID_PARAM = "id";
+    String FILTER = "filter";
 }
