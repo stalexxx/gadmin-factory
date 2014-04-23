@@ -5,17 +5,11 @@
 
 package com.ifree.common.gwt.client.ui.grids;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.BaseFilter;
-import com.ifree.common.gwt.client.ui.fields.BaseField;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.*;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -26,7 +20,7 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     protected F filter;
 
-    private static FilterHelper writer = new FilterHelper();
+    private static FilterHelper helper = new FilterHelper();
 
     private ValueProvider<?, ?> defaultField;
 
@@ -41,7 +35,6 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     @Override
     public void setFilter(F filter) {
-
         this.filter = filter;
     }
 
@@ -51,7 +44,7 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
         if (filter != null) {
             if (defaultField != null) {
-                writer.appendTo(filterConfigs, defaultField, filter.getName());
+                helper.appendTo(filterConfigs, defaultField, filter.getName());
             }
 
             addCustomFields(filterConfigs);
@@ -66,8 +59,8 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     }
 
-    protected  static <V> void addField(List<FilterConfigBean> filterConfigs, ValueProvider<?, V> field, V value) {
-        writer.appendTo(filterConfigs, field, value);
+    protected  static <V> void addField(List<FilterConfigBean> filterConfigs, ValueProvider<?, ?> field, V value) {
+        helper.appendTo(filterConfigs, field, value);
     }
 
 
