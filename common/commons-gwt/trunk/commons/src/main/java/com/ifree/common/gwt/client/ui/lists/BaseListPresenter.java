@@ -109,11 +109,7 @@ public abstract class BaseListPresenter<T,
         getView().setupRoles(currentUser.getRoles());
         getView().updateToolbar();
 
-
         getView().updateHeader(getDisplayHeader());
-
-
-
     }
 
     private void setupFilter() {
@@ -180,7 +176,7 @@ public abstract class BaseListPresenter<T,
     }
 
 
-    protected abstract AbstractFilterHandler<Filter_> getFilterHandler();
+    public abstract AbstractFilterHandler<Filter_> getFilterHandler();
 
     @Override
     public void onColumnSort(ColumnSortEvent event) {

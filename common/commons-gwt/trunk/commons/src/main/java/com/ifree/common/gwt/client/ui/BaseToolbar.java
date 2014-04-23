@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.ui.lists.BaseFilterPanel;
 import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 
@@ -101,6 +102,9 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     public void add(Widget w) {
         if (w instanceof AbstractPager) {
             //pagerContainer.add(w);
+        } else if (w instanceof BaseFilterPanel) {
+            setFilterPanel(w);
+
         } else {
             listItemContainer.add(w);
         }

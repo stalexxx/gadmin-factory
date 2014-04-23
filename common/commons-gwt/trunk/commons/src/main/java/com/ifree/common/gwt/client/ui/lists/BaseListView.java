@@ -28,7 +28,7 @@ import java.util.List;
  */
 public abstract class BaseListView<
         T,
-        _Filter extends Filter,
+        _Filter extends BaseFilter,
         _Handler extends ListUiHandler<T, _Filter>
         >
         extends ViewWithUiHandlers<_Handler> implements ListView<T, _Filter> {
@@ -37,11 +37,9 @@ public abstract class BaseListView<
     @UiField
     public PageHeader header;
 
-    protected TakesValue<_Filter> filterPanel;
-
-
 
     protected BaseListView() {
+
     }
 
     protected abstract BaseToolbar getToolbar();
@@ -133,7 +131,10 @@ public abstract class BaseListView<
         }
     }
 
-    protected abstract TakesValue<_Filter> getFilterPeer();
+    protected TakesValue<_Filter> getFilterPeer() {
+        return null;
+    }
+
 
 
     protected HasEnabled getViewControl() {
