@@ -5,22 +5,26 @@
 
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
-import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.view.client.HasData;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.ui.BaseFilter;
-import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
+import org.gwtbootstrap3.client.ui.ListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alexander Ostrovskiy (alex)
@@ -36,6 +40,9 @@ public abstract class BaseListView<
 
     @UiField
     public PageHeader header;
+
+    private UIActionBuilder<T, ListItem> actionBuilder = new ListItemActionBuilder<T>();
+    private Map<Action<T>, ListItem> actionMap = Maps.newHashMap();
 
 
     protected BaseListView() {
@@ -102,21 +109,6 @@ public abstract class BaseListView<
         }
     }
 
-    @Override
-    public void updateControls(T selectedObject) {
-        if (getCreateControl() != null) {
-            getCreateControl().setEnabled(true);
-        }
-        if (getEditControl() != null) {
-            getEditControl().setEnabled(selectedObject != null);
-        }
-        if (getRemoveControl() != null) {
-            getRemoveControl().setEnabled(selectedObject != null);
-        }
-        if (getViewControl() != null) {
-            getViewControl().setEnabled(selectedObject != null);
-        }
-    }
 
     @Override
     public void updateHeader(String displayHeader) {
@@ -135,26 +127,25 @@ public abstract class BaseListView<
         return null;
     }
 
-
-
-    protected HasEnabled getViewControl() {
-        return null;
-
+    @Override
+    public void addAction(Action<T> action, final Command command) {
+        ListItem actionWidget = actionBuilder.build(action);
+        actionWidget.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                command.execute();
+            }
+        });
+        actionMap.put(action, actionWidget);
+        getToolbar().add(actionWidget);
     }
 
-    protected HasEnabled getRemoveControl() {
-        return null;
-
-    }
-
-    protected HasEnabled getEditControl() {
-        return null;
-
-    }
-
-    protected HasEnabled getCreateControl() {
-        return null;
-
+    @Override
+    public void updateAction(Action<T> action, boolean enabled) {
+        ListItem listItem = actionMap.get(action);
+        if (listItem != null) {
+            listItem.setEnabled(enabled);
+        }
     }
 
     protected  _Filter castFilter(BaseFilter filter) {
