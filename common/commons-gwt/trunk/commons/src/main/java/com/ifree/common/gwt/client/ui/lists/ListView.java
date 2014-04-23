@@ -7,6 +7,7 @@ package com.ifree.common.gwt.client.ui.lists;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -38,9 +39,12 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void firstPage();
 
-    void updateControls(M selectedObject);
-
     void updateHeader(String displayHeader);
 
     void setFilter(F filter);
+
+    void addAction(Action<M> action, Command command);
+
+    void updateAction(Action<M> action, boolean enabled);
+
 }

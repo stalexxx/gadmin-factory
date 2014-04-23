@@ -5,8 +5,10 @@
 
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
@@ -32,6 +34,7 @@ import com.ifree.common.gwt.shared.loader.PagingLoadResult;
 import com.ifree.common.gwt.shared.loader.PagingLoader;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 
 /**
@@ -63,15 +66,25 @@ public abstract class BaseListPresenter<T,
     protected final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     protected final PagingSortingFilteringDataProvider<T, Filter_> provider;
 
+    private List<Action<T>> actionList = Lists.newArrayList();
+
 
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
                                 BaseDataProxy<T> dataProxy) {
         super(eventBus, view, proxy, slot);
-        loader = new FilterPagingLoader(dataProxy);
+        loader = new FilterPagingLoader<>(dataProxy);
         provider = createProvider(view);
 
+        initAction();
+
     }
+
+    private void initAction() {
+        addActions(createActions());
+    }
+
+    protected abstract Action [] createActions();
 
     private PagingSortingFilteringDataProvider<T, Filter_> createProvider(View_ view) {
         return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, createFilterConfigBuilder());
@@ -89,6 +102,9 @@ public abstract class BaseListPresenter<T,
         provider.addDataDisplay(getView().getGridDataDisplay());
 
         onSelectionChanged(getSelectedObject());
+
+
+
     }
 
 
@@ -162,7 +178,6 @@ public abstract class BaseListPresenter<T,
         if (filterHandler != null) {
             PlaceRequest currentPlaceRequest = placeManager.getCurrentPlaceRequest();
 
-
             PlaceRequest.Builder builder = new PlaceRequest.Builder()
                     .nameToken(currentPlaceRequest.getNameToken());
             if (filter != null) {
@@ -189,28 +204,25 @@ public abstract class BaseListPresenter<T,
     public void onSelectionChange(SelectionChangeEvent event) {
         T selectedObject = getSelectedObject();
         onSelectionChanged(selectedObject);
-        getView().updateControls(selectedObject);
+
+        for (Action<T> action : actionList) {
+            boolean enabled = action.isEnabled(selectedObject);
+            getView().updateAction(action, enabled);
+        }
     }
 
-    @Override
-    public void onView(T selectedObject) {
+    public void addActions(Action<T>... actions) {
+        if (actions != null) {
+            for (final Action<T> action : actions) {
+                actionList.add(action);
+                getView().addAction(action, new Command() {
 
+                    @Override
+                    public void execute() {
+                        action.perform(getSelectedObject());
+                    }
+                });
+            }
+        }
     }
-
-    @Override
-    public void onEdit(T selectedObject) {
-
-    }
-
-    @Override
-    public void onRemove(T selectedObject) {
-
-    }
-
-    @Override
-    public void onCreate() {
-
-    }
-
-
 }

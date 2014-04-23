@@ -22,11 +22,11 @@ public interface ListUiHandler<T, F extends Filter> extends UiHandlers, PerformF
 
 //    CRUD
 
-    void onView(T selectedObject);
+    /*void onView(T selectedObject);
 
     void onEdit(T selectedObject);
 
     void onRemove(T selectedObject);
 
-    void onCreate();
+    void onCreate();*/
 }
