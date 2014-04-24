@@ -19,6 +19,12 @@
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <version.gwt>2.6.0</version.gwt>
+        <version.maven-processor-plugin>2.0.5</version.maven-processor-plugin>
+        <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
+    </properties>
+
     <scm>
         <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
         <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
