@@ -3,22 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.ifree.maven</groupId>
-        <artifactId>parent</artifactId>
-        <version>2.2</version>
-
+        <groupId>com.ifree.common</groupId>
+        <artifactId>commons-gwt-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
-
-
 
 
     <groupId>com.ifree.common</groupId>
     <artifactId>infrastucture-gwt</artifactId>
     <version>1.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
 
     <properties>
-        <version.gwt>2.6.0</version.gwt>
+
         <version.gwtp>1.2.1</version.gwtp>
         <version.gin>2.1.2</version.gin>
         <version.gwt.bootstrap>2.3.2.0</version.gwt.bootstrap>
@@ -27,17 +23,195 @@
         <version.arcbees-core>1.0-SNAPSHOT</version.arcbees-core>
 
 
+        <version.jackson-mapper>1.9.12</version.jackson-mapper>
+        <resteasy.version>3.0.8.Final</resteasy.version>
 
         <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
         <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
 
 
-        <version.maven-processor-plugin>2.0.5</version.maven-processor-plugin>
-        <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
+
         <!--<maven.javadoc.skip>true</maven.javadoc.skip>-->
 
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jackson-provider</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-guice</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-spring</artifactId>
+            <version>${resteasy.version}</version>
+        </dependency>
+
+        <!-- Infrastructure -->
+
+
+
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${version.jackson-mapper}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-mvp-client</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <!-- <dependency>
+             <groupId>com.arcbees</groupId>
+             <artifactId>guicy-resteasy</artifactId>
+             <version>${version.gwtp}</version>
+         </dependency>
+ -->
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rest</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rpc-client</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+
+        <dependency>
+
+
+
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-dispatch-rpc-server-spring</artifactId>
+            <version>${version.gwtp}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-core</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spring-web</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-processors</artifactId>
+            <version>${version.gwtp}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.gwtplatform</groupId>
+            <artifactId>gwtp-tester</artifactId>
+            <version>${version.gwtp}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Google Web Toolkit dependencies -->
+
+        <!-- <dependency>
+             <groupId>com.google.gwt</groupId>
+             <artifactId>gwt-codeserver</artifactId>
+             <version>${version.gwt}</version>
+         </dependency>-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+
+        <!--<dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-codeserver</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+
+
+        <!-- Request Factory-->
+
+        <dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-server</artifactId>
+            <version>${version.gwt}</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.google.web.bindery</groupId>
+            <artifactId>requestfactory-apt</artifactId>
+            <version>${version.gwt}</version>
+            <scope>compile</scope>
+        </dependency>
+-->
+
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3</artifactId>
+            <version>${version.gwt.bootstrap3}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.gwtbootstrap3</groupId>
+            <artifactId>gwtbootstrap3-extras</artifactId>
+            <version>${version.gwt.bootstrap3}</version>
+        </dependency>
+        <!--<dependency>
+            <groupId>com.github.gwtbootstrap</groupId>
+            <artifactId>gwt-bootstrap</artifactId>
+            <version>${version.gwt.bootstrap}</version>
+        </dependency>
+-->
+        <!-- DI dependencies -->
+
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>${version.gin}</version>
+        </dependency>
+
+    </dependencies>
 
     <scm>
         <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/infrastructure</connection>
