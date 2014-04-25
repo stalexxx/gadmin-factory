@@ -33,6 +33,7 @@
         <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
         <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
 
+        <version.guava>15.0</version.guava>
 
 
         <!--<maven.javadoc.skip>true</maven.javadoc.skip>-->
@@ -40,6 +41,13 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxrs</artifactId>
