@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <parent>
+        <groupId>com.ifree.common</groupId>
+        <artifactId>commons-gwt-parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.ifree.common</groupId>
+    <artifactId>commons-gwt-spring</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+
+    <properties>
+
+    </properties>
+
+
+    <dependencies>
+
+        <!-- REST -->
+
+        <!-- <dependency>
+            <groupId>com.ifree.common</groupId>
+            <artifactId>infrastucture-gwt</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+
+        </dependency>
+ -->
+    </dependencies>
+
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>target/generated-sources/annotations</directory>
+                <includes>
+                    <include>**/*.java</include>
+
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+
+                <includes>
+                    <include>**/*.java</include>
+                    <include>**/*.gwt.xml</include>
+                    <include>**/*.css</include>
+                </includes>
+            </resource>
+        </resources>
+
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>${version.maven-build-helper-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.build.directory}/generated-sources/annotations</source>
+                                <source>${project.build.directory}/generated-sources/gwt</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>${version.gwt}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+<!--
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        &lt;!&ndash; here the phase you need &ndash;&gt;
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/java</directory>
+                                    <includes>
+                                        <include>**/*.java</include>
+                                        <include>**/*.gwt.xml</include>
+                                    </includes>
+                                </resource>
+                                <resource>
+                                    <directory>src/non-packaged-resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+-->
+        </plugins>
+    </build>
+
+
+
+    <scm>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt-spring/trunk/commons/</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt-spring/trunk/commons/</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt-spring/trunk/commons/</url>
+    </scm>
+</project>
