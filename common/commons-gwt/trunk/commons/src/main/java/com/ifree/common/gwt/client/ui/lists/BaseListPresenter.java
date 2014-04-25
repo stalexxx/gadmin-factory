@@ -76,13 +76,14 @@ public abstract class BaseListPresenter<T,
         loader = new FilterPagingLoader<>(dataProxy);
         provider = createProvider(view);
 
-        initAction();
 
     }
 
     private void initAction() {
         addActions(createActions());
     }
+
+
 
     protected abstract Action [] createActions();
 
@@ -96,13 +97,14 @@ public abstract class BaseListPresenter<T,
     protected void onBind() {
         super.onBind();
 
+        initAction();
+
         registerHandler(getView().addColumnSortHandler(this));
         registerHandler(getView().addSelectionChangeHandler(this));
 
         provider.addDataDisplay(getView().getGridDataDisplay());
 
         onSelectionChanged(getSelectedObject());
-
 
 
     }
@@ -206,8 +208,11 @@ public abstract class BaseListPresenter<T,
         onSelectionChanged(selectedObject);
 
         for (Action<T> action : actionList) {
-            boolean enabled = action.isEnabled(selectedObject);
-            getView().updateAction(action, enabled);
+            String displayText = action.getDisplayText(selectedObject);
+            getView().updateAction(action,
+                    action.isEnabled(selectedObject),
+                    action.isVisible(selectedObject),
+                    displayText);
         }
     }
 

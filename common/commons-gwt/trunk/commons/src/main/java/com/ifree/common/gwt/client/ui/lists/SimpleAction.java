@@ -1,5 +1,7 @@
 package com.ifree.common.gwt.client.ui.lists;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by alex on 23.04.14.
  */
@@ -13,5 +15,8 @@ public abstract class SimpleAction<T> extends BaseAction<T> {
         return true;
     }
 
-
+    @Override
+    public boolean isVisible(@Nullable T item) {
+        return true;
+    }
 }

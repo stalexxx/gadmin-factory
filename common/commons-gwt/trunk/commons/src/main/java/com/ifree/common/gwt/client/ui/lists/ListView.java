@@ -45,6 +45,6 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void addAction(Action<M> action, Command command);
 
-    void updateAction(Action<M> action, boolean enabled);
+    void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText);
 
 }
