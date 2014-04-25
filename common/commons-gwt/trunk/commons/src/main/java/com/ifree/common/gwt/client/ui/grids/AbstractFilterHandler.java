@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
 import com.ifree.common.gwt.shared.loader.FilterHandler;
-import com.ifree.common.gwt.shared.loader.FilterHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;

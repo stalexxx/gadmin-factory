@@ -2,6 +2,7 @@ package com.ifree.common.gwt.spring;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+import com.ifree.common.gwt.client.ui.grids.FilterHelper;
 import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
