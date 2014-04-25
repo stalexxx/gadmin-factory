@@ -1,9 +1,9 @@
-package com.ifree.common.gwt.shared.loader;
+package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.collect.Maps;
 import com.google.gwt.text.shared.Parser;
-import com.ifree.common.gwt.client.ui.fields.BaseField;
 import com.ifree.common.gwt.shared.ValueProvider;
+import com.ifree.common.gwt.shared.loader.*;
 
 import java.text.ParseException;
 import java.util.Collection;
