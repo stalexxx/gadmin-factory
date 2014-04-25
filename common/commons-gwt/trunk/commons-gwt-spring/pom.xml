@@ -170,8 +170,8 @@
 
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/commons-gwt-spring</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt-spring/trunk/commons/commons-gwt-spring</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons/commons-gwt-spring</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons-gwt-spring</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt-spring/trunk/commons-gwt-spring</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/commons-gwt-spring</url>
     </scm>
 </project>
