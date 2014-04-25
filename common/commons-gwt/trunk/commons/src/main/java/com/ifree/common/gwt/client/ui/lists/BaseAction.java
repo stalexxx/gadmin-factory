@@ -5,14 +5,14 @@ package com.ifree.common.gwt.client.ui.lists;
  */
 public abstract class BaseAction<T> implements Action<T> {
 
-    private String text;
+    protected String text;
 
     public BaseAction(String text) {
         this.text = text;
     }
 
     @Override
-    public String getDisplayText() {
+    public String getDisplayText(T item) {
         return text;
     }
 }

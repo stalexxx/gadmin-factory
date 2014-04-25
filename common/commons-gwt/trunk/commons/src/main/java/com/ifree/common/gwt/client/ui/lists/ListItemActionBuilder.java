@@ -1,6 +1,5 @@
 package com.ifree.common.gwt.client.ui.lists;
 
-import com.google.gwt.user.client.ui.IsWidget;
 import org.gwtbootstrap3.client.ui.ListItem;
 
 /**
@@ -10,7 +9,7 @@ class ListItemActionBuilder<M> implements UIActionBuilder<M, ListItem> {
     @Override
     public ListItem build(final Action action) {
 
-        ListItem listItem = new ListItem(action.getDisplayText());
+        ListItem listItem = new ListItem();
         /*Scheduler.get().scheduleDeferred();
         listItem.addClickHandler(new ClickHandler() {
             @Override

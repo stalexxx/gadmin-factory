@@ -1,7 +1,6 @@
 package com.ifree.common.gwt.client.ui.lists;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by alex on 23.04.14.
@@ -16,6 +15,7 @@ public abstract class SingleItemAction<T> extends BaseAction<T> {
         return item != null;
     }
 
+
     @Override
     public final void perform(@Nullable T item) {
         if (item != null) {
@@ -23,5 +23,7 @@ public abstract class SingleItemAction<T> extends BaseAction<T> {
         }
     }
 
-    protected abstract void nonNullPerform(@NotNull T item);
+
+
+    protected abstract void nonNullPerform(T item);
 }

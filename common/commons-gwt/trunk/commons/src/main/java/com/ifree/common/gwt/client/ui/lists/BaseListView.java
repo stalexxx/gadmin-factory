@@ -141,10 +141,13 @@ public abstract class BaseListView<
     }
 
     @Override
-    public void updateAction(Action<T> action, boolean enabled) {
+    public void updateAction(Action<T> action, boolean enabled, boolean visible, String displayText) {
         ListItem listItem = actionMap.get(action);
         if (listItem != null) {
             listItem.setEnabled(enabled);
+            listItem.setText(displayText);
+            listItem.setVisible(visible);
+
         }
     }
 
