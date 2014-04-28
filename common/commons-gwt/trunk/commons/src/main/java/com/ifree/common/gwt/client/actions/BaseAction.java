@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.lists;
+package com.ifree.common.gwt.client.actions;
 
 /**
  * Created by alex on 23.04.14.

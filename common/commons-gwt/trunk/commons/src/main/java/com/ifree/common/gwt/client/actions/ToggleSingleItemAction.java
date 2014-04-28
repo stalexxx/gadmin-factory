@@ -1,6 +1,4 @@
-package com.ifree.common.gwt.client.ui.lists;
-
-import com.ifree.common.gwt.shared.ValueProvider;
+package com.ifree.common.gwt.client.actions;
 
 import javax.annotation.Nullable;
 

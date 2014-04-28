@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.view.client.HasData;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;

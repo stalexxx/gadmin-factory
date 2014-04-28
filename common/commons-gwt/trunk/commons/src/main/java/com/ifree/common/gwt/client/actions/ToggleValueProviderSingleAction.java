@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.lists;
+package com.ifree.common.gwt.client.actions;
 
 import com.ifree.common.gwt.shared.ValueProvider;
 

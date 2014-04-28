@@ -33,19 +33,13 @@ public class BooleanEditor extends Composite implements LeafValueEditor<Boolean>
 
         initWidget(group);
 
-        /*doesntMatter.addClickHandler(this);
-        yes.addClickHandler(this);
-        no.addClickHandler(this);*/
     }
 
     @Override
     public void setValue(Boolean value) {
-
-            doesntMatter.setActive(value == null);
-
-            yes.setActive(value == Boolean.TRUE);
-
-            no.setActive(value == Boolean.FALSE);
+        doesntMatter.setActive(value == null);
+        yes.setActive(value == Boolean.TRUE);
+        no.setActive(value == Boolean.FALSE);
     }
 
     @Override

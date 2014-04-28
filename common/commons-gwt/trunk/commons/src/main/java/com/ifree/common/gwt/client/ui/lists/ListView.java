@@ -12,6 +12,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.View;
+import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.ui.application.CustomizedWithRoles;
 import com.ifree.common.gwt.client.ui.application.Filter;
 

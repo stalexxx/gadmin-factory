@@ -1,5 +1,6 @@
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.ifree.common.gwt.client.actions.Action;
 import org.gwtbootstrap3.client.ui.ListItem;
 
 /**
