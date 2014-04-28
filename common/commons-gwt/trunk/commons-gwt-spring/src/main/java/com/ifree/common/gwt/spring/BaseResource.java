@@ -41,14 +41,14 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             page = findAll(config);
         }
 
-        List<EntityDto_> dtos = getConversionService().transformToList(page.getContent(), getClazz());
+        List<EntityDto_> dtos = getConversionService().transformToList(page.getContent(), getDtoClazz());
 
         return new PagingLoadResultBean<EntityDto_>(dtos, (int) page.getTotalElements(), config.getOffset());
     }
 
     protected abstract BaseConversionService getConversionService();
 
-    protected abstract Class<EntityDto_> getClazz();
+    protected abstract Class<EntityDto_> getDtoClazz();
 
     protected abstract Page<Entity_> findAll(FilterPagingLoadConfigBean config);
 
@@ -125,6 +125,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             if (specs != null) {
                 return specs.and(specification);
             } else {
+
                 return Specifications.where(specification);
             }
         }
