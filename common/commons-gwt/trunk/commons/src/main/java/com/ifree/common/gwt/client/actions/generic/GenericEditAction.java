@@ -1,14 +1,10 @@
 package com.ifree.common.gwt.client.actions.generic;
 
-import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.ifree.common.gwt.client.actions.SimpleAction;
 import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
-
-import javax.annotation.Nullable;
 
 /**
 * Created by alex on 28.04.14.
