@@ -157,7 +157,7 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>${version.gwt}</version>
-            <exclusions>
+           <!-- <exclusions>
                 <exclusion>
                     <artifactId>validation-api</artifactId>
                     <groupId>javax.validation</groupId>
@@ -166,10 +166,10 @@
                     <artifactId>validation-api</artifactId>
                     <groupId>javax.validation</groupId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
@@ -179,7 +179,7 @@
             <artifactId>validation-api</artifactId>
             <version>1.0.0.GA</version>
             <classifier>sources</classifier>
-        </dependency>
+        </dependency>-->
         <!--<dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
@@ -189,16 +189,7 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
             <version>${version.gwt}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>validation-api</artifactId>
-                    <groupId>javax.validation</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>validation-api</artifactId>
-                    <groupId>javax.validation</groupId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
 
         <dependency>

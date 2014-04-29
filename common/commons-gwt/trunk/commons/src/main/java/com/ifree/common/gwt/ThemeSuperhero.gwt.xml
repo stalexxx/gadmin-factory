@@ -21,8 +21,6 @@
 <module>
     <inherits name="org.gwtbootstrap3.client.NoThemeResources"/>
 
-
-
     <public path="resources">
         <include name="superhero/css/*.css"/>
     </public>

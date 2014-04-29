@@ -1,5 +1,6 @@
 package com.ifree.common.gwt.client.actions;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -25,5 +26,5 @@ public abstract class SingleItemAction<T> extends BaseAction<T> {
 
 
 
-    protected abstract void nonNullPerform(T item);
+    protected abstract void nonNullPerform(@Nonnull T item);
 }
