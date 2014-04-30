@@ -130,6 +130,7 @@ public abstract class BaseListPresenter<T,
 
         getView().updateHeader(getDisplayHeader());
 
+        updateActions();
 
     }
 
@@ -209,6 +210,13 @@ public abstract class BaseListPresenter<T,
     public void onSelectionChange(SelectionChangeEvent event) {
         T selectedObject = getSelectedObject();
         onSelectionChanged(selectedObject);
+
+        updateActions();
+    }
+
+    private void updateActions() {
+        T selectedObject;
+        selectedObject = getSelectedObject();
 
         for (Action<T> action : actionList) {
             String displayText = action.getDisplayText(selectedObject);
