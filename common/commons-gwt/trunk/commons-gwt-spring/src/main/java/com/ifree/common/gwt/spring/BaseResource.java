@@ -50,6 +50,8 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
     protected abstract Class<EntityDto_> getDtoClazz();
 
+    protected abstract Class<Entity_> getEntityClazz();
+
     protected abstract Page<Entity_> findAll(FilterPagingLoadConfigBean config);
 
     protected abstract Page<Entity_> findAll(Specifications<Entity_> spec, FilterPagingLoadConfigBean config);

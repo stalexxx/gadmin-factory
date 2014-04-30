@@ -16,7 +16,6 @@ import org.gwtbootstrap3.client.ui.constants.AlertType;
  */
 public abstract class AlertingAsyncCallback<T> implements AsyncCallback<T> {
 
-
     private EventBus eventBus;
 
     protected AlertingAsyncCallback(EventBus eventBus) {

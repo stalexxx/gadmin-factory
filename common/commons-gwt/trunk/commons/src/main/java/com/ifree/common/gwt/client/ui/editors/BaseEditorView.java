@@ -32,7 +32,7 @@ import java.util.Set;
  * @author Alexander Ostrovskiy (a.ostrovskiy)
  * @since 26.04.13
  */
-public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers> extends ViewWithUiHandlers<C> implements EditorView<T> {
+public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extends Editor<T>> extends ViewWithUiHandlers<C> implements EditorView<T> {
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -41,6 +41,13 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers> extends 
     private Widget[] validationFields;
 
     private Map<Editor, FormGroup> groupMap = Maps.newHashMap();
+
+    private final SimpleBeanEditorDriver<T, E> driver;
+
+    protected BaseEditorView(SimpleBeanEditorDriver<T, E> driver) {
+        this.driver = driver;
+    }
+
 
     /*===========================================[ CLASS METHODS ]================*/
 
@@ -79,6 +86,11 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers> extends 
     }
 
 
+    @Override
+    public SimpleBeanEditorDriver<T, E> getDriver() {
+        return driver;
+    }
+
     protected abstract Widget[] validationFields();
 
     @Override
@@ -113,7 +125,12 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers> extends 
 
     }
 
-    private List<EditorError> getEditorErrors(Set<ConstraintViolation<T>> violations, SimpleBeanEditorDriver<T, Editor<T>> driver) {
+    @Override
+    public void initializeDriver() {
+        getDriver().initialize((E) this);
+    }
+
+    private List<EditorError> getEditorErrors(Set<ConstraintViolation<T>> violations, SimpleBeanEditorDriver<T, ?> driver) {
         DelegateMap delegateMap = DelegateMap.of(driver, DelegateMap.IDENTITY);
 
         ArrayList<EditorError> errors = new ArrayList<EditorError>(violations.size());

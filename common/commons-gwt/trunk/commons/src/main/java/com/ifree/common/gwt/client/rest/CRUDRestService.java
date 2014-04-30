@@ -18,7 +18,7 @@ public interface CRUDRestService<T, ID extends Serializable> {
     RestAction<ID> create(T dto);
 
     @PUT
-    RestAction<Boolean> update(T dto);
+    RestAction<ID> update(T dto);
 
     @DELETE @Path("/{id}")
     RestAction<Boolean> delete(@PathParam("id") ID id);

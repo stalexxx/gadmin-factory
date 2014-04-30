@@ -26,6 +26,11 @@
         <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
 
 
+        <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
+        <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
+
+        <version.guava>16.0</version.guava>
+
 
     </properties>
 

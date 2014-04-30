@@ -129,6 +129,8 @@ public abstract class BaseListPresenter<T,
         getView().updateToolbar();
 
         getView().updateHeader(getDisplayHeader());
+
+
     }
 
     private void setupFilter() {

@@ -30,10 +30,6 @@
         <version.jackson-mapper>1.9.12</version.jackson-mapper>
         <resteasy.version>3.0.8.Final</resteasy.version>
 
-        <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
-        <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
-
-        <version.guava>15.0</version.guava>
 
 
         <!--<maven.javadoc.skip>true</maven.javadoc.skip>-->
