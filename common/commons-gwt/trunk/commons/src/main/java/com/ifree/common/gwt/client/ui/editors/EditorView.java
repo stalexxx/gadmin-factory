@@ -22,7 +22,7 @@ public interface EditorView<T> extends View, HasEditorErrors<T>, CustomizedWithR
 
     /*===========================================[ INTERFACE METHODS ]============*/
 
-    SimpleBeanEditorDriver<T, Editor<T>> getDriver();
+    SimpleBeanEditorDriver<T, ?> getDriver();
 
     void clearValidation();
 
@@ -32,4 +32,6 @@ public interface EditorView<T> extends View, HasEditorErrors<T>, CustomizedWithR
     void setEditableMode(boolean editMode);
 
     void handleViolations(Set<ConstraintViolation<T>> violations);
+
+    void initializeDriver();
 }

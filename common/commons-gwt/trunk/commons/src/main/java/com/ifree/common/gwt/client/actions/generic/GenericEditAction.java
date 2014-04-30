@@ -6,6 +6,8 @@ import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 
+import javax.annotation.Nonnull;
+
 /**
 * Created by alex on 28.04.14.
 */
@@ -23,11 +25,10 @@ public class GenericEditAction<T> extends SingleItemAlwaysVisibleAction<T> {
     }
 
     @Override
-    protected void nonNullPerform(T item) {
+    protected void nonNullPerform(@Nonnull T item) {
         PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(token).
                 with(BaseNameTokes.ID_PARAM, getId(item)).build();
         placeManager.revealPlace(placeRequest);
-
     }
 
 

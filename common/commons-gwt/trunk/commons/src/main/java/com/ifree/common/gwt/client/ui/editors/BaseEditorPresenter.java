@@ -13,7 +13,6 @@ import com.google.gwt.validation.client.impl.Validation;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.gwtplatform.dispatch.rest.shared.RestService;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
@@ -21,6 +20,7 @@ import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.events.ShowAlertEvent;
+import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.BlockingOverlay;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
@@ -28,9 +28,11 @@ import com.ifree.common.gwt.client.ui.constants.BaseMessages;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -42,10 +44,10 @@ import java.util.logging.Logger;
 
 @SuppressWarnings("TypeParameterNamingConvention")
 public abstract class BaseEditorPresenter<
-        T,
+        T, ID extends Serializable,
         View_ extends EditorView<T> & HasUiHandlers<?>,
         Proxy_ extends ProxyPlace<?>,
-        RestService_ extends RestService
+        RestService_ extends CRUDRestService<T, ID>
         >
         extends Presenter<View_, Proxy_> implements BaseEditorUiHandlers {
 
@@ -57,7 +59,7 @@ public abstract class BaseEditorPresenter<
 
     protected final PlaceManager placeManager;
 
-    protected RestService_ restService;
+    protected RestService_ service;
 
     protected T currentDto;
 
@@ -76,19 +78,19 @@ public abstract class BaseEditorPresenter<
 
     protected final Logger logger;
 
-    private String id;
+    private ID id;
 
 /*===========================================[ CONSTRUCTORS ]=================*/
 
 
     protected BaseEditorPresenter(EventBus eventBus, View_ view, Proxy_ proxy, PlaceManager placeManager,
-                                  GwtEvent.Type<RevealContentHandler<?>> slot, Logger logger, RestService_ restService) {
+                                  GwtEvent.Type<RevealContentHandler<?>> slot, Logger logger, RestService_ service) {
         super(eventBus, view, proxy, slot);
 
         this.placeManager = placeManager;
 
         this.logger = logger;
-        this.restService = restService;
+        this.service = service;
 
     }
 
@@ -96,7 +98,7 @@ public abstract class BaseEditorPresenter<
     protected void onBind() {
         super.onBind();
 
-        getView().getDriver().initialize(getView());
+        getView().initializeDriver();
     }
 
 
@@ -116,25 +118,29 @@ public abstract class BaseEditorPresenter<
     @Override
     public void prepareFromRequest(PlaceRequest request) {
 
-        id = request.getParameter(BaseNameTokes.ID_PARAM, null);
+        String parameter = request.getParameter(BaseNameTokes.ID_PARAM, null);
+        id = convertId(parameter);
 
         super.prepareFromRequest(request);
     }
 
+    @Nullable
+    protected abstract ID convertId(String parameter);
 
-    protected void load(String id) {
+
+    protected void load(ID id) {
         if (id != null) {
             find(id, new AlertingAsyncCallback<T>(getEventBus()) {
                 @Override
                 public void onSuccess(T result) {
                     switchEditableMode(true);
-                    load(result);
+                    loadDto(result);
 
                 }
             });
         } else {
             switchEditableMode(true);
-            currentDto = create(restService);
+            currentDto = create(service);
 
             preEditableLoaded();
             getView().getDriver().edit(currentDto);
@@ -147,7 +153,7 @@ public abstract class BaseEditorPresenter<
     }
 
 
-    protected abstract void find(String id, AsyncCallback<T> receiver);
+    protected abstract void find(ID id, AsyncCallback<T> receiver);
 
     protected abstract T create(RestService_ currentContext);
 
@@ -168,6 +174,7 @@ public abstract class BaseEditorPresenter<
     public void onSave() {
         final T dto = getView().getDriver().flush();
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
         Set<ConstraintViolation<T>> violations = doValidate(dto, validator);
 
         if (!violations.isEmpty()) {
@@ -181,14 +188,17 @@ public abstract class BaseEditorPresenter<
 
 
         } else {
-            dispatcher.execute(getSaveOrCreateAction(dto), new AsyncCallback<T>() {
-                @Override
-                public void onFailure(Throwable caught) {
+            RestAction<ID> action;
+            if (getId(dto) == null) {
+                action = service.create(dto);
+            } else {
+                action = service.update(dto);
+            }
 
-                }
 
+            dispatcher.execute(action, new AlertingAsyncCallback<ID>(getEventBus()) {
                 @Override
-                public void onSuccess(T result) {
+                public void onSuccess(ID result) {
                     onBack();
                 }
             });
@@ -259,15 +269,15 @@ public abstract class BaseEditorPresenter<
     }
 
     private Set<ConstraintViolation<T>> validate(T dto) {
-        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        return doValidate(dto, validator);
+       // Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        return doValidate(dto, null);
 
 
     }
 
     protected abstract Set<ConstraintViolation<T>> doValidate(T dto, Validator validator);
 
-    protected abstract RestAction<T> getSaveOrCreateAction(T dto);
+    protected abstract RestAction<ID> getSaveOrCreateAction(T dto);
 
     protected List<EditorError> makeCustomValidation(T currentProxy) {
         return Lists.newArrayList();
@@ -277,9 +287,9 @@ public abstract class BaseEditorPresenter<
 
     protected abstract Object getId(T currentProxy);
 
-    protected void load(T proxy) {
-        /*restService = createContext();
-        currentDto = restService.edit(proxy);
+    protected void loadDto(T proxy) {
+        /*service = createContext();
+        currentDto = service.edit(proxy);
 */
 
         preEditableLoaded();
