@@ -61,9 +61,32 @@ public abstract class BaseDataProxy<T>
         timer.cancel();
         timer.schedule(DELAY_MILLIS);
     }
+    public void load(final Callback<PagingLoadResult<T>, Throwable> callback) {
+        load(null, callback);
+    }
+
+    public void load(final AsyncCallback<PagingLoadResult<T>> callback) {
+        load(null, new Callback<PagingLoadResult<T>, Throwable>() {
+            @Override
+            public void onFailure(Throwable reason) {
+                callback.onFailure(reason);
+            }
+
+            @Override
+            public void onSuccess(PagingLoadResult<T> result) {
+                callback.onSuccess(result);
+            }
+        });
+    }
 
     public void doLoad(FilterPagingLoadConfig loadConfig, final Callback<PagingLoadResult<T>, Throwable> callback) {
-        final RestAction<PagingLoadResultBean<T>> action = getAction((FilterPagingLoadConfigBean) loadConfig);
+        final RestAction<PagingLoadResultBean<T>> action;
+        if (loadConfig != null) {
+            action = getAction((FilterPagingLoadConfigBean) loadConfig);
+        } else {
+            action = getAction();
+        }
+
         restDispatch.execute(action, new AsyncCallback<PagingLoadResultBean<T>>() {
             @Override
             public void onFailure(Throwable caught) {
@@ -140,6 +163,7 @@ public abstract class BaseDataProxy<T>
     }*/
 
 
-
     protected abstract RestAction<PagingLoadResultBean<T>> getAction(FilterPagingLoadConfigBean loadConfig);
+
+    protected abstract RestAction<PagingLoadResultBean<T>> getAction();
 }
