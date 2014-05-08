@@ -21,6 +21,7 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.rest.ListingRestService;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
@@ -46,7 +47,8 @@ import java.util.List;
 public abstract class BaseListPresenter<T,
                                         Filter_ extends BaseFilter,
                                         View_ extends ListView<T, Filter_>,
-                                        Proxy_ extends ProxyPlace<?>
+                                        Proxy_ extends ProxyPlace<?>,
+                                        Service_ extends ListingRestService<T>
                                         >
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler,
@@ -64,6 +66,8 @@ public abstract class BaseListPresenter<T,
     @Inject
     protected ViewHeaderResolver headerResolver;
 
+    protected final Service_ listService;
+
     protected final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     protected final PagingSortingFilteringDataProvider<T, Filter_> provider;
 
@@ -72,8 +76,10 @@ public abstract class BaseListPresenter<T,
 
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
-                                BaseDataProxy<T> dataProxy) {
+                                BaseDataProxy<T> dataProxy,
+                                Service_ listService) {
         super(eventBus, view, proxy, slot);
+        this.listService = listService;
         loader = new FilterPagingLoader<>(dataProxy);
         provider = createProvider(view);
 
@@ -240,5 +246,9 @@ public abstract class BaseListPresenter<T,
                 });
             }
         }
+    }
+
+    public Service_ getService() {
+        return listService;
     }
 }
