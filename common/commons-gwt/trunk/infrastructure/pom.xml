@@ -159,16 +159,6 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>${version.gwt}</version>
-           <!-- <exclusions>
-                <exclusion>
-                    <artifactId>validation-api</artifactId>
-                    <groupId>javax.validation</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>validation-api</artifactId>
-                    <groupId>javax.validation</groupId>
-                </exclusion>
-            </exclusions>-->
         </dependency>
 
         <!--<dependency>
@@ -201,24 +191,6 @@
         </dependency>
 
 
-
-        <!-- Request Factory-->
-<!--
-
-        <dependency>
-            <groupId>com.google.web.bindery</groupId>
-            <artifactId>requestfactory-server</artifactId>
-            <version>${version.gwt}</version>
-        </dependency>
--->
-
-        <!--<dependency>
-            <groupId>com.google.web.bindery</groupId>
-            <artifactId>requestfactory-apt</artifactId>
-            <version>${version.gwt}</version>
-            <scope>compile</scope>
-        </dependency>
--->
 
         <dependency>
             <groupId>org.gwtbootstrap3</groupId>
