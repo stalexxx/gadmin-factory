@@ -90,8 +90,6 @@ public abstract class BaseListPresenter<T,
         addActions(createActions());
     }
 
-
-
     protected abstract Action [] createActions();
 
     private PagingSortingFilteringDataProvider<T, Filter_> createProvider(View_ view) {
