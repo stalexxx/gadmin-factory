@@ -5,6 +5,7 @@
 
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -22,10 +23,11 @@ import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
-import org.gwtbootstrap3.client.ui.FlowPanel;
 import org.gwtbootstrap3.client.ui.ListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -40,23 +42,22 @@ public abstract class BaseListView<
         >
         extends ViewWithUiHandlers<_Handler> implements ListView<T, _Filter> {
 
-
-    public final PageHeader header;
+    protected final PageHeader header;
     protected final BaseListGrid<T> dataGrid;
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
 
-
-
     private UIActionBuilder<T, ListItem> actionBuilder = new ListItemActionBuilder<T>();
     private Map<Action<T>, ListItem> actionMap = Maps.newHashMap();
-
 
     protected BaseListView(BaseListGrid<T> dataGrid) {
         this(dataGrid, null);
     }
 
-    protected BaseListView(BaseListGrid<T> grid, BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel) {
+    protected BaseListView(@Nonnull BaseListGrid<T> grid,
+                           @Nullable BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel) {
+        Preconditions.checkNotNull(grid);
+
         dataGrid = grid;
         this.filterPanel = filterPanel;
 
@@ -76,7 +77,7 @@ public abstract class BaseListView<
             }
         });
 
-        initWidget(createPanel());
+        initWidget(new BaseViewPanel<T>(dataGrid, toolbar, header));
     }
 
 
@@ -88,27 +89,15 @@ public abstract class BaseListView<
         }
 
     }
-    private FlowPanel createPanel() {
-        FlowPanel panel = new FlowPanel();
-        panel.add(toolbar);
-        panel.add(header);
-        panel.add(dataGrid);
-        return panel;
-    }
-
-    public final BaseToolbar getToolbar() {
-        return toolbar;
-    }
-
 
     @Override
     public T getSelectedObject() {
-        return getDataGrid().getSelection();
+        return dataGrid.getSelection();
     }
 
     @Override
     public boolean isSelected(T item) {
-        return getDataGrid().isSelected(item);
+        return dataGrid.isSelected(item);
     }
 
 
@@ -119,32 +108,23 @@ public abstract class BaseListView<
 
     @Override
     public HandlerRegistration addColumnSortHandler(ColumnSortEvent.Handler handler) {
-        return getDataGrid().addColumnSortHandler(handler);
+        return dataGrid.addColumnSortHandler(handler);
     }
 
     @Override
     public HasData<T> getGridDataDisplay() {
-        return getDataGrid().getDisplay();
-    }
-
-    public final BaseListGrid<T> getDataGrid() {
-        return dataGrid;
+        return dataGrid.getDisplay();
     }
 
 
     @Override
     public Object getKey(T item) {
-        return getDataGrid().getKey(item);
+        return dataGrid.getKey(item);
     }
 
     @Override
     public void setSelection(T newSelection) {
-        getDataGrid().setSelection(newSelection);
-    }
-
-    @Override
-    public void displayFilter(_Filter filter) {
-
+        dataGrid.setSelection(newSelection);
     }
 
     @Override
@@ -154,18 +134,17 @@ public abstract class BaseListView<
 
     @Override
     public void updateToolbar() {
-        final int offsetHeight = getToolbar().getOffsetHeight();
-        getDataGrid().getElement().getStyle().setTop(offsetHeight, Style.Unit.PX);
+        final int offsetHeight = toolbar.getOffsetHeight();
+        dataGrid.getElement().getStyle().setTop(offsetHeight, Style.Unit.PX);
     }
 
     @Override
     public void firstPage() {
-        SimplePager pager = getDataGrid().getPager();
+        SimplePager pager = dataGrid.getPager();
         if (pager != null) {
             pager.firstPage();
         }
     }
-
 
     @Override
     public void updateHeader(String displayHeader) {
@@ -190,7 +169,7 @@ public abstract class BaseListView<
             }
         });
         actionMap.put(action, actionWidget);
-        getToolbar().add(actionWidget);
+        toolbar.add(actionWidget);
     }
 
     @Override
@@ -200,11 +179,7 @@ public abstract class BaseListView<
             listItem.setEnabled(enabled);
             listItem.setText(displayText);
             listItem.setVisible(visible);
-
         }
     }
 
-    protected  _Filter castFilter(BaseFilter filter) {
-        return (_Filter) filter;
-    }
 }
