@@ -38,10 +38,29 @@
 
     <dependencies>
 
+        <!-- Google Web Toolkit dependencies -->
+
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-codeserver</artifactId>
+        </dependency>
+
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${version.guava}</version>
         </dependency>
 
         <dependency>
@@ -148,47 +167,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Google Web Toolkit dependencies -->
-
-        <!-- <dependency>
-             <groupId>com.google.gwt</groupId>
-             <artifactId>gwt-codeserver</artifactId>
-             <version>${version.gwt}</version>
-         </dependency>-->
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>${version.gwt}</version>
-        </dependency>
-
-        <!--<dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.1.0.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>1.0.0.GA</version>
-            <classifier>sources</classifier>
-        </dependency>-->
-        <!--<dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <version>${version.gwt}</version>
-        </dependency>-->
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-servlet</artifactId>
-            <version>${version.gwt}</version>
-
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-codeserver</artifactId>
-            <version>${version.gwt}</version>
-        </dependency>
 
 
 

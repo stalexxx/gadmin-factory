@@ -34,6 +34,38 @@
 
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- Google Web Toolkit dependencies -->
+
+
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${version.gwt}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-servlet</artifactId>
+                <version>${version.gwt}</version>
+
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-codeserver</artifactId>
+                <version>${version.gwt}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${version.guava}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <scm>
         <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
         <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
