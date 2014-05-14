@@ -158,6 +158,14 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
         filterPanel.add(panel);
     }
 
+    public void setExtendSearch(boolean extend) {
+        if (extend) {
+            extendSearch.setVisible(true);
+        } else {
+            remove.setIcon(IconType.SEARCH);
+        }
+    }
+
     @SuppressWarnings("PackageVisibleInnerClass")
     interface Binder extends UiBinder<Widget, BaseToolbar> {
 
