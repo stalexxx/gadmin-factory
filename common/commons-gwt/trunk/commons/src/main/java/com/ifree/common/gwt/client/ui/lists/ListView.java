@@ -34,8 +34,6 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void setSelection(M newSelection);
 
-    void displayFilter(F filter);
-
     void updateToolbar();
 
     void firstPage();
