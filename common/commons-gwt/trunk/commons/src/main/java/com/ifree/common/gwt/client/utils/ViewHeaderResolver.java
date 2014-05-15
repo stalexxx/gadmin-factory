@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.utils;
+package com.ifree.common.gwt.client.utils;
 
 /**
  * Created by alex on 16.04.14.
