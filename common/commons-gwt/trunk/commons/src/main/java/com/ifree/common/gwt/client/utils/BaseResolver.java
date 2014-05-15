@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.utils;
+package com.ifree.common.gwt.client.utils;
 
 import com.google.common.collect.Maps;
 

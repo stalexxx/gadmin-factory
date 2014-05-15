@@ -29,7 +29,7 @@ import com.ifree.common.gwt.client.ui.grids.PagingSortingFilteringDataProvider;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
 import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
-import com.ifree.common.gwt.client.ui.utils.ViewHeaderResolver;
+import com.ifree.common.gwt.client.utils.ViewHeaderResolver;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
 import com.ifree.common.gwt.shared.loader.PagingLoadResult;
@@ -244,6 +244,11 @@ public abstract class BaseListPresenter<T,
                 });
             }
         }
+    }
+
+    @Override
+    public void onSelectionChanged(T selection) {
+
     }
 
     public Service_ getService() {
