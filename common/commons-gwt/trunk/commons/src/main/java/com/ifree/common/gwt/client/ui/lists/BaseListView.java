@@ -179,7 +179,7 @@ public abstract class BaseListView<
         AnchorListItem listItem = actionMap.get(action);
         if (listItem != null) {
             listItem.setEnabled(enabled);
-            listItem.setTitle(displayText);
+            listItem.setText(displayText);
             listItem.setVisible(visible);
         }
     }
