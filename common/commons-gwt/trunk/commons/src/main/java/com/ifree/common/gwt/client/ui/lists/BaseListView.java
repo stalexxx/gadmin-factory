@@ -59,6 +59,7 @@ public abstract class BaseListView<
         Preconditions.checkNotNull(grid);
 
         dataGrid = grid;
+        dataGrid.addStyleName("gridAfterFixedBar");
         this.filterPanel = filterPanel;
 
         toolbar = new BaseToolbar();
