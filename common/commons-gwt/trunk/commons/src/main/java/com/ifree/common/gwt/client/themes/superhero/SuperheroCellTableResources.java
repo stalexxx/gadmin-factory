@@ -6,7 +6,7 @@
 package com.ifree.common.gwt.client.themes.superhero;
 
 import com.ifree.common.gwt.client.themes.CellTableResources;
-import org.gwtbootstrap3.client.ui.CellTable;
+import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
 /**
 *

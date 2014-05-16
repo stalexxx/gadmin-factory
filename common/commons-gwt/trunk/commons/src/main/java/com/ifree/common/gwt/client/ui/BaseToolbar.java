@@ -22,6 +22,7 @@ import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.lists.BaseFilterPanel;
 import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.constants.NavbarType;
 
 import java.util.Iterator;
 
@@ -68,11 +69,13 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     protected void init() {
         initWidget(binder.createAndBindUi(this));
+        filterPanel.addStyleName(NavbarType.DEFAULT.getCssName());
+
 
         remove.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                PerformFilterEvent.fire(BaseToolbar.this, new BaseFilter() );
+                PerformFilterEvent.fire(BaseToolbar.this, new BaseFilter());
                 search.setValue(null);
                 search.setEnabled(true);
             }

@@ -22,7 +22,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Span;
+import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;

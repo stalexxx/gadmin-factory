@@ -2,7 +2,7 @@ package com.ifree.common.gwt.client.ui.lists;
 
 import com.ifree.common.gwt.client.ui.BaseToolbar;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
-import org.gwtbootstrap3.client.ui.FlowPanel;
+import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
 /**

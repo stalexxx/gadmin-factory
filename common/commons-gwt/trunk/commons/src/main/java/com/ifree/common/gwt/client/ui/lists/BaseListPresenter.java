@@ -80,7 +80,7 @@ public abstract class BaseListPresenter<T,
                                 Service_ listService) {
         super(eventBus, view, proxy, slot);
         this.listService = listService;
-        loader = new FilterPagingLoader<>(dataProxy);
+        loader = new FilterPagingLoader(dataProxy);
         provider = createProvider(view);
 
 

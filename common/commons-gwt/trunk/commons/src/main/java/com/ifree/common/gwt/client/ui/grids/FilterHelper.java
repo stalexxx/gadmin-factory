@@ -39,7 +39,7 @@ public class FilterHelper {
                 return Float.parseFloat(text.toString());
             }
         });
-        integerFilterHandler = new NumberFilterHandler<>(new Parser<Integer>() {
+        integerFilterHandler = new NumberFilterHandler(new Parser<Integer>() {
             @Override
             public Integer parse(CharSequence text) throws ParseException {
                 return Integer.parseInt(text.toString());

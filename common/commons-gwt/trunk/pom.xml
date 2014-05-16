@@ -21,6 +21,9 @@
     <packaging>pom</packaging>
 
     <properties>
+
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+
         <version.gwt>2.6.1</version.gwt>
         <version.maven-processor-plugin>2.0.5</version.maven-processor-plugin>
         <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
@@ -30,6 +33,10 @@
         <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
 
         <version.guava>16.0</version.guava>
+
+        <version.gwt.bootstrap3>0.8-SNAPSHOT</version.gwt.bootstrap3>
+        <source.version>1.6</source.version>
+
 
 
     </properties>
@@ -64,8 +71,41 @@
                 <artifactId>guava</artifactId>
                 <version>${version.guava}</version>
             </dependency>
+
+
+            <dependency>
+                <groupId>org.gwtbootstrap3</groupId>
+                <artifactId>gwtbootstrap3</artifactId>
+                <version>${version.gwt.bootstrap3}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.gwtbootstrap3</groupId>
+                <artifactId>gwtbootstrap3-extras</artifactId>
+                <version>${version.gwt.bootstrap3}</version>
+            </dependency>
         </dependencies>
+
     </dependencyManagement>
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.maven-compiler-plugin}</version>
+                    <configuration>
+
+                        <source>${source.version}</source>
+                        <target>${source.version}</target>
+
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <!-- Disable annotation processors during normal compilation -->
+                        <!--<proc>none</proc>-->
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
     <scm>
         <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
         <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>

@@ -36,12 +36,12 @@ class BaseSuggestOracle<T> extends SuggestOracle {
     @Override
     public void requestSuggestions(Request request, Callback callback) {
         String query = request.getQuery();
-        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback<>(callback, request, renderer));
+        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback(callback, request, renderer));
     }
 
     @Override
     public void requestDefaultSuggestions(Request request, Callback callback) {
-        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback<>(callback, request, renderer));
+        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback(callback, request, renderer));
     }
 
     private FilterPagingLoadConfig createFilterBean(Request request) {
@@ -84,7 +84,7 @@ class BaseSuggestOracle<T> extends SuggestOracle {
                     if (input != null) {
 
                         String str = renderer.render(input);
-                        return new ValuedSuggestion<>(input, str, str);
+                        return new ValuedSuggestion(input, str, str);
                     }
                     return null;
 
