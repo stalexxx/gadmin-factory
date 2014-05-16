@@ -26,7 +26,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.ValueProvider;
-import org.gwtbootstrap3.client.ui.CellTable;
+import org.gwtbootstrap3.client.ui.gwt.CellTable;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 

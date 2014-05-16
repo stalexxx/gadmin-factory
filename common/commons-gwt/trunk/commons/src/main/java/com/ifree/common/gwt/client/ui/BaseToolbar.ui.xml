@@ -27,7 +27,6 @@
             right: 0;
             bottom: 50px;
             top: 40px;
-            background-color: #4E5D6C;
 
             vertical-align: top;
         }

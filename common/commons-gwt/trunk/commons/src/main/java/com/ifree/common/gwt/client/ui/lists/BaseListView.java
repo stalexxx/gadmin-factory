@@ -23,6 +23,7 @@ import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
+import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.ListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
@@ -47,8 +48,8 @@ public abstract class BaseListView<
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
 
-    private UIActionBuilder<T, ListItem> actionBuilder = new ListItemActionBuilder<T>();
-    private Map<Action<T>, ListItem> actionMap = Maps.newHashMap();
+    private UIActionBuilder<T, AnchorListItem> actionBuilder = new ListItemActionBuilder<T>();
+    private Map<Action<T>, AnchorListItem> actionMap = Maps.newHashMap();
 
     protected BaseListView(BaseListGrid<T> dataGrid) {
         this(dataGrid, null);
@@ -162,7 +163,7 @@ public abstract class BaseListView<
 
     @Override
     public void addAction(Action<T> action, final Command command) {
-        ListItem actionWidget = actionBuilder.build(action);
+        AnchorListItem actionWidget = actionBuilder.build(action);
         actionWidget.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
@@ -175,10 +176,10 @@ public abstract class BaseListView<
 
     @Override
     public void updateAction(Action<T> action, boolean enabled, boolean visible, String displayText) {
-        ListItem listItem = actionMap.get(action);
+        AnchorListItem listItem = actionMap.get(action);
         if (listItem != null) {
             listItem.setEnabled(enabled);
-            listItem.setText(displayText);
+            listItem.setTitle(displayText);
             listItem.setVisible(visible);
         }
     }
