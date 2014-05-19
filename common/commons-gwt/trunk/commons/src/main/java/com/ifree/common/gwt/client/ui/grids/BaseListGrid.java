@@ -63,12 +63,12 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
     protected void addTextEditColumn(CellTable<T> dataGrid,
-                                                FieldUpdater<T, String> updater,
-                                                final Function<T, String> valueGetter,
-                                                String header,
-                                                int width,
-                                                boolean sortable,
-                                                String dataStore) {
+                                     FieldUpdater<T, String> updater,
+                                     final Function<T, String> valueGetter,
+                                     String header,
+                                     int width,
+                                     boolean sortable,
+                                     String dataStore) {
         Column<T, String> column = new Column<T, String>(new EditTextCell()) {
 
             @Override
@@ -132,7 +132,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-
     protected void addDateColumn(CellTable<T> dataGrid, final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
@@ -150,13 +149,20 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
                 Boolean b = field.getValue(object);
                 if (b != null) {
                     return templates.icon(Styles.FONT_AWESOME_BASE,
-                            b ? yes.getCssName() : no.getCssName());
+                            b ? yes.getCssName() : no.getCssName(), b ? "green" : "red");
 
                 } else {
                     return SafeHtmlUtils.EMPTY_SAFE_HTML;
                 }
             }
         }, header, width, sortable, field.getPath());
+    }
+
+
+    protected void addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
+                                    String header, int width, boolean sortable) {
+
+        addBooleanColumn(dataGrid, field, IconType.CHECK,IconType.TIMES, header, width, sortable);
     }
 
 
