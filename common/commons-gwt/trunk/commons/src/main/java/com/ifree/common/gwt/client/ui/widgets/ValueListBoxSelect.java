@@ -15,6 +15,7 @@
  */
 package com.ifree.common.gwt.client.ui.widgets;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.adapters.TakesValueEditor;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -51,7 +52,8 @@ public class ValueListBoxSelect<T> extends Composite implements
         Focusable, HasConstrainedValue<T>, HasEnabled,
         IsEditor<TakesValueEditor<T>> {
 
-    private final List<T> values = new ArrayList<T>();
+    private final List<T> values = Lists.newArrayList();
+    private final List<Option> options = Lists.newArrayList();
     private final Map<Object, Integer> valueKeyToIndex = new HashMap<Object, Integer>();
     private final Renderer<T> renderer;
     private final ProvidesKey<T> keyProvider;
@@ -71,28 +73,19 @@ public class ValueListBoxSelect<T> extends Composite implements
 
         getSelect().addChangeHandler(new ChangeHandler() {
             public void onChange(ChangeEvent event) {
-                int selectedIndex = getSelectedIndex(getSelect());
-
-                if (selectedIndex < 0) {
+                String val = getSelect().getValue();
+                if (val == null) {
                     return; // Not sure why this happens during addValue
                 }
+                int selectedIndex = valueKeyToIndex.get(val);
+
                 T newValue = values.get(selectedIndex);
                 setValue(newValue, true);
             }
         });
     }
 
-    private int getSelectedIndex(Select select) {
 
-        for(int i = 0; i < select.getItemCount(); i++) {
-            if(select.isItemSelected(i)) {
-
-                return i;
-
-            }
-        }
-        return -1;
-    }
 
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
@@ -123,6 +116,7 @@ public class ValueListBoxSelect<T> extends Composite implements
     }
 
     public void setAcceptableValues(Collection<T> newValues) {
+        options.clear();
         values.clear();
         valueKeyToIndex.clear();
         Select select = getSelect();
@@ -178,7 +172,7 @@ public class ValueListBoxSelect<T> extends Composite implements
     }
 
     private void addValue(T value) {
-        Object key = keyProvider.getKey(value);
+        String key = (String)keyProvider.getKey(value);
         if (valueKeyToIndex.containsKey(key)) {
             throw new IllegalArgumentException("Duplicate value: " + value);
         }
@@ -186,7 +180,11 @@ public class ValueListBoxSelect<T> extends Composite implements
         valueKeyToIndex.put(key, values.size());
         values.add(value);
         Option option = new Option();
+        option.setValue(key);
+
         option.setText(renderer.render(value));
+
+        options.add(option);
         getSelect().add(option);
         assert values.size() == getSelect().getItemCount();
     }
@@ -203,11 +201,8 @@ public class ValueListBoxSelect<T> extends Composite implements
         }
 
         index = valueKeyToIndex.get(key);
-       //todo setSelectedIndex(getSelect());
-    }
-
-    private void setSelectedIndex(Select select, int index) {
-     //todo    select.getSelectElement().getOptions().getItem(index).setSelected(index);
-
+        Option option = options.get(index);
+        getSelect().setValue(option);
+        getSelect().refresh();
     }
 }
