@@ -79,7 +79,10 @@ public abstract class BaseListView<
             }
         });
 
-        initWidget(new BaseViewPanel<T>(dataGrid, toolbar, header));
+        BaseViewPanel<T> viewPanel = new BaseViewPanel<T>(dataGrid, toolbar, header);
+        viewPanel.addPager(dataGrid.getPager());
+
+        initWidget(viewPanel);
     }
 
 
