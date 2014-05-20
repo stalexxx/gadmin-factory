@@ -7,6 +7,7 @@ package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.base.Function;
 import com.google.gwt.cell.client.*;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -42,7 +43,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
-    private static final int PAGE_SIZE = 1000000;
+    private static final int PAGE_SIZE_UNLIMIT = 1000000;
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -51,15 +52,22 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     protected CellTable<T> cellTable;
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     private ModelKeyProvider<T> keyProvider;
-    //protected SimplePager pager;
+    private Integer pageSize;
+    protected SimplePager pager;
 
     @Inject
     protected BaseTemplates templates;
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key) {
+    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key, Integer pageSize) {
         this.resources = resources;
         keyProvider = key;
+        this.pageSize = pageSize;
+    }
+
+
+    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key) {
+        this(resources, key, null);
     }
 
     protected void addTextEditColumn(CellTable<T> dataGrid,
@@ -225,12 +233,15 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 //        cellTable.setHover(true);
 
 
-       /* SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-        pager = new CustomPager(pagerResources);
-        //pager = new NumberedPager();
-        pager.addStyleName(Styles.PULL_LEFT);
-        pager.setDisplay(cellTable);
-*/
+        if (pageSize() != PAGE_SIZE_UNLIMIT) {
+            SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+            pager = new SimplePager(SimplePager.TextLocation.CENTER);
+            //pager = new NumberedPager();
+            pager.addStyleName(Styles.PULL_LEFT);
+            pager.setDisplay(cellTable);
+        }
+
+
         selectionModel = new SingleSelectionModel<T>(this);
 
         cellTable.setSelectionModel(selectionModel);
@@ -241,7 +252,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
     protected int pageSize() {
-        return PAGE_SIZE;
+        return pageSize != null ? pageSize : PAGE_SIZE_UNLIMIT;
     }
 
     protected abstract void initColumns(CellTable<T> dataGrid);
@@ -259,7 +270,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
 
     public SimplePager getPager() {
-        return null;
+        return pager;
     }
 
     public boolean isSelected(T item) {

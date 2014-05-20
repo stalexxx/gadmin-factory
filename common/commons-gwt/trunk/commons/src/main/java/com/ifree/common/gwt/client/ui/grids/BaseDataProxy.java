@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class BaseDataProxy<T>
         implements DataProxy<FilterPagingLoadConfig, PagingLoadResult<T>> {
 
-    public static final int DELAY_MILLIS = 300;
+    public static final int DELAY_MILLIS = 500;
 
     @Inject
     protected RestDispatch restDispatch;
