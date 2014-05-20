@@ -3,7 +3,7 @@
  * Use is subject to license terms.
  */
 
-package com.ifree.common.gwt.client.ui;
+package com.ifree.common.gwt.client.ui.widgets;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
@@ -15,7 +15,9 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.ifree.common.gwt.shared.ValueProvider;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -38,12 +40,16 @@ public class ValueIdListBox<T, ID> extends Composite implements LeafValueEditor<
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    public ValueIdListBox(Renderer<T> renderer, final Function<T, ID> idProvider) {
+    public ValueIdListBox(Renderer<T> renderer, final ValueProvider<T, ID> valueProvider) {
         assert renderer != null;
 
-        this.idProvider = idProvider;
-
-
+        this.idProvider = new Function<T, ID>() {
+            @Nullable
+            @Override
+            public ID apply(@Nullable T input) {
+                return input != null ? valueProvider.getValue(input) : null;
+            }
+        };
 
         listBox = new ValueListBox<T>(renderer, new ProvidesKey<T>() {
             @Override

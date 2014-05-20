@@ -26,6 +26,7 @@ import com.ifree.common.gwt.client.ui.application.BlockingOverlay;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
 import com.ifree.common.gwt.client.ui.constants.BaseMessages;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
+import com.ifree.common.gwt.shared.SavingResult;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 
 import javax.annotation.Nullable;
@@ -188,7 +189,7 @@ public abstract class BaseEditorPresenter<
 
 
         } else {
-            RestAction<ID> action;
+            RestAction<SavingResult<ID>> action;
             if (getId(dto) == null) {
                 action = service.create(dto);
             } else {
@@ -196,10 +197,20 @@ public abstract class BaseEditorPresenter<
             }
 
 
-            dispatcher.execute(action, new AlertingAsyncCallback<ID>(getEventBus()) {
+            dispatcher.execute(action, new AlertingAsyncCallback<SavingResult<ID>>(getEventBus()) {
                 @Override
-                public void onSuccess(ID result) {
-                    onBack();
+                public void onSuccess(SavingResult<ID> result) {
+                    if (result.isSaved()) {
+                        placeManager.navigateBack();
+                    } else {
+                        getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
+                    }
+                    //onBack();
+                }
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    super.onFailure(caught);
                 }
             });
         }
@@ -221,7 +232,7 @@ public abstract class BaseEditorPresenter<
                 List<EditorError> errors = makeCustomValidation(currentDto);
 
                 if (!errors.isEmpty()) {
-                    load(currentDto);
+                    instantLoad(currentDto);
 
                     getView().showErrors(errors);
                 } else {
@@ -230,7 +241,7 @@ public abstract class BaseEditorPresenter<
 
                             @Override
                             public void onActionFailure(ServerFailure error) {
-                                load(currentDto);
+                                instantLoad(currentDto);
                                 onShowFailure(error);
                             }
 
@@ -238,7 +249,7 @@ public abstract class BaseEditorPresenter<
                             @Override
                             public void onActionSuccess(Void response) {
                                 alertsPanel.addAlert(messages.entityCreated(getEntityDisplayName()), AlertType.SUCCESS);
-                                load(currentDto);
+                                instantLoad(currentDto);
 
                                 onBack();
                             }
@@ -247,7 +258,7 @@ public abstract class BaseEditorPresenter<
                         createContext().update(currentDto).fire(new BlockingReciever<Void>(blockingOverlay) {
                             @Override
                             public void onActionFailure(ServerFailure error) {
-                                load(currentDto);
+                                instantLoad(currentDto);
                                 onShowFailure(error);
                             }
 
@@ -255,7 +266,7 @@ public abstract class BaseEditorPresenter<
                             @Override
                             public void onActionSuccess(Void response) {
                                 alertsPanel.addAlert(messages.entityUpdated(), AlertType.SUCCESS);
-                                load(currentDto);
+                                instantLoad(currentDto);
 
                                 onBack();
                             }
@@ -277,7 +288,9 @@ public abstract class BaseEditorPresenter<
 
     protected abstract Set<ConstraintViolation<T>> doValidate(T dto, Validator validator);
 
-    protected abstract RestAction<ID> getSaveOrCreateAction(T dto);
+    protected  RestAction<SavingResult<ID>> getSaveOrCreateAction(T dto) {
+        return service.create(dto);
+    }
 
     protected List<EditorError> makeCustomValidation(T currentProxy) {
         return Lists.newArrayList();

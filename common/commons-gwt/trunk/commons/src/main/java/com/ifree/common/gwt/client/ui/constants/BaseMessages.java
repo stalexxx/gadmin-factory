@@ -128,6 +128,8 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("Описание")
     String description();
 
+    @DefaultMessage("Ошибка валидации: {0}")
+    String validationFailed(String errorMessage);
 }
 
 

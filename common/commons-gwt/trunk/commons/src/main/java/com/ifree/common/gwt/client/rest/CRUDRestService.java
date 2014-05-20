@@ -1,7 +1,7 @@
 package com.ifree.common.gwt.client.rest;
 
 import com.gwtplatform.dispatch.rest.shared.RestAction;
-import com.gwtplatform.dispatch.rest.shared.RestService;
+import com.ifree.common.gwt.shared.SavingResult;
 
 import javax.ws.rs.*;
 import java.io.Serializable;
@@ -15,10 +15,10 @@ public interface CRUDRestService<T, ID extends Serializable> {
     RestAction<T> getItem(@PathParam("id") ID id);
 
     @POST
-    RestAction<ID> create(T dto);
+    RestAction<SavingResult<ID>> create(T dto);
 
     @PUT
-    RestAction<ID> update(T dto);
+    RestAction<SavingResult<ID>> update(T dto);
 
     @DELETE @Path("/{id}")
     RestAction<Boolean> delete(@PathParam("id") ID id);
