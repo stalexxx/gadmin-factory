@@ -65,8 +65,8 @@ public abstract class BaseDataProxy<T>
         load(null, callback);
     }
 
-    public void load(final AsyncCallback<PagingLoadResult<T>> callback) {
-        load(null, new Callback<PagingLoadResult<T>, Throwable>() {
+    public void instantLoad(final AsyncCallback<PagingLoadResult<T>> callback) {
+        doLoad(null, new Callback<PagingLoadResult<T>, Throwable>() {
             @Override
             public void onFailure(Throwable reason) {
                 callback.onFailure(reason);

@@ -22,6 +22,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.rest.ListingRestService;
+import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
@@ -200,6 +201,10 @@ public abstract class BaseListPresenter<T,
 
     }
 
+
+    protected CountBackAsyncCallback createManualRevealingCallback() {
+        return new CountBackAsyncCallback(getProxy(), this);
+    }
 
     public abstract AbstractFilterHandler<Filter_> getFilterHandler();
 
