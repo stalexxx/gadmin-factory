@@ -48,7 +48,6 @@ public class BooleanEditor extends Composite implements LeafValueEditor<Boolean>
     @Override
     public void setValue(Boolean value) {
         if (doesntMatter != null) {
-
             doesntMatter.setValue(value == null);
         }
 
