@@ -49,11 +49,11 @@ public class BooleanEditor extends Composite implements LeafValueEditor<Boolean>
     public void setValue(Boolean value) {
         if (doesntMatter != null) {
 
-            doesntMatter.setActive(value == null);
+            doesntMatter.setValue(value == null);
         }
 
-        yes.setActive(value == Boolean.TRUE);
-        no.setActive(value == Boolean.FALSE);
+        yes.setValue(Boolean.TRUE.equals(value));
+        no.setValue(Boolean.FALSE.equals(value));
     }
 
     @Override
