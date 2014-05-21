@@ -329,10 +329,8 @@ public abstract class BaseEditorPresenter<
 
     @Override
     public void onBack() {
-        PlaceRequest.Builder builder = new PlaceRequest.Builder();
-
-        placeManager.revealPlace(builder.nameToken(getListPlace()).build());
-    }
+        placeManager.navigateBack();
+     }
 
     protected abstract String getListPlace();
 
