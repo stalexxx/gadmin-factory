@@ -49,7 +49,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     protected SingleSelectionModel<T> selectionModel;
 
-    protected CellTable<T> cellTable;
+    protected CellTable<T> dataGrid;
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     private ModelKeyProvider<T> keyProvider;
     private Integer pageSize;
@@ -63,6 +63,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         this.resources = resources;
         keyProvider = key;
         this.pageSize = pageSize;
+
+        init();
     }
 
 
@@ -195,13 +197,13 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected void init() {
+    private void init() {
 
-        cellTable = createDataGrid();
+        dataGrid = createDataGrid();
 
         FlowPanel panel = new FlowPanel();
 
-        panel.add(cellTable);
+        panel.add(dataGrid);
 
         initWidget(panel);
     }
@@ -209,7 +211,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     /*===========================================[ CLASS METHODS ]================*/
 
     public HandlerRegistration addColumnSortHandler(ColumnSortEvent.Handler handler) {
-        return cellTable.addColumnSortHandler(handler);
+        return dataGrid.addColumnSortHandler(handler);
     }
 
 
@@ -220,17 +222,17 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     protected CellTable<T> createDataGrid() {
         if (resources != null) {
-            cellTable = new CellTable<T>(pageSize(), resources, this, new Label());
+            dataGrid = new CellTable<T>(pageSize(), resources, this, new Label());
         } else {
-            cellTable = new CellTable<T>(pageSize(), this);
+            dataGrid = new CellTable<T>(pageSize(), this);
         }
-        cellTable.setAutoHeaderRefreshDisabled(true);
-        cellTable.setAutoFooterRefreshDisabled(true);
+        dataGrid.setAutoHeaderRefreshDisabled(true);
+        dataGrid.setAutoFooterRefreshDisabled(true);
 
-        cellTable.setStriped(false);
-        cellTable.setBordered(true);
-        cellTable.setCondensed(true);
-//        cellTable.setHover(true);
+        dataGrid.setStriped(false);
+        dataGrid.setBordered(true);
+        dataGrid.setCondensed(true);
+//        dataGrid.setHover(true);
 
 
         if (pageSize() != PAGE_SIZE_UNLIMIT) {
@@ -238,27 +240,27 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             pager = new SimplePager(SimplePager.TextLocation.CENTER);
             //pager = new NumberedPager();
             pager.addStyleName(Styles.PULL_LEFT);
-            pager.setDisplay(cellTable);
+            pager.setDisplay(dataGrid);
         }
 
 
         selectionModel = new SingleSelectionModel<T>(this);
 
-        cellTable.setSelectionModel(selectionModel);
+        dataGrid.setSelectionModel(selectionModel);
 
-        initColumns(cellTable);
+        initColumns(dataGrid);
 
-        return cellTable;
+        return dataGrid;
     }
 
     protected int pageSize() {
         return pageSize != null ? pageSize : PAGE_SIZE_UNLIMIT;
     }
 
-    protected abstract void initColumns(CellTable<T> dataGrid);
+    protected final void initColumns(CellTable<T> dataGrid){}
 
     public HasData<T> getDisplay() {
-        return cellTable;
+        return dataGrid;
     }
 
     /*===========================================[ INTERFACE METHODS ]============*/

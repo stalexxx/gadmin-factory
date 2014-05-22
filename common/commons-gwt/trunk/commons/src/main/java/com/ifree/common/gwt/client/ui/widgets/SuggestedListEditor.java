@@ -21,6 +21,8 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
+import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
+import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.client.ui.TextBox;
@@ -43,7 +45,7 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     /*===========================================[ STATIC VARIABLES ]=============*/
 
     private static SuggestedListEditorUiBinder ourUiBinder = GWT.create(SuggestedListEditorUiBinder.class);
-    private final MultiWordSuggestOracle oracle;
+    private final SuggestOracle oracle;
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -65,9 +67,20 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     public SuggestedListEditor(Renderer<T> renderer) {
+        this(renderer, null, null);
+
+    }
+    public SuggestedListEditor(Renderer<T> renderer, BaseDataProxy<T> dataProxy, ValueProvider<T, String> searchField) {
+
         this.renderer = renderer;
 
-        oracle = new MultiWordSuggestOracle() ;
+        if (dataProxy == null) {
+            oracle = new MultiWordSuggestOracle() ;
+        } else {
+            oracle = new BaseSuggestOracle<T>(dataProxy, renderer, searchField);
+        }
+
+
         final TextBox box = new TextBox();
         suggestBox = new SuggestBox(oracle, box);
         box.setStyleName("form-control");
@@ -83,8 +96,16 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
             @Override
             public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
                 final Set<T> value = Sets.newLinkedHashSet(getValue());
-                final String replacementString = event.getSelectedItem().getReplacementString();
-                final T item = replacementMap.get(replacementString);
+                final T item;
+
+
+                if (event.getSelectedItem() instanceof ValuedSuggestion) {
+                    ValuedSuggestion<T> selectedItem = (ValuedSuggestion) event.getSelectedItem();
+                    item = selectedItem.getValue();
+                } else {
+                    final String replacementString = event.getSelectedItem().getReplacementString();
+                    item = replacementMap.get(replacementString);
+                }
 
                 if (item != null) {
                     value.add(item);
@@ -103,6 +124,7 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
     public void setAcceptableValues(List<T> acceptableValues) {
         if (acceptableValues != null) {
+            MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) this.oracle;
             oracle.clear();
             replacementMap.clear();
 
