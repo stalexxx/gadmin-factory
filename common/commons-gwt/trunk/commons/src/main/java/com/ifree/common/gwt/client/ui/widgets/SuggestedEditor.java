@@ -55,7 +55,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         if (dataProxy == null) {
             oracle = new MultiWordSuggestOracle() ;
         } else {
-            oracle = new BaseSuggestOracle(dataProxy, renderer, searchField);
+            oracle = new BaseSuggestOracle<T>(dataProxy, renderer, searchField);
 
         }
         final TextBox box = new TextBox();
