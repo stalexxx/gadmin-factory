@@ -40,7 +40,7 @@ import java.util.Set;
  * Use is subject to license terms.
  */
 public class SuggestedListEditor<T> extends Composite implements LeafValueEditor<List<T>>, IsEditor<LeafValueEditor<List<T>>>,
-        HasValue<List<T>> {
+        HasValue<List<T>>, HasEnabled {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -206,6 +206,16 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
+    @Override
+    public boolean isEnabled() {
+        return suggestBox.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        suggestBox.setEnabled(enabled);
+    }
+
     /*===========================================[ INNER CLASSES ]================*/
 
     interface SuggestedListEditorUiBinder extends UiBinder<HTMLPanel, SuggestedListEditor> {
@@ -220,12 +230,15 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
         @Override
         public void onClick(ClickEvent event) {
-            final T deleted = replacementMap.get(render);
-            if (deleted != null) {
-                final Collection<T> ts = Sets.newHashSet(getValue());
-                ts.remove(deleted);
-                setValue(Lists.newArrayList(ts), true);
+            if (isEnabled()) {
+                final T deleted = replacementMap.get(render);
+                if (deleted != null) {
+                    final Collection<T> ts = Sets.newHashSet(getValue());
+                    ts.remove(deleted);
+                    setValue(Lists.newArrayList(ts), true);
+                }
             }
+
         }
     }
 }
