@@ -8,6 +8,10 @@ import com.google.gwt.text.shared.Renderer;
 public interface RendererResolver {
     <T> Renderer<T> get(Class<T> key);
 
+    <T> Renderer<T> get(Class<T> key, String defaultValue);
+
+    <T> Renderer<T> getNotNull(Class<T> key);
+
     <T> void register(Class<T> key, Renderer<T> value);
 
 }

@@ -15,6 +15,7 @@ import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -166,4 +167,5 @@ public abstract class BaseDataProxy<T>
     protected abstract RestAction<PagingLoadResultBean<T>> getAction(FilterPagingLoadConfigBean loadConfig);
 
     protected abstract RestAction<PagingLoadResultBean<T>> getAction();
+
 }

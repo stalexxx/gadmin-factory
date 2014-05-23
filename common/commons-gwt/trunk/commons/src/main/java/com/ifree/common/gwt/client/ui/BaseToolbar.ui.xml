@@ -21,12 +21,11 @@
 
         }
 
-        .left_panel {
+        .filter_panel {
             position: fixed;
-            z-index: 3000;
             right: 0;
             bottom: 50px;
-            top: 40px;
+            top: 49px;
 
             vertical-align: top;
         }
@@ -99,7 +98,7 @@
         -->
 
 
-        <b:Column size="MD_2" addStyleNames="{style.left_panel}" ui:field="filterPanel" visible="false">
+        <b:Column size="MD_2" addStyleNames="{style.filter_panel}" ui:field="filterPanel" visible="false">
         </b:Column>
     </g:FlowPanel>
 </ui:UiBinder>

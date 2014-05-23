@@ -1,6 +1,7 @@
 package com.ifree.common.gwt.client.ui.widgets;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.editor.client.IsEditor;
@@ -26,7 +27,7 @@ import java.util.*;
  * Use is subject to license terms.
  */
 public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>, IsEditor<LeafValueEditor<T>>,
-        HasValue<T> {
+        HasConstrainedValue<T>, HasEnabled {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -91,7 +92,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
 
     /*===========================================[ INTERFACE METHODS ]============*/
 
-    public void setAcceptableValues(List<T> acceptableValues) {
+    public void setAcceptableValues(Collection<T> acceptableValues) {
 
         if (acceptableValues != null) {
             MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) this.oracle;
@@ -105,7 +106,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
             }
 
 
-            oracle.setDefaultSuggestionsFromText(Lists.transform(acceptableValues, new Function<T, String>() {
+            oracle.setDefaultSuggestionsFromText(Collections2.transform(acceptableValues, new Function<T, String>() {
                 @Nullable
                 @Override
                 public String apply(@Nullable T input) {
@@ -146,6 +147,16 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
         return addHandler(handler, ValueChangeEvent.getType());
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return suggestBox.isEnabled();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        suggestBox.setEnabled(enabled);
     }
 
     /*===========================================[ INNER CLASSES ]================*/

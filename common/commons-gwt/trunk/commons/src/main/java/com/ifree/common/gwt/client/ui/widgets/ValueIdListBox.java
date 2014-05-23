@@ -40,7 +40,7 @@ public class ValueIdListBox<T, ID> extends Composite implements LeafValueEditor<
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    public ValueIdListBox(Renderer<T> renderer, final ValueProvider<T, ID> valueProvider) {
+    public ValueIdListBox(final Renderer<T> renderer, final ValueProvider<T, ID> valueProvider) {
         assert renderer != null;
 
         this.idProvider = new Function<T, ID>() {
@@ -164,4 +164,5 @@ public class ValueIdListBox<T, ID> extends Composite implements LeafValueEditor<
     public void setStyleName(String style) {
         listBox.setStyleName(style);
     }
+
 }
