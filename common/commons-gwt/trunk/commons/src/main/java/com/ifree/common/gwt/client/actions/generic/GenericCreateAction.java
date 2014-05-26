@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 /**
 * Created by alex on 28.04.14.
 */
-public class GenericCreateAction extends SimpleAction {
+public class GenericCreateAction<T> extends SimpleAction<T> {
 
     private PlaceManager placeManager;
     private final String token;
