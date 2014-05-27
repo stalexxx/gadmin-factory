@@ -11,14 +11,17 @@ import com.google.gwt.editor.client.EditorError;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.editor.client.impl.DelegateMap;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.ui.validation.DefaultEditorError;
+import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormGroup;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 
@@ -38,6 +41,8 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
     @UiField
     public BaseEditorLayout layout;
+    @UiField
+    public Button save;
     private Widget[] validationFields;
 
     private Map<Editor, FormGroup> groupMap = Maps.newHashMap();
@@ -89,6 +94,11 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     @Override
     public SimpleBeanEditorDriver<T, E> getDriver() {
         return driver;
+    }
+
+    @UiHandler("save")
+    public final void onSave(ClickEvent event) {
+        getUiHandlers().onSave();
     }
 
     protected abstract Widget[] validationFields();
