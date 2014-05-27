@@ -33,7 +33,7 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
 
     FilterHelper helper = new FilterHelper();
 
-    public AbstractFilterHandler(ValueProvider<T, ?>... providers) {
+    public AbstractFilterHandler(ValueProvider<T, ?> ... providers) {
 
         this.providers = providers;
     }
