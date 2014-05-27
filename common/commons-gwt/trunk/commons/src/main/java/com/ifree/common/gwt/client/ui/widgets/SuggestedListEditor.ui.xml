@@ -1,5 +1,6 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:w='urn:import:com.ifree.common.gwt.client.ui.widgets'
              xmlns:select='urn:import:org.gwtbootstrap3.extras.select.client.ui'>
 
     <g:HTMLPanel>
@@ -8,6 +9,7 @@
 
         <g:SuggestBox ui:field="suggestBox">
         </g:SuggestBox>
-        <g:FlowPanel ui:field="itemContainer" addStyleNames="clearfix"/>
+
+        <w:BagePanel ui:field="bagePanel"/>
     </g:HTMLPanel>
 </ui:UiBinder>
