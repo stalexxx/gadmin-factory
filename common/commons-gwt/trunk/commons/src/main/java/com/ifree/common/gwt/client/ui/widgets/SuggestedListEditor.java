@@ -5,11 +5,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -23,14 +20,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.shared.ValueProvider;
-import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.html.Span;
 import org.gwtbootstrap3.client.ui.TextBox;
-import org.gwtbootstrap3.client.ui.constants.IconType;
-import org.gwtbootstrap3.client.ui.constants.Styles;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -49,33 +41,32 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
-    private List<T> list = Lists.newArrayList();
+    @UiField(provided = true)
+    BagePanel<T> bagePanel;
 
-    @UiField
-    FlowPanel itemContainer;
-
-    /*@UiField
-    Select select;
-    */
     @UiField(provided = true)
     SuggestBox suggestBox;
 
     private Renderer<T> renderer;
 
-    private Map<String, T> replacementMap = Maps.newHashMap();
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
+    @Deprecated
     public SuggestedListEditor(Renderer<T> renderer) {
         this(renderer, null, null);
 
     }
-    public SuggestedListEditor(Renderer<T> renderer, BaseDataProxy<T> dataProxy, ValueProvider<T, String> searchField) {
 
+
+    public SuggestedListEditor(Renderer<T> renderer, BaseDataProxy<T> dataProxy,
+                               ValueProvider<T, String> searchField) {
+
+        bagePanel = new BagePanel<T>(renderer);
         this.renderer = renderer;
 
         if (dataProxy == null) {
-            oracle = new MultiWordSuggestOracle() ;
+            oracle = new MultiWordSuggestOracle();
         } else {
             oracle = new BaseSuggestOracle<T>(dataProxy, renderer, searchField);
         }
@@ -103,8 +94,10 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
                     ValuedSuggestion<T> selectedItem = (ValuedSuggestion) event.getSelectedItem();
                     item = selectedItem.getValue();
                 } else {
-                    final String replacementString = event.getSelectedItem().getReplacementString();
+                    throw new IllegalStateException();
+                    /*final String replacementString = event.getSelectedItem().getReplacementString();
                     item = replacementMap.get(replacementString);
+                */
                 }
 
                 if (item != null) {
@@ -122,7 +115,7 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
     /*===========================================[ INTERFACE METHODS ]============*/
 
-    public void setAcceptableValues(List<T> acceptableValues) {
+    /*public void setAcceptableValues(List<T> acceptableValues) {
         if (acceptableValues != null) {
             MultiWordSuggestOracle oracle = (MultiWordSuggestOracle) this.oracle;
             oracle.clear();
@@ -143,57 +136,22 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
                 }
             }));
         }
-    }
+    }*/
 
     @Override
     public void setValue(List<T> value) {
-         setValue(value, false);
+        setValue(value, false);
     }
 
     @Override
     public void setValue(List<T> value, boolean fireEvents) {
-        list.clear();
-        itemContainer.clear();
-
-        if (value != null) {
-            list.addAll(value);
-            for (T t : value) {
-
-                FlowPanel panel = new FlowPanel();
-                panel.addStyleName("pull-left");
-                panel.addStyleName(Styles.BADGE);
-
-
-                Span badge = new Span();
-
-                Anchor anchor = new Anchor();
-                setMargin(anchor, 3);
-                anchor.setIcon(IconType.TIMES);
-
-                final String render = renderer.render(t);
-                badge.setText(render);
-
-                anchor.addClickHandler(new RemoveClickHandler(render));
-
-                panel.add(badge);
-                panel.add(anchor);
-                setMargin(panel, 2);
-
-                itemContainer.add(panel);
-            }
-        }
-        if (fireEvents) {
-            ValueChangeEvent.fire(this, value);
-        }
+        bagePanel.setValue(value, fireEvents);
     }
 
-    private void setMargin(Widget anchor, int value) {
-        anchor.getElement().getStyle().setMargin(value, Style.Unit.PX);
-    }
 
     @Override
     public List<T> getValue() {
-        return Lists.newArrayList(list);
+        return bagePanel.getValue();
     }
 
     @Override
@@ -203,7 +161,7 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
     @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<List<T>> handler) {
-        return addHandler(handler, ValueChangeEvent.getType());
+        return bagePanel.addValueChangeHandler(handler);
     }
 
     @Override
@@ -214,6 +172,7 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     @Override
     public void setEnabled(boolean enabled) {
         suggestBox.setEnabled(enabled);
+        bagePanel.setEnabled(enabled);
     }
 
     /*===========================================[ INNER CLASSES ]================*/
@@ -221,24 +180,5 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     interface SuggestedListEditorUiBinder extends UiBinder<HTMLPanel, SuggestedListEditor> {
     }
 
-    private class RemoveClickHandler implements ClickHandler {
-        private final String render;
 
-        public RemoveClickHandler(String render) {
-            this.render = render;
-        }
-
-        @Override
-        public void onClick(ClickEvent event) {
-            if (isEnabled()) {
-                final T deleted = replacementMap.get(render);
-                if (deleted != null) {
-                    final Collection<T> ts = Sets.newHashSet(getValue());
-                    ts.remove(deleted);
-                    setValue(Lists.newArrayList(ts), true);
-                }
-            }
-
-        }
-    }
 }
