@@ -201,7 +201,8 @@ public abstract class BaseEditorPresenter<
                 @Override
                 public void onSuccess(SavingResult<ID> result) {
                     if (result.isSaved()) {
-                        placeManager.navigateBack();
+                        //placeManager.navigateBack();
+                        onBack();
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
                     }
@@ -329,8 +330,8 @@ public abstract class BaseEditorPresenter<
 
     @Override
     public void onBack() {
-        placeManager.navigateBack();
-     }
+       placeManager.navigateBack();
+    }
 
     protected abstract String getListPlace();
 
