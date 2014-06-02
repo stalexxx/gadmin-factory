@@ -8,7 +8,11 @@ import javax.annotation.Nullable;
  */
 public abstract class SingleItemAction<T> extends BaseAction<T> {
     public SingleItemAction(String text) {
-        super(text);
+        super(text, false);
+    }
+
+    protected SingleItemAction(String text, boolean additional) {
+        super(text, additional);
     }
 
     @Override

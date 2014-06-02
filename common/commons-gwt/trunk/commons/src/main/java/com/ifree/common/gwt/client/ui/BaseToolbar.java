@@ -18,9 +18,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
+import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.lists.BaseFilterPanel;
 import org.gwtbootstrap3.client.ui.*;
+import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.NavbarType;
 
@@ -58,6 +60,10 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     NavbarNav listItemContainer;
     @UiField
     Column filterPanel;
+    @UiField
+    DropDownMenu elseSubmenu;
+    @UiField
+    ListDropDown elseDropdown;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -109,7 +115,10 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
             setFilterPanel(w);
 
         } else {
-            listItemContainer.add(w);
+            if (w instanceof Action) {
+                Action action = (Action) w;
+                
+            }
         }
     }
 
@@ -167,6 +176,19 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
         } else {
             remove.setIcon(IconType.SEARCH);
         }
+    }
+
+    public <T> void addAction(Action<T> action, AbstractListItem actionWidget) {
+
+        if (action.isAdditional()) {
+            elseDropdown.setVisible(true);
+            elseSubmenu.add(actionWidget);
+        } else {
+            listItemContainer.insert(actionWidget, listItemContainer.getWidgetCount() - 1);
+
+        }
+
+
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")

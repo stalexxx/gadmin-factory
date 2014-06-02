@@ -174,7 +174,7 @@ public abstract class BaseListView<
             }
         });
         actionMap.put(action, actionWidget);
-        toolbar.add(actionWidget);
+        toolbar.addAction(action, actionWidget);
     }
 
     @Override

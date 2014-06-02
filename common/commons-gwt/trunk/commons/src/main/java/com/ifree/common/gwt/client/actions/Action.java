@@ -14,5 +14,8 @@ public interface Action<T> {
 
     void perform(@Nullable T item);
 
+    boolean isAdditional();
+
+    Action<T> setAdditional(boolean additional);
 
 }
