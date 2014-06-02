@@ -13,6 +13,7 @@ import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.ItemLoader;
 import com.ifree.common.gwt.shared.ValueProvider;
+import org.gwtbootstrap3.client.ui.base.HasPlaceholder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -21,7 +22,7 @@ import java.util.Collection;
  * Created by alex on 22.05.14.
  */
 public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite implements LeafValueEditor<ID>,
-        HasValue<ID>, HasEnabled {
+        HasValue<ID>, HasEnabled, HasPlaceholder {
 
     private final SuggestedEditor<T> suggestedEditor;
 
@@ -91,5 +92,14 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
 
     public void setAcceptableValues(Collection<T> values) {
         suggestedEditor.setAcceptableValues(values);
+    }
+
+    public void setPlaceholder(String placeholder) {
+        suggestedEditor.setPlaceholder(placeholder);
+    }
+
+    @Override
+    public String getPlaceholder() {
+        return suggestedEditor.getPlaceholder();
     }
 }

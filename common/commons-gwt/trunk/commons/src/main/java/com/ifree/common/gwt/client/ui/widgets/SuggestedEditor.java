@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.*;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.base.HasPlaceholder;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -27,7 +28,7 @@ import java.util.*;
  * Use is subject to license terms.
  */
 public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>, IsEditor<LeafValueEditor<T>>,
-        HasConstrainedValue<T>, HasEnabled {
+        HasConstrainedValue<T>, HasEnabled, HasPlaceholder {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -157,6 +158,25 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
     @Override
     public void setEnabled(boolean enabled) {
         suggestBox.setEnabled(enabled);
+    }
+
+    @Override
+    public void setPlaceholder(String placeholder) {
+        ValueBoxBase<String> valueBox = suggestBox.getValueBox();
+        if (valueBox instanceof TextBox) {
+            TextBox box = (TextBox) valueBox;
+            box.setPlaceholder(placeholder);
+        }
+    }
+
+    @Override
+    public String getPlaceholder() {
+        ValueBoxBase<String> valueBox = suggestBox.getValueBox();
+        if (valueBox instanceof TextBox) {
+            TextBox box = (TextBox) valueBox;
+            box.getPlaceholder();
+        }
+        return null;
     }
 
     /*===========================================[ INNER CLASSES ]================*/
