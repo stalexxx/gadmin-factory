@@ -68,4 +68,9 @@ public class BooleanEditor extends Composite implements LeafValueEditor<Boolean>
     }
 
 
+    public void setUndefined(String undefined) {
+        if (doesntMatter != null) {
+            doesntMatter.setText(undefined + "?");
+        }
+    }
 }
