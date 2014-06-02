@@ -9,7 +9,12 @@ public abstract class ToggleValueProviderSingleAction<T> extends ToggleSingleIte
     private ValueProvider<T, Boolean> valueProvider;
 
     public ToggleValueProviderSingleAction(ValueProvider<T, Boolean> valueProvider, String isTrueText, String isFalseText) {
-        super(isTrueText, isFalseText);
+        super(isTrueText, isFalseText,false);
+        this.valueProvider = valueProvider;
+    }
+
+    public ToggleValueProviderSingleAction(ValueProvider<T, Boolean> valueProvider, String isTrueText, String isFalseText, boolean additional) {
+        super(isTrueText, isFalseText, additional);
         this.valueProvider = valueProvider;
     }
 

@@ -9,9 +9,16 @@ public abstract class ToggleSingleItemAction<T> extends SingleItemAction<T> {
     protected String falseText;
 
     public ToggleSingleItemAction( String trueText, String falseText) {
-        super(trueText);
+        super(trueText, false);
         this.falseText = falseText;
     }
+
+    public ToggleSingleItemAction( String trueText, String falseText, boolean additional) {
+        super(trueText, additional);
+        this.falseText = falseText;
+    }
+
+
 
     @Override
     public boolean isVisible(@Nullable T item) {

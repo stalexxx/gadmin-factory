@@ -10,6 +10,10 @@ public abstract class SimpleAction<T> extends BaseAction<T> {
         super(text);
     }
 
+    protected SimpleAction(String text, boolean additional) {
+        super(text, additional);
+    }
+
     @Override
     public final boolean isEnabled(T item) {
         return true;

@@ -130,6 +130,9 @@ public interface BaseMessages extends Messages {
 
     @DefaultMessage("Ошибка валидации: {0}")
     String validationFailed(String errorMessage);
+
+    @DefaultMessage("Изображение")
+    String image();
 }
 
 

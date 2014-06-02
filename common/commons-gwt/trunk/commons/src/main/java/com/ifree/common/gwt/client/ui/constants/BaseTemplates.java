@@ -17,5 +17,8 @@ public interface BaseTemplates extends SafeHtmlTemplates {
     @Template("<i class=\"{0} {1}\" style=\"color: {2}\"></i>" )
     SafeHtml icon(String fa, String icon, String color);
 
+    @Template("<div class=\"{0}\"><img src=\"{1}\" class=\"\"></div>")
+    SafeHtml image(String style, String url);
+
 
 }

@@ -7,7 +7,11 @@ import javax.annotation.Nullable;
  */
 public abstract class SingleItemAlwaysVisibleAction<T> extends SingleItemAction<T> {
     public SingleItemAlwaysVisibleAction(String text) {
-        super(text);
+        super(text, false);
+    }
+
+    protected SingleItemAlwaysVisibleAction(String text, boolean additional) {
+        super(text, additional);
     }
 
     @Override

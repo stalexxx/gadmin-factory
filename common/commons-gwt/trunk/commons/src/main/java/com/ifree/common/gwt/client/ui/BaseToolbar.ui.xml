@@ -44,6 +44,13 @@
 
                 <b:NavbarNav pull="LEFT" ui:field="listItemContainer">
 
+
+                    <b:ListDropDown ui:field="elseDropdown" visible="false">
+                        <b:AnchorButton dataToggle="DROPDOWN">Еще</b:AnchorButton>
+                        <b:DropDownMenu ui:field="elseSubmenu">
+
+                        </b:DropDownMenu>
+                    </b:ListDropDown>
                 </b:NavbarNav>
 
                 <b:NavbarForm pull="RIGHT">
