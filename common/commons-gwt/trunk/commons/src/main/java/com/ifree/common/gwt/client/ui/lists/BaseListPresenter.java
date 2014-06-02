@@ -128,7 +128,7 @@ public abstract class BaseListPresenter<T,
 
         setupFilter();
 
-        update();
+        refresh();
 
         getView().setupRoles(currentUser.getRoles());
         getView().updateToolbar();
@@ -158,7 +158,7 @@ public abstract class BaseListPresenter<T,
 
     }
 
-    protected void update() {
+    protected void refresh() {
         loader.load();
     }
 
