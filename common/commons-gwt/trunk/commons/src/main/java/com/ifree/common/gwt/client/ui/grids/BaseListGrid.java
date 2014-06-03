@@ -44,6 +44,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     /*===========================================[ STATIC VARIABLES ]=============*/
 
     private static final int PAGE_SIZE_UNLIMIT = 1000000;
+    public static final String EMPTY_STRING = "";
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -53,7 +54,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     private ModelKeyProvider<T> keyProvider;
     private Integer pageSize;
-    protected SimplePager pager;
+    protected Pager pager;
 
     @Inject
     protected BaseTemplates templates;
@@ -116,17 +117,17 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return valueProvider.getValue(object);
+                return object != null ? valueProvider.getValue(object) : EMPTY_STRING;
             }
         }, header, width, sortable, valueProvider.getPath());
     }
 
 
-    protected void addIntegerColumn(CellTable<T> dataGrid, final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
+    protected void addNumberColumn(CellTable<T> dataGrid, final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return String.valueOf(valueProvider.getValue(object));
+                return object != null ? String.valueOf(valueProvider.getValue(object)) : EMPTY_STRING;
             }
         }, header, width, sortable, valueProvider.getPath());
     }
@@ -136,7 +137,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return renderer.render(valueProvider.getValue(object));
+                return object != null ? renderer.render(valueProvider.getValue(object)) : EMPTY_STRING;
             }
         }, header, width, sortable, valueProvider.getPath());
     }
@@ -146,7 +147,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return String.valueOf(provider.getValue(object));
+                return object != null ? String.valueOf(provider.getValue(object)) : null;
             }
         }, header, width, sortable, provider.getPath());
     }
@@ -181,7 +182,9 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         final IdentityColumn<T> column = new IdentityColumn<T>(new AbstractSafeHtmlCell<T>(renderer) {
             @Override
             protected void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
-                sb.append(data);
+                if (data != null) {
+                    sb.append(data);
+                }
             }
         });
 
@@ -237,7 +240,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
         if (pageSize() != PAGE_SIZE_UNLIMIT) {
             SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
-            pager = new SimplePager(SimplePager.TextLocation.CENTER);
+            pager = new Pager(SimplePager.TextLocation.CENTER);
             //pager = new NumberedPager();
             pager.addStyleName(Styles.PULL_LEFT);
             pager.setDisplay(dataGrid);
@@ -271,7 +274,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    public SimplePager getPager() {
+    public Pager getPager() {
         return pager;
     }
 
