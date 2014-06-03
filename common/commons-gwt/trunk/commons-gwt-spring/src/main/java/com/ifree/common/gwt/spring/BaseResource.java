@@ -58,11 +58,12 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
     protected Pageable pageable(FilterPagingLoadConfigBean config) {
         int page = config.getOffset() / config.getLimit();
+        int additional = config.getOffset() % config.getLimit();
 
         if (hasSortInfo(config)) {
-            return new PageRequest(page, config.getLimit(), sort(config));
+            return new PageRequest(page, config.getLimit() + additional, sort(config));
         } else {
-            return new PageRequest(page, config.getLimit());
+            return new PageRequest(page, config.getLimit() + additional);
         }
     }
 
