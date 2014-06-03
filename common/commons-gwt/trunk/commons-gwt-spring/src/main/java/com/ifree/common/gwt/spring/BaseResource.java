@@ -96,7 +96,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
                     return NONE_SPECIFICATION;
 
                 }
-                return stringLike(filter, type);
+                return stringSpecification(filter, type);
 
 
             } else if (type.equals(FilterHelper.BOOLEAN_TYPE)) {
@@ -121,7 +121,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
     protected abstract FilterHelper getFilterHelper();
 
-    protected abstract Specification<Entity_> stringLike(FilterConfig filter, String type);
+    protected abstract Specification<Entity_> stringSpecification(FilterConfig filter, String type);
 
     protected Specifications<Entity_> andOrWhere(Specifications<Entity_> specs, Specification<Entity_> specification) {
         if (specification != NONE_SPECIFICATION) {
