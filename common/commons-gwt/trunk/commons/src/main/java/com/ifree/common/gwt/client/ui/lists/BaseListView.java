@@ -23,6 +23,7 @@ import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
+import com.ifree.common.gwt.client.ui.grids.Pager;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.ListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
@@ -145,7 +146,7 @@ public abstract class BaseListView<
 
     @Override
     public void firstPage() {
-        SimplePager pager = dataGrid.getPager();
+        Pager pager = dataGrid.getPager();
         if (pager != null) {
             pager.firstPage();
         }
