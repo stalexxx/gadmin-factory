@@ -34,4 +34,6 @@ public interface EditorView<T> extends View, HasEditorErrors<T>, CustomizedWithR
     void handleViolations(Set<ConstraintViolation<T>> violations);
 
     void initializeDriver();
+
+    void setSaveButtonEnabled(boolean enabled);
 }

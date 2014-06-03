@@ -54,10 +54,6 @@ public abstract class BaseEditorPresenter<
 
 /*===========================================[ INSTANCE VARIABLES ]===========*/
 
-
-
-
-
     protected final PlaceManager placeManager;
 
     protected RestService_ service;
@@ -93,6 +89,8 @@ public abstract class BaseEditorPresenter<
         this.logger = logger;
         this.service = service;
 
+
+
     }
 
     @Override
@@ -100,6 +98,9 @@ public abstract class BaseEditorPresenter<
         super.onBind();
 
         getView().initializeDriver();
+
+        getView().setSaveButtonEnabled(false);
+
     }
 
 
@@ -109,6 +110,7 @@ public abstract class BaseEditorPresenter<
 
     @Override
     protected void onReveal() {
+
         super.onReveal();
 
         getView().setupRoles(currentUser.getRoles());
@@ -173,6 +175,8 @@ public abstract class BaseEditorPresenter<
 
     @Override
     public void onSave() {
+        getView().setSaveButtonEnabled(false);
+
         final T dto = getView().getDriver().flush();
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -206,12 +210,17 @@ public abstract class BaseEditorPresenter<
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
                     }
+
+
+
                     //onBack();
                 }
 
                 @Override
                 public void onFailure(Throwable caught) {
                     super.onFailure(caught);
+                   getView().setSaveButtonEnabled(true);
+
                 }
             });
         }
@@ -302,9 +311,6 @@ public abstract class BaseEditorPresenter<
     protected abstract Object getId(T currentProxy);
 
     protected void loadDto(T proxy) {
-        /*service = createContext();
-        currentDto = service.edit(proxy);
-*/
 
         preEditableLoaded();
         getView().getDriver().edit(proxy);
@@ -320,6 +326,7 @@ public abstract class BaseEditorPresenter<
 
     protected void onEditableLoaded(T proxy) {
         getView().clearValidation();
+        getView().setSaveButtonEnabled(true);
     }
 
     /*protected void onShowFailure(ServerFailure error) {

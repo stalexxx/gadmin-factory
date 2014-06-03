@@ -129,6 +129,8 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
     public void handleViolations(Set<ConstraintViolation<T>> violations) {
 
+        setSaveButtonEnabled(true);
+
         List<EditorError> errors = getEditorErrors(violations, getDriver());
 
         showErrors(errors);
@@ -138,6 +140,11 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     @Override
     public void initializeDriver() {
         getDriver().initialize((E) this);
+    }
+
+    @Override
+    public void setSaveButtonEnabled(boolean enabled) {
+        save.setEnabled(enabled);
     }
 
     private List<EditorError> getEditorErrors(Set<ConstraintViolation<T>> violations, SimpleBeanEditorDriver<T, ?> driver) {
