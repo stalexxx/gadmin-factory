@@ -10,6 +10,7 @@ import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -127,7 +128,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         addColumn(dataGrid, new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return object != null ? String.valueOf(valueProvider.getValue(object)) : EMPTY_STRING;
+                return object != null ? NumberFormat.getDecimalFormat().format(valueProvider.getValue(object)) : EMPTY_STRING;
             }
         }, header, width, sortable, valueProvider.getPath());
     }

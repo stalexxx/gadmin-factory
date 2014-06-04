@@ -133,6 +133,10 @@ public interface BaseMessages extends Messages {
 
     @DefaultMessage("Изображение")
     String image();
+
+    @DefaultMessage("Объект не может быть загружен или найден")
+    String cantFindObject();
+
 }
 
 
