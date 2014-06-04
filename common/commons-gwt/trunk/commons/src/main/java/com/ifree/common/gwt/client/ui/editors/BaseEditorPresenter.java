@@ -140,6 +140,12 @@ public abstract class BaseEditorPresenter<
                     loadDto(result);
 
                 }
+
+                @Override
+                public void onFailure(Throwable caught) {
+                    getEventBus().fireEvent(new ShowAlertEvent(messages.cantFindObject(), AlertType.DANGER));
+                    onBack();
+                }
             });
         } else {
             switchEditableMode(true);
@@ -313,6 +319,7 @@ public abstract class BaseEditorPresenter<
     protected void loadDto(T proxy) {
 
         preEditableLoaded();
+        currentDto = proxy;
         getView().getDriver().edit(proxy);
 
         onEditableLoaded(proxy);
