@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import javax.annotation.Nullable;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -41,9 +42,28 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             page = findAll(config);
         }
 
-        List<EntityDto_> dtos = getConversionService().transformToList(page.getContent(), getDtoClazz());
+        List<Entity_> entities = page.getContent();
+        List<EntityDto_> dtos = getConversionService().transformToList(entities, getDtoClazz());
+
+        postProcessPagingLoadDtos(dtos, entities);
 
         return new PagingLoadResultBean<EntityDto_>(dtos, (int) page.getTotalElements(), config.getOffset());
+    }
+
+    private void postProcessPagingLoadDtos(List<EntityDto_> dtos, List<Entity_> entities) {
+
+        Iterator<EntityDto_> iteratorDto = dtos.iterator();
+        Iterator<Entity_> entityIterator = entities.iterator();
+
+        while (entityIterator.hasNext()) {
+            Entity_ next = entityIterator.next();
+            EntityDto_ entityDto = iteratorDto.next();
+            postProcessPagingLoadDto(entityDto, next);
+        }
+    }
+
+    protected void postProcessPagingLoadDto(EntityDto_ entityDto, Entity_ entity) {
+
     }
 
     protected abstract BaseConversionService getConversionService();
