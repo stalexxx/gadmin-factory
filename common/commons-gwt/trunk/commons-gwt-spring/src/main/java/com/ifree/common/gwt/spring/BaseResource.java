@@ -53,12 +53,9 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     private void postProcessPagingLoadDtos(List<EntityDto_> dtos, List<Entity_> entities) {
 
         Iterator<EntityDto_> iteratorDto = dtos.iterator();
-        Iterator<Entity_> entityIterator = entities.iterator();
 
-        while (entityIterator.hasNext()) {
-            Entity_ next = entityIterator.next();
-            EntityDto_ entityDto = iteratorDto.next();
-            postProcessPagingLoadDto(entityDto, next);
+        for (Entity_ next : entities) {
+            postProcessPagingLoadDto(iteratorDto.next(), next);
         }
     }
 

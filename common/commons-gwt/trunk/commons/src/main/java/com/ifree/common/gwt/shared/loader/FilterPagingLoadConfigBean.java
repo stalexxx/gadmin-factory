@@ -16,20 +16,21 @@ import java.util.List;
  */
 public class FilterPagingLoadConfigBean extends PagingLoadConfigBean implements FilterPagingLoadConfig {
 
-  private List<FilterConfigBean> filterConfigs = new ArrayList<FilterConfigBean>();
-  
-  @Override
-  public List<FilterConfigBean> getFilters() {
-    return filterConfigs;
-  }
+    private List<FilterConfigBean> filterConfigs = new ArrayList<FilterConfigBean>();
 
-  @Override
-  public void setFilters(List<FilterConfigBean> filters) {
-    this.filterConfigs = filters;
-  }
+    @Override
+    public List<FilterConfigBean> getFilters() {
+        return filterConfigs;
+    }
 
-    /*@Override
-    public void setSortInfo(List<? extends SortInfo> info) {
-        int i = 0;
-    }*/
+    @Override
+    public void setFilters(List<FilterConfigBean> filters) {
+        this.filterConfigs = filters;
+    }
+
+    public void addFilter(FilterConfigBean filterConfigBean) {
+        filterConfigs.add(filterConfigBean);
+    }
+
+
 }
