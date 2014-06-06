@@ -96,7 +96,7 @@ public abstract class BaseListPresenter<T,
         addActions(createActions());
     }
 
-    protected abstract Action [] createActions();
+    protected abstract List<Action<T>> createActions();
 
     private PagingSortingFilteringDataProvider<T, Filter_> createProvider(View_ view) {
         return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, createFilterConfigBuilder());
@@ -249,7 +249,7 @@ public abstract class BaseListPresenter<T,
         }
     }
 
-    public void addActions(Action<T>... actions) {
+    public void addActions(List<Action<T>> actions) {
         if (actions != null) {
             for (final Action<T> action : actions) {
                 actionList.add(action);
