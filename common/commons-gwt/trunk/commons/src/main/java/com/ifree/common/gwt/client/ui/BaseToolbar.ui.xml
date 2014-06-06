@@ -9,38 +9,17 @@
 
 
     <ui:style>
-
-
-        .footer_space {
-            height: 150px;
-            width: 100%;
-        }
-
-        .alert_panel {
-            bottom: 50px;
-
-        }
-
         .filter_panel {
             position: fixed;
             right: 0;
             bottom: 50px;
             top: 49px;
-
             padding-top: 15px;
             vertical-align: top;
-
         }
-
-
     </ui:style>
     <g:FlowPanel>
         <b:Navbar ui:field="navbar" position="FIXED_TOP" addStyleNames="toolbar">
-            <!--<b:NavbarHeader>
-                <b:NavbarBrand>Genome</b:NavbarBrand>
-            </b:NavbarHeader>
-    -->
-
             <b:NavbarCollapse>
 
 
