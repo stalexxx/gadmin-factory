@@ -6,6 +6,7 @@
 package com.ifree.common.gwt.client.ui.lists;
 
 import com.google.common.collect.Lists;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.client.Command;
@@ -22,8 +23,10 @@ import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.events.StartTypingEvent;
 import com.ifree.common.gwt.client.rest.ListingRestService;
+import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
@@ -33,10 +36,8 @@ import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
 import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
 import com.ifree.common.gwt.client.utils.ViewHeaderResolver;
-import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
-import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
-import com.ifree.common.gwt.shared.loader.PagingLoadResult;
-import com.ifree.common.gwt.shared.loader.PagingLoader;
+import com.ifree.common.gwt.shared.loader.*;
+import org.gwtbootstrap3.client.ui.constants.AlertType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,7 +57,7 @@ public abstract class BaseListPresenter<T,
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler,
         SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ >, PerformFilterEvent.PerformFilterHandler,
-        StartTypingEvent.StartTypingHandler {
+        StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig,PagingLoadResult<T>> {
 
     @Inject
     protected PlaceManager placeManager;
@@ -85,6 +86,7 @@ public abstract class BaseListPresenter<T,
         super(eventBus, view, proxy, slot);
         this.listService = listService;
         loader = new FilterPagingLoader(dataProxy);
+        loader.addLoadHandler(this);
         provider = createProvider(view);
 
 
@@ -269,5 +271,34 @@ public abstract class BaseListPresenter<T,
 
     public Service_ getService() {
         return listService;
+    }
+
+    @Override
+    public void onLoad(LoadEvent<FilterPagingLoadConfig, PagingLoadResult<T>> event) {
+        //мы должны быть уверены что updateActions будет вызвано ПОСЛЕ того как все желающие получили LoadEvent
+        // потому что именно его слушает провайдер
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                updateActions();
+            }
+        });
+    }
+
+    protected class RefreshingCallback extends AlertingAsyncCallback<Void> {
+
+        private final String message;
+
+        public RefreshingCallback(String message) {
+            super(getEventBus());
+            this.message = message;
+        }
+
+        @Override
+        public void onSuccess(Void result) {
+            getEventBus().fireEvent(new ShowAlertEvent(message, AlertType.SUCCESS));
+
+            refresh();
+        }
     }
 }

@@ -16,7 +16,7 @@ public abstract class SingleItemAction<T> extends BaseAction<T> {
     }
 
     @Override
-    public final boolean isEnabled(T item) {
+    public boolean isEnabled(T item) {
         return item != null;
     }
 
