@@ -8,7 +8,12 @@ package com.ifree.common.gwt.client.ui.grids;
 import com.google.common.base.Function;
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -21,10 +26,9 @@ import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.*;
+import com.google.web.bindery.event.shared.EventBus;
+import com.ifree.common.gwt.client.events.StartTypingEvent;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.ValueProvider;
@@ -57,6 +61,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     private Integer pageSize;
     protected Pager pager;
 
+    @Inject
+    protected EventBus eventBus;
     @Inject
     protected BaseTemplates templates;
     /*===========================================[ CONSTRUCTORS ]=================*/

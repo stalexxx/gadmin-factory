@@ -48,8 +48,6 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     @UiField
     TextBox search;
-    /*@UiField
-    FlowPanel pagerContainer;*/
     @UiField
     Anchor remove;
     @UiField
@@ -168,6 +166,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     public void setFilterPanel(IsWidget panel) {
         filterPanel.setVisible(true);
         filterPanel.add(panel);
+        search.setVisible(false);
     }
 
     public void setExtendSearch(boolean extend) {
@@ -185,10 +184,15 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
             elseSubmenu.add(actionWidget);
         } else {
             listItemContainer.insert(actionWidget, listItemContainer.getWidgetCount() - 1);
+        }
+    }
+
+    public void focusSearchBySymbol(Character symbol) {
+        if (search.isVisible()) {
+            search.setText("" + symbol);
+            search.setFocus(true);
 
         }
-
-
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")

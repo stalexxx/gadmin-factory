@@ -188,4 +188,9 @@ public abstract class BaseListView<
         }
     }
 
+    @Override
+    public void focusFilter(Character symbol) {
+        toolbar.focusSearchBySymbol(symbol);
+    }
+
 }

@@ -46,4 +46,9 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText);
 
+    /**
+     * first input symbol
+     * @param symbol
+     */
+    void focusFilter(Character symbol);
 }

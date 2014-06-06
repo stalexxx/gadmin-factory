@@ -15,12 +15,14 @@ import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
+import com.gwtplatform.mvp.client.annotations.ProxyEvent;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.events.StartTypingEvent;
 import com.ifree.common.gwt.client.rest.ListingRestService;
 import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
@@ -53,7 +55,8 @@ public abstract class BaseListPresenter<T,
                                         >
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler,
-        SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ >, PerformFilterEvent.PerformFilterHandler {
+        SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ >, PerformFilterEvent.PerformFilterHandler,
+        StartTypingEvent.StartTypingHandler {
 
     @Inject
     protected PlaceManager placeManager;
@@ -174,6 +177,14 @@ public abstract class BaseListPresenter<T,
 
         return null;
     }
+
+    @ProxyEvent
+    public void onStartTyping(StartTypingEvent event) {
+        Character symbol = event.getSymbol();
+        getView().focusFilter(symbol);
+    }
+
+
 
 
     @Override
