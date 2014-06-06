@@ -33,5 +33,10 @@ public abstract class BaseAction<T> implements Action<T> {
         return this;
     }
 
+    @Override
+    public Action<T> action() {
+        return this;
+    }
+
 
 }

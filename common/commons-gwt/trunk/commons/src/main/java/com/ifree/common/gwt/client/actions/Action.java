@@ -18,4 +18,6 @@ public interface Action<T> {
 
     Action<T> setAdditional(boolean additional);
 
+    Action<T> action();
+
 }
