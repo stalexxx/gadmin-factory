@@ -43,16 +43,21 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
 
         T result = createObj();
 
-        Iterable<String> split = Splitter.on(";").split(str);
 
+
+        Iterable<String> split = Splitter.on(";").split(str);
 
         for (String s : split) {
 
-            FilterConfigBean configBean = parse(s);
+            if (!s.isEmpty()) {
 
-            ValueProvider provider = findProvider(configBean.getField());
+                FilterConfigBean configBean = parse(s);
 
-            provider.setValue(result, helper.getValue(configBean.getType(), configBean.getValue()));
+                ValueProvider provider = findProvider(configBean.getField());
+
+                provider.setValue(result, helper.getValue(configBean.getType(), configBean.getValue()));
+            }
+
 
 
         }
@@ -66,9 +71,17 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
         FilterConfigBean bean = new FilterConfigBean();
 
         String[] fieldType = keyvalue[0].split("/");
-        bean.setField(fieldType[0]);
-        bean.setType(fieldType[1]);
-        bean.setValue(keyvalue[1]);
+
+        if (fieldType.length > 1 && keyvalue.length > 1) {
+
+            bean.setField(fieldType[0]);
+            bean.setType(fieldType[1]);
+            bean.setValue(keyvalue[1]);
+
+        } else {
+            int i = 0;
+        }
+
 
         return bean;
     }
