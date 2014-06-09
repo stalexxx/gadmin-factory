@@ -1,5 +1,6 @@
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.google.gwt.user.cellview.client.AbstractPager;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
@@ -16,7 +17,7 @@ public class BaseViewPanel<T> extends FlowPanel {
         add(dataGrid);
     }
 
-    public void addPager(SimplePager pager) {
+    public void addPager(AbstractPager pager) {
         if (pager != null) {
             add(pager);
         }

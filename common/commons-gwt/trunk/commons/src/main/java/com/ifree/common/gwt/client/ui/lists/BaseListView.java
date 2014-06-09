@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.view.client.HasData;
@@ -23,9 +22,8 @@ import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
-import com.ifree.common.gwt.client.ui.grids.Pager;
+import com.ifree.common.gwt.client.ui.grids.BasePager;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.ListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
 import javax.annotation.Nonnull;
@@ -146,7 +144,7 @@ public abstract class BaseListView<
 
     @Override
     public void firstPage() {
-        Pager pager = dataGrid.getPager();
+        BasePager pager = dataGrid.getPager();
         if (pager != null) {
             pager.firstPage();
         }
