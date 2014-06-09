@@ -50,7 +50,6 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
     }
 
-
     protected void addCustomFields(List<FilterConfigBean> filterConfigs) {
         if (defaultField != null) {
             helper.appendTo(filterConfigs, defaultField, filter.getName());
