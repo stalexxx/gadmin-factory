@@ -43,10 +43,6 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
         final List<FilterConfigBean> filterConfigs = Lists.newArrayList();
 
         if (filter != null) {
-            if (defaultField != null) {
-                helper.appendTo(filterConfigs, defaultField, filter.getName());
-            }
-
             addCustomFields(filterConfigs);
         }
 
@@ -56,7 +52,9 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
 
 
     protected void addCustomFields(List<FilterConfigBean> filterConfigs) {
-
+        if (defaultField != null) {
+            helper.appendTo(filterConfigs, defaultField, filter.getName());
+        }
     }
 
     protected  static <V> void addField(List<FilterConfigBean> filterConfigs, ValueProvider<?, ?> field, V value) {
