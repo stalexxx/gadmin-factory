@@ -36,6 +36,7 @@ import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
 import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
 import com.ifree.common.gwt.client.utils.ViewHeaderResolver;
+import com.ifree.common.gwt.shared.PropertyAccess;
 import com.ifree.common.gwt.shared.loader.*;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 
@@ -52,7 +53,8 @@ public abstract class BaseListPresenter<T,
                                         Filter_ extends BaseFilter,
                                         View_ extends ListView<T, Filter_>,
                                         Proxy_ extends ProxyPlace<?>,
-                                        Service_ extends ListingRestService<T>
+                                        Service_ extends ListingRestService<T>,
+                                        Properties_ extends PropertyAccess<T>
                                         >
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler,
@@ -72,6 +74,7 @@ public abstract class BaseListPresenter<T,
     protected ViewHeaderResolver headerResolver;
 
     protected final Service_ listService;
+    protected final Properties_ properties;
 
     protected final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     protected final PagingSortingFilteringDataProvider<T, Filter_> provider;
@@ -82,9 +85,10 @@ public abstract class BaseListPresenter<T,
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
                                 BaseDataProxy<T> dataProxy,
-                                Service_ listService) {
+                                Service_ listService, Properties_ properties) {
         super(eventBus, view, proxy, slot);
         this.listService = listService;
+        this.properties = properties;
         loader = new FilterPagingLoader(dataProxy);
         loader.addLoadHandler(this);
         provider = createProvider(view);
@@ -95,6 +99,8 @@ public abstract class BaseListPresenter<T,
     private void initAction() {
         addActions(createActions());
     }
+
+
 
     protected abstract List<Action<T>> createActions();
 
