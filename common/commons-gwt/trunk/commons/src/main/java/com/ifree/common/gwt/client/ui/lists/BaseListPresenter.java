@@ -148,7 +148,7 @@ public abstract class BaseListPresenter<T,
         PlaceRequest request = placeManager.getCurrentPlaceRequest();
         String filter = request.getParameter(BaseNameTokes.FILTER, null);
         AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
-        if (filterHandler != null && filter != null) {
+        if (filterHandler != null && filter != null && !filter.isEmpty()) {
             Filter_ filter_ = filterHandler.convertToObject(filter);
             provider.setFilter(filter_);
             getView().setFilter(filter_);
