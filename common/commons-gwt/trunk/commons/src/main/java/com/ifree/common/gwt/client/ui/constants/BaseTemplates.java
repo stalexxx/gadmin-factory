@@ -17,10 +17,10 @@ public interface BaseTemplates extends SafeHtmlTemplates {
     @Template("<i class=\"{0} {1}\" style=\"color: {2}\"></i>" )
     SafeHtml icon(String fa, String icon, String color);
 
-    @Template("<div class=\"{0}\"><img src=\"{1}\" style=\"height: 140px\"></div>")
+    @Template("<img class=\"{0}\" src=\"{1}\" style=\"height: 70px\"/>")
     SafeHtml image(String style, String url);
 
-    @Template("<span class=\"label {1}\">{0}</span>")
-    SafeHtml label(String text, String color);
+    @Template("<span class=\"label {1}\" title=\"{2}\">{0}</span>")
+    SafeHtml label(String text, String color, String title);
 
 }
