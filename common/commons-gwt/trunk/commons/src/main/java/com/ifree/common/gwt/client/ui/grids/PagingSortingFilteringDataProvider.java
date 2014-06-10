@@ -14,6 +14,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.Range;
+import com.google.inject.Provider;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.shared.SortInfoBean;
@@ -39,28 +40,35 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
 
     private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
     private ProvidesKey<T> providesKey;
-    
+    private Provider<FilterConfigBuilder<F>> fcbProvider;
+
     private List<SortInfoBean> sortInfoList = Lists.newArrayList();
     private List<T> currentData;
 
-    private final FilterConfigBuilder<F> filterConfigBuilder;
+    private FilterConfigBuilder<F> filterConfigBuilder;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    public PagingSortingFilteringDataProvider(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey, FilterConfigBuilder<F> fcb) {
+    public PagingSortingFilteringDataProvider(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey, Provider<FilterConfigBuilder<F>> fcb) {
         this.loader = loader;
         this.providesKey = providesKey;
+
+        fcbProvider = fcb;
 
         loader.addLoadHandler(this);
         loader.addBeforeLoadHandler(this);
 
-        filterConfigBuilder = fcb;
+       // filterConfigBuilder = fcb;
 
 
     }
 
-    public PagingSortingFilteringDataProvider(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey) {
-        this(loader, providesKey, new BaseFilterConfigBuilder<F>());
+    private FilterConfigBuilder<F> getFilterConfigBuilder() {
+        if (filterConfigBuilder == null) {
+            filterConfigBuilder = fcbProvider.get();
+        }
+
+        return filterConfigBuilder;
     }
 
     /*===========================================[ CLASS METHODS ]================*/
@@ -117,7 +125,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
         return null;
     }
     public void setFilter(F filter) {
-        filterConfigBuilder.setFilter(filter);        
+        getFilterConfigBuilder().setFilter(filter);
     }
 
     /*===========================================[ INTERFACE METHODS ]============*/
@@ -140,7 +148,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
     public void onBeforeLoad(BeforeLoadEvent<FilterPagingLoadConfig> event) {
         FilterPagingLoadConfig loadConfig = event.getLoadConfig();
 
-        loadConfig.setFilters(filterConfigBuilder.build());
+        loadConfig.setFilters(getFilterConfigBuilder().build());
 
         loadConfig.setSortInfo(sortInfoList);
 

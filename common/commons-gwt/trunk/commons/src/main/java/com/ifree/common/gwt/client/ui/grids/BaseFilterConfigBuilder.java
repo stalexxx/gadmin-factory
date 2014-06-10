@@ -19,17 +19,11 @@ import java.util.List;
 public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSortingFilteringDataProvider.FilterConfigBuilder<F> {
 
     protected F filter;
+    private CustomFilterAppender<F> appender;
 
-    private static FilterHelper helper = new FilterHelper();
 
-    private ValueProvider<?, ?> defaultField;
-
-    public BaseFilterConfigBuilder(ValueProvider<?, ?> defaultField) {
-        this.defaultField = defaultField;
-    }
-
-    public BaseFilterConfigBuilder() {
-
+    public BaseFilterConfigBuilder(CustomFilterAppender<F> appender) {
+        this.appender = appender;
     }
 
 
@@ -43,23 +37,15 @@ public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSort
         final List<FilterConfigBean> filterConfigs = Lists.newArrayList();
 
         if (filter != null) {
-            addCustomFields(filterConfigs);
+            appender.addCustomFields(filter, filterConfigs);
         }
 
         return filterConfigs;
 
     }
 
-    protected void addCustomFields(List<FilterConfigBean> filterConfigs) {
-        if (defaultField != null) {
-            helper.appendTo(filterConfigs, defaultField, filter.getName());
-        }
+    public interface CustomFilterAppender<F> {
+        void addCustomFields(F filter, List<FilterConfigBean> filterConfigs);
     }
-
-    protected  static <V> void addField(List<FilterConfigBean> filterConfigs, ValueProvider<?, ?> field, V value) {
-        helper.appendTo(filterConfigs, field, value);
-    }
-
-
 
 }

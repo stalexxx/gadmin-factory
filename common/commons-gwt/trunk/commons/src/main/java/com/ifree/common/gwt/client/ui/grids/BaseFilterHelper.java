@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Created by alex on 18.04.14.
  */
-public class FilterHelper {
+public abstract class BaseFilterHelper {
 
     public static final String BOOLEAN_TYPE = "boolean";
     public static final String STRING_TYPE = "string";
@@ -39,7 +39,7 @@ public class FilterHelper {
                 return Float.parseFloat(text.toString());
             }
         });
-        integerFilterHandler = new NumberFilterHandler(new Parser<Integer>() {
+        integerFilterHandler = new NumberFilterHandler<Integer>(new Parser<Integer>() {
             @Override
             public Integer parse(CharSequence text) throws ParseException {
                 return Integer.parseInt(text.toString());
@@ -47,6 +47,7 @@ public class FilterHelper {
         });
     }
 
+    protected BaseFilterHelper()
     {
         handlerMap.put(STRING_TYPE, stringFilterHandler);
         handlerMap.put(BOOLEAN_TYPE, booleanFilterHandler);
@@ -58,7 +59,12 @@ public class FilterHelper {
         typeMap.put(Float.class, FLOAT_TYPE);
         typeMap.put(Integer.class, INTEGER_TYPE);
 
+        registerCustom();
+
+
     }
+
+    protected abstract void registerCustom();
 
     protected <T> void register(String type, Class<T> clazz,  FilterHandler<T> handler) {
         handlerMap.put(type, handler);
@@ -77,20 +83,6 @@ public class FilterHelper {
             configBean.setType(strType);
             configBean.setValue(filterHandler.convertToString(value));
         }
-      /*  if (value instanceof String) {
-
-            configBean.setType(STRING_TYPE);
-            configBean.setValue(stringFilterHandler.convertToString((String) value));
-        } else if (value instanceof Boolean) {
-
-            configBean.setType(BOOLEAN_TYPE);
-            configBean.setValue(booleanFilterHandler.convertToString((Boolean) value));
-        } else if (value instanceof Float) {
-
-            configBean.setType(FLOAT_TYPE);
-            configBean.setValue(floatNumberFilterHandler.convertToString((Float) value));
-        }
-*/
 
         return configBean;
     }
@@ -104,13 +96,6 @@ public class FilterHelper {
         if (filterHandler != null) {
             return (V) filterHandler.convertToObject(value);
         }
-        /*if (STRING_TYPE.equals(type)) {
-            return (V) stringFilterHandler.convertToObject(value);
-        } else if (BOOLEAN_TYPE.equals(type)) {
-            return (V) booleanFilterHandler.convertToObject(value);
-        } else if (FLOAT_TYPE.equals(type)) {
-            return (V) floatNumberFilterHandler.convertToObject(value);
-        }*/
         return null;
     }
 }
