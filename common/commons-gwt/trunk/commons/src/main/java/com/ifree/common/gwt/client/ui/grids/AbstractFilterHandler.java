@@ -6,6 +6,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
+import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
 import com.ifree.common.gwt.shared.loader.FilterHandler;
@@ -16,7 +18,7 @@ import java.util.List;
 /**
  * Created by alex on 22.04.14.
  */
-public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
+public abstract class AbstractFilterHandler<T extends BaseFilter> extends FilterHandler<T> implements BaseFilterConfigBuilder.CustomFilterAppender<T> {
 
 
     public static final Function<FilterConfigBean, String> CONFIG_BEAN_STRING_FUNCTION = new FilterConfigBeanStringFunction();
@@ -31,7 +33,8 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
     };
     private ValueProvider<T, ?>[] providers;
 
-    FilterHelper helper = new FilterHelper();
+    @Inject
+    protected BaseFilterHelper filterHelper;
 
     public AbstractFilterHandler(ValueProvider<T, ?> ... providers) {
 
@@ -55,7 +58,7 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
 
                 ValueProvider provider = findProvider(configBean.getField());
 
-                provider.setValue(result, helper.getValue(configBean.getType(), configBean.getValue()));
+                provider.setValue(result, filterHelper.getValue(configBean.getType(), configBean.getValue()));
             }
 
 
@@ -105,7 +108,7 @@ public abstract class AbstractFilterHandler<T> extends FilterHandler<T> {
         for (ValueProvider<T, ?> provider : providers) {
             Object value = provider.getValue(object);
             if (value != null) {
-                beanList.add(helper.createConfig(provider, value));
+                beanList.add(filterHelper.createConfig(provider, value));
             }
         }
 

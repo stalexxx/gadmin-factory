@@ -2,7 +2,7 @@ package com.ifree.common.gwt.spring;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.ifree.common.gwt.client.ui.grids.FilterHelper;
+import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
 import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
@@ -107,7 +107,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
             String type = filter.getType();
 
-            if (type.equals(FilterHelper.STRING_TYPE)) {
+            if (type.equals(BaseFilterHelper.STRING_TYPE)) {
 
                 if (filter.getValue().isEmpty()) {
                     return NONE_SPECIFICATION;
@@ -116,15 +116,15 @@ public abstract class BaseResource<Entity_, EntityDto_> {
                 return stringSpecification(filter, type);
 
 
-            } else if (type.equals(FilterHelper.BOOLEAN_TYPE)) {
+            } else if (type.equals(BaseFilterHelper.BOOLEAN_TYPE)) {
 
                 return booleanSpecification(filter, type);
 
-            } else if (type.equals(FilterHelper.INTEGER_TYPE)) {
+            } else if (type.equals(BaseFilterHelper.INTEGER_TYPE)) {
 
                 return integerSpecification(filter, type);
 
-            } else if (type.equals(FilterHelper.FLOAT_TYPE)) {
+            } else if (type.equals(BaseFilterHelper.FLOAT_TYPE)) {
 
                 throw new UnsupportedOperationException();
             }
@@ -136,7 +136,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
     protected abstract Specification<Entity_> integerSpecification(FilterConfig filter, String type);
 
-    protected abstract FilterHelper getFilterHelper();
+    protected abstract BaseFilterHelper getFilterHelper();
 
     protected abstract Specification<Entity_> stringSpecification(FilterConfig filter, String type);
 

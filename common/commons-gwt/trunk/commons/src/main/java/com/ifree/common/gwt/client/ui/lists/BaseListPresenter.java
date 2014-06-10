@@ -13,6 +13,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
@@ -29,12 +30,9 @@ import com.ifree.common.gwt.client.rest.ListingRestService;
 import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
-import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
-import com.ifree.common.gwt.client.ui.grids.BaseFilterConfigBuilder;
-import com.ifree.common.gwt.client.ui.grids.PagingSortingFilteringDataProvider;
+import com.ifree.common.gwt.client.ui.grids.*;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
-import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
 import com.ifree.common.gwt.client.utils.ViewHeaderResolver;
 import com.ifree.common.gwt.shared.PropertyAccess;
 import com.ifree.common.gwt.shared.loader.*;
@@ -50,16 +48,18 @@ import java.util.List;
  */
 @SuppressWarnings("TypeParameterNamingConvention")
 public abstract class BaseListPresenter<T,
-                                        Filter_ extends BaseFilter,
-                                        View_ extends ListView<T, Filter_>,
-                                        Proxy_ extends ProxyPlace<?>,
-                                        Service_ extends ListingRestService<T>,
-                                        Properties_ extends PropertyAccess<T>
-                                        >
+        Filter_ extends BaseFilter,
+        View_ extends ListView<T, Filter_>,
+        Proxy_ extends ProxyPlace<?>,
+        Service_ extends ListingRestService<T>,
+        Properties_ extends PropertyAccess<T>
+        >
         extends Presenter<View_, Proxy_>
         implements ColumnSortEvent.Handler,
-        SelectionChangeEvent.Handler, ListUiHandler<T, Filter_ >, PerformFilterEvent.PerformFilterHandler,
-        StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig,PagingLoadResult<T>> {
+        SelectionChangeEvent.Handler, ListUiHandler<T, Filter_>, PerformFilterEvent.PerformFilterHandler,
+        StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig, PagingLoadResult<T>>
+       {
+
 
     @Inject
     protected PlaceManager placeManager;
@@ -72,6 +72,9 @@ public abstract class BaseListPresenter<T,
 
     @Inject
     protected ViewHeaderResolver headerResolver;
+
+    @Inject
+    protected BaseFilterHelper filterHelper;
 
     protected final Service_ listService;
     protected final Properties_ properties;
@@ -101,14 +104,17 @@ public abstract class BaseListPresenter<T,
     }
 
 
-
     protected abstract List<Action<T>> createActions();
 
     private PagingSortingFilteringDataProvider<T, Filter_> createProvider(View_ view) {
-        return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, createFilterConfigBuilder());
+        return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, new Provider<PagingSortingFilteringDataProvider.FilterConfigBuilder<Filter_>>() {
+            @Override
+            public PagingSortingFilteringDataProvider.FilterConfigBuilder<Filter_> get() {
+                return new BaseFilterConfigBuilder<Filter_>(getFilterHandler());
+            }
+        });
     }
 
-    protected abstract BaseFilterConfigBuilder<Filter_> createFilterConfigBuilder();
 
     @Override
     protected void onBind() {
@@ -125,7 +131,6 @@ public abstract class BaseListPresenter<T,
 
 
     }
-
 
 
     @Override
@@ -191,8 +196,6 @@ public abstract class BaseListPresenter<T,
         Character symbol = event.getSymbol();
         getView().focusFilter(symbol);
     }
-
-
 
 
     @Override
