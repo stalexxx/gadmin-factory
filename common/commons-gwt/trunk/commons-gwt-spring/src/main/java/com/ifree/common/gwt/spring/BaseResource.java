@@ -102,7 +102,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         }));
     }
 
-    private Specification<Entity_> createSpecification(FilterConfig filter) {
+    protected Specification<Entity_> createSpecification(FilterConfig filter) {
         if (filter.getValue() != null) {
 
             String type = filter.getType();
@@ -127,10 +127,14 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             } else if (type.equals(BaseFilterHelper.FLOAT_TYPE)) {
 
                 throw new UnsupportedOperationException();
+            } else {
+                return createSpecificationByUnfound(filter);
             }
         }
         return NONE_SPECIFICATION;
     }
+
+    protected abstract Specification<Entity_> createSpecificationByUnfound(FilterConfig filter);
 
     protected abstract Specification<Entity_> booleanSpecification(FilterConfig filter, String type);
 
