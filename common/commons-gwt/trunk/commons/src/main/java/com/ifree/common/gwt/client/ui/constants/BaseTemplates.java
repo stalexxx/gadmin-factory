@@ -23,4 +23,6 @@ public interface BaseTemplates extends SafeHtmlTemplates {
     @Template("<span class=\"label {1}\" title=\"{2}\">{0}</span>")
     SafeHtml label(String text, String color, String title);
 
+    @Template("<span class=\"badge\" style=\"margin: {1}px\">{0}</span>")
+    SafeHtml badge(String text, int padding);
 }

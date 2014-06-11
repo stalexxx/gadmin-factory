@@ -32,7 +32,7 @@
         <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
         <version.hibernate-validator.hack>4.1.0.Final</version.hibernate-validator.hack>
 
-        <version.guava>16.0</version.guava>
+        <version.guava>17.0</version.guava>
 
         <version.gwt.bootstrap3>0.8-SNAPSHOT</version.gwt.bootstrap3>
         <source.version>1.6</source.version>

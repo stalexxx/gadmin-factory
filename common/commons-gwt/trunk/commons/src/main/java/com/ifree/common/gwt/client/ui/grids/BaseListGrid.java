@@ -178,6 +178,25 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
+    protected static <T, R> void addSafeHtmlColumn(final CellTable<T> dataGrid, final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
+        final Column<T, R> column = new Column<T, R>(new AbstractSafeHtmlCell<R>(renderer) {
+            @Override
+            protected void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
+                if (data != null) {
+                    sb.append(data);
+                }
+            }
+        }) {
+            @Override
+            public R getValue(T object) {
+                return object != null ? provider.getValue(object) : null;
+            }
+
+        };
+        addColumn(dataGrid, column, header, width);
+    }
+
+
     protected static <T> void addSafeHtmlColumn(final CellTable<T> dataGrid, SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
 
         final IdentityColumn<T> column = new IdentityColumn<T>(new AbstractSafeHtmlCell<T>(renderer) {
@@ -198,6 +217,10 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         dataGrid.setColumnWidth(column, width, Style.Unit.PX);
         column.setSortable(sortable);
         column.setDataStoreName(dataStore);
+    }
+
+    protected static <T, C> void addColumn(CellTable<T> dataGrid, Column<T, C> column, String header, int width) {
+        addColumn(dataGrid, column, header, width, false, null);
     }
 
 
