@@ -14,7 +14,7 @@ import com.google.gwt.safehtml.shared.SafeHtml;
  */
 public interface BaseTemplates extends SafeHtmlTemplates {
 
-    @Template("<i class=\"{0} {1}\" style=\"color: {2}\"></i>" )
+    @Template("<i class=\"{0} {1} {2}\" ></i>" )
     SafeHtml icon(String fa, String icon, String color);
 
     @Template("<img class=\"{0}\" src=\"{1}\" style=\"height: 70px\"/>")
