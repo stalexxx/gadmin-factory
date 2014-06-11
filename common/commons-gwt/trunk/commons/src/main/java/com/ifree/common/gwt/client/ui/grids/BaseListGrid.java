@@ -161,7 +161,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
                 Boolean b = field.getValue(object);
                 if (b != null) {
                     return templates.icon(Styles.FONT_AWESOME_BASE,
-                            b ? yes.getCssName() : no.getCssName(), b ? "green" : "red");
+                            b ? yes.getCssName() : no.getCssName(), b ? "icon-yes" : "icon-no");
 
                 } else {
                     return SafeHtmlUtils.EMPTY_SAFE_HTML;
@@ -178,7 +178,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected static <T> void addSafeHtmlColumn(CellTable<T> dataGrid, SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
+    protected static <T> void addSafeHtmlColumn(final CellTable<T> dataGrid, SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
 
         final IdentityColumn<T> column = new IdentityColumn<T>(new AbstractSafeHtmlCell<T>(renderer) {
             @Override
