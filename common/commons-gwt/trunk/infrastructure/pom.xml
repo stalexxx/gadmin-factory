@@ -17,8 +17,7 @@
 
     <properties>
 
-        <version.gwtp>1.2.1</version.gwtp>
-        <version.gin>2.1.2</version.gin>
+
 <!--
         <version.gwt.bootstrap3>0.</version.gwt.bootstrap3>
 -->
@@ -86,26 +85,14 @@
 
 
 
-
-
-
         <dependency>
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-mvp-client</artifactId>
-            <version>${version.gwtp}</version>
         </dependency>
-
-        <!-- <dependency>
-             <groupId>com.arcbees</groupId>
-             <artifactId>guicy-resteasy</artifactId>
-             <version>${version.gwtp}</version>
-         </dependency>
- -->
 
         <dependency>
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-dispatch-rest</artifactId>
-            <version>${version.gwtp}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jsr311-api</artifactId>
@@ -117,9 +104,7 @@
         <dependency>
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-dispatch-rpc-client</artifactId>
-            <version>${version.gwtp}</version>
         </dependency>
-
 
         <dependency>
 
@@ -127,7 +112,6 @@
 
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-dispatch-rpc-server-spring</artifactId>
-            <version>${version.gwtp}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>spring-core</artifactId>
@@ -155,13 +139,11 @@
         <dependency>
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-processors</artifactId>
-            <version>${version.gwtp}</version>
         </dependency>
 
         <dependency>
             <groupId>com.gwtplatform</groupId>
             <artifactId>gwtp-tester</artifactId>
-            <version>${version.gwtp}</version>
             <scope>test</scope>
         </dependency>
 
@@ -173,12 +155,7 @@
             <groupId>org.gwtbootstrap3</groupId>
             <artifactId>gwtbootstrap3-extras</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>com.github.gwtbootstrap</groupId>
-            <artifactId>gwt-bootstrap</artifactId>
-            <version>${version.gwt.bootstrap}</version>
-        </dependency>
--->
+
         <!-- DI dependencies -->
 
         <dependency>
