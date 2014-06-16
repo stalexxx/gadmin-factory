@@ -24,9 +24,11 @@
 
         <maven.javadoc.skip>true</maven.javadoc.skip>
 
+        <version.gwtp>1.2.1</version.gwtp>
+        <version.gin>2.1.2</version.gin>
         <version.gwt>2.6.1</version.gwt>
-        <version.maven-processor-plugin>2.0.5</version.maven-processor-plugin>
-        <version.maven-build-helper-plugin>1.7</version.maven-build-helper-plugin>
+        <version.maven-processor-plugin>2.2.4</version.maven-processor-plugin>
+        <version.maven-build-helper-plugin>1.9</version.maven-build-helper-plugin>
 
 
         <version.validation-api.hack>1.0.0.GA</version.validation-api.hack>
@@ -88,11 +90,53 @@
                 <artifactId>gwtupload</artifactId>
                 <version>${gwtupload.version}</version>
             </dependency>
+
+
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-mvp-client</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-dispatch-rest</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-dispatch-rpc-client</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-dispatch-rpc-server-spring</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-processors</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.gwtplatform</groupId>
+                <artifactId>gwtp-tester</artifactId>
+                <version>${version.gwtp}</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
     <build>
         <pluginManagement>
+
+
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -105,10 +149,65 @@
 
                         <encoding>${project.build.sourceEncoding}</encoding>
                         <!-- Disable annotation processors during normal compilation -->
-                        <!--<proc>none</proc>-->
+                        <proc>none</proc>
                     </configuration>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.bsc.maven</groupId>
+                    <artifactId>maven-processor-plugin</artifactId>
+                    <version>${version.maven-processor-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>process</id>
+                            <goals>
+                                <goal>process</goal>
+                            </goals>
+                            <phase>generate-sources</phase>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <compilerArguments>-encoding ${project.build.sourceEncoding}</compilerArguments>
+                        <outputDirectory>${project.build.directory}/generated-sources/apt</outputDirectory>
+                        <detail>true</detail>
+                    </configuration>
+                    <dependencies>
+
+                        <dependency>
+                            <groupId>com.gwtplatform</groupId>
+                            <artifactId>gwtp-processors</artifactId>
+                            <version>${version.gwtp}</version>
+                        </dependency>
+
+                    </dependencies>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${version.maven-build-helper-plugin}</version>
+                    <executions>
+                        <execution>
+                            <id>add-source</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                            </goals>
+                            <configuration>
+                                <sources>
+                                    <source>${project.build.directory}/generated-sources/apt</source>
+                                    <source>${project.build.directory}/generated-sources/gwt</source>
+                                </sources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+
             </plugins>
+
+
+
         </pluginManagement>
     </build>
     <scm>
