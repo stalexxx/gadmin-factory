@@ -137,7 +137,16 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("Объект не может быть загружен или найден")
     String cantFindObject();
 
+    @DefaultMessage("Тип")
+    String type();
+
+    @DefaultMessage("Дата модификации")
+    String modificationDate();
+
+    @DefaultMessage("Кто обновил")
+    String modificator();
 }
+
 
 
 
