@@ -18,6 +18,7 @@ public class MySummernote extends Summernote implements LeafValueEditor<String> 
                         .setShowHelpButton(false)
                         .setShowInsertVideoButton(false)
                         .setShowLineHeightButton(false)
+                        .setShowInsertPictureButton(false)
                         );
     }
 

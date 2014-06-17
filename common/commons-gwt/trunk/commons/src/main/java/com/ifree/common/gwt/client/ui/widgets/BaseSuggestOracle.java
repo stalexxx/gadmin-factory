@@ -3,10 +3,12 @@ package com.ifree.common.gwt.client.ui.widgets;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
+import com.ifree.common.gwt.client.utils.StringUtils;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
@@ -75,6 +77,8 @@ class BaseSuggestOracle<T> extends SuggestOracle {
 
         @Override
         public void onSuccess(PagingLoadResult<T> tPagingLoadResult) {
+            final RegExp regExp = StringUtils.prepareSimplePattern(request.getQuery());
+
             callback.onSuggestionsReady(request, new Response(Collections2.transform(tPagingLoadResult.getData(), new Function<T, Suggestion>() {
                 @Nullable
                 @Override
@@ -82,7 +86,7 @@ class BaseSuggestOracle<T> extends SuggestOracle {
                     if (input != null) {
 
                         String str = renderer.render(input);
-                        return new ValuedSuggestion(input, str, str);
+                        return new ValuedSuggestion<T>(input, str, str);
                     }
                     return null;
 

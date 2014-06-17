@@ -4,9 +4,6 @@
              xmlns:select='urn:import:org.gwtbootstrap3.extras.select.client.ui'>
 
     <g:HTMLPanel>
-
-
-
         <g:SuggestBox ui:field="suggestBox">
         </g:SuggestBox>
 
