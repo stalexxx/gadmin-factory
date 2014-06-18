@@ -2,10 +2,11 @@ package com.ifree.common.gwt.client.ui.widgets;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -17,8 +18,11 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.*;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.shared.ValueProvider;
+import org.gwtbootstrap3.client.ui.*;
+import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.base.HasPlaceholder;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -60,8 +64,12 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
             oracle = new BaseSuggestOracle<T>(dataProxy, renderer, searchField);
 
         }
+
+
+
+
         final TextBox box = new TextBox();
-        suggestBox = new SuggestBox(oracle, box);
+        suggestBox = new SuggestBox(oracle,  box, new SuggestionDisplayImpl());
         box.setStyleName("form-control");
 
         box.addFocusHandler(new FocusHandler() {
@@ -87,7 +95,27 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
             }
         });
 
-        initWidget(suggestBox);
+        InputGroup inputGroup = createGroup(suggestBox);
+
+        initWidget(inputGroup);
+    }
+
+    private InputGroup createGroup(SuggestBox widget) {
+        InputGroup inputGroup = new InputGroup();
+        InputGroupButton inputGroupButton = new InputGroupButton();
+        Button btn = new Button();
+        btn.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                setValue(null, true);
+            }
+        });
+
+        btn.setIcon(IconType.TIMES);
+        inputGroupButton.add(btn);
+        inputGroup.add(widget);
+        inputGroup.add(inputGroupButton);
+        return inputGroup;
     }
 
 
