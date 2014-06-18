@@ -16,7 +16,7 @@
     <properties>
 
         <version.spring>4.0.3.RELEASE</version.spring>
-        <version.spring-security>3.2.3.RELEASE</version.spring-security>
+        <version.spring-security>3.2.4.RELEASE</version.spring-security>
 
         <version.spring-data-jpa>1.6.0.M1</version.spring-data-jpa>
 
