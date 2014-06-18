@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.view.client.HasData;
@@ -189,6 +190,11 @@ public abstract class BaseListView<
     @Override
     public void focusFilter(Character symbol) {
         toolbar.focusSearchBySymbol(symbol);
+    }
+
+    @Override
+    public ColumnSortList getColumnSortList() {
+        return dataGrid.getColumnSortList();
     }
 
 }

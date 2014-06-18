@@ -5,8 +5,6 @@
 
 package com.ifree.common.gwt.client.ui.grids;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.cellview.client.ColumnSortList;
@@ -42,10 +40,11 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
     private ProvidesKey<T> providesKey;
     private Provider<FilterConfigBuilder<F>> fcbProvider;
 
-    private List<SortInfoBean> sortInfoList = Lists.newArrayList();
+   // private List<SortInfoBean> sortInfoList = Lists.newArrayList();
     private List<T> currentData;
 
     private FilterConfigBuilder<F> filterConfigBuilder;
+    private Provider<ColumnSortList> sortListProvider;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -73,18 +72,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
 
     /*===========================================[ CLASS METHODS ]================*/
 
-    public void pushSortingInfo(SortInfoBean sortInfo) {
-        if (sortInfoList == null) {
-            sortInfoList = Lists.newArrayList();
-        }
-
-        sortInfoList.add(new SortInfoBean(sortInfo.getSortField(), sortInfo.getSortDir()));
-    }
-
-    public void pushSortingInfo(String field, SortDir sortDir) {
-        pushSortingInfo(new SortInfoBean(field, sortDir));
-    }
-    public void setSorting(ColumnSortList sorting) {
+    private List<SortInfoBean> toSortingBeanList(ColumnSortList sorting) {
 
         List<SortInfoBean> list = Lists.newArrayList();
 
@@ -98,7 +86,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
             list.add(new SortInfoBean(field, columnSortInfo.isAscending() ? SortDir.ASC : SortDir.DESC));
         }
 
-        this.sortInfoList = list;
+        return list;
     }
 
 
@@ -150,7 +138,7 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
 
         loadConfig.setFilters(getFilterConfigBuilder().build());
 
-        loadConfig.setSortInfo(sortInfoList);
+        loadConfig.setSortInfo(toSortingBeanList(sortListProvider.get()));
 
     }
 
@@ -161,6 +149,9 @@ public class PagingSortingFilteringDataProvider<T, F extends BaseFilter> extends
         loader.load(visibleRange.getStart(), visibleRange.getLength());
     }
 
+    public void setSortListProvider(Provider<ColumnSortList> filterProvider) {
+        this.sortListProvider = filterProvider;
+    }
 
     /*===========================================[ INNER CLASSES ]================*/
 

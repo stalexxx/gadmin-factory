@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -125,6 +126,13 @@ public abstract class BaseListPresenter<T,
         registerHandler(getView().addColumnSortHandler(this));
         registerHandler(getView().addSelectionChangeHandler(this));
 
+        provider.setSortListProvider(new Provider<ColumnSortList>() {
+
+            @Override
+            public ColumnSortList get() {
+                return getView().getColumnSortList();
+            }
+        });
         provider.addDataDisplay(getView().getGridDataDisplay());
 
         onSelectionChanged(getSelectedObject());
@@ -232,7 +240,7 @@ public abstract class BaseListPresenter<T,
 
     @Override
     public void onColumnSort(ColumnSortEvent event) {
-        provider.setSorting(event.getColumnSortList());
+        //provider.toSortingBeanList(event.getColumnSortList());
         HasData<T> hasData = getView().getGridDataDisplay();
         hasData.setVisibleRangeAndClearData(hasData.getVisibleRange(), true);
     }
