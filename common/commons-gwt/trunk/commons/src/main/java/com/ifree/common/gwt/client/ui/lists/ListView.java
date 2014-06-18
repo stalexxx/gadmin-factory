@@ -7,6 +7,7 @@ package com.ifree.common.gwt.client.ui.lists;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
+import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
@@ -51,4 +52,6 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
      * @param symbol
      */
     void focusFilter(Character symbol);
+
+    ColumnSortList getColumnSortList();
 }
