@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.common.base.Function;
 import com.google.gwt.editor.client.LeafValueEditor;
@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.ItemLoader;
+import com.ifree.common.gwt.client.ui.suggestions.SuggestedEditor;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.base.HasPlaceholder;
 

@@ -1,9 +1,7 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.WidgetCollection;
 import org.gwtbootstrap3.client.ui.LinkedGroup;
-import org.gwtbootstrap3.client.ui.LinkedGroupItem;
 
 import java.util.Iterator;
 
@@ -56,8 +54,8 @@ class SuggestionMenu extends LinkedGroup {
 
         while (iterator.hasNext()) {
             Widget next = iterator.next();
-            if (next instanceof LinkedGroupItem) {
-                LinkedGroupItem item = (LinkedGroupItem) next;
+            if (next instanceof SuggestionMenuItem) {
+                SuggestionMenuItem item = (SuggestionMenuItem) next;
                 item.setActive(index == i);
                 i += 1;
             }
@@ -70,7 +68,7 @@ class SuggestionMenu extends LinkedGroup {
 
     public SuggestionMenuItem getSelectedItem() {
         for (Widget next : getChildren()) {
-            if (next instanceof LinkedGroupItem) {
+            if (next instanceof SuggestionMenuItem) {
                 SuggestionMenuItem item = (SuggestionMenuItem) next;
                 if (item.isActive()) {
                     return item;

@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -76,7 +76,9 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         box.addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                suggestBox.showSuggestionList();
+                if (getValue() == null) {
+                    suggestBox.showSuggestionList();
+                }
             }
         });
 
@@ -84,14 +86,13 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
             @Override
             public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
-                if (event.getSelectedItem() instanceof ValuedSuggestion) {
-                    ValuedSuggestion<T> selectedItem = (ValuedSuggestion) event.getSelectedItem();
+                if (event.getSelectedItem() instanceof Suggestion) {
+                    Suggestion<T> selectedItem = (Suggestion) event.getSelectedItem();
                     value = selectedItem.getValue();
                 } else {
                     final String replacementString = event.getSelectedItem().getReplacementString();
-                    final T item = replacementMap.get(replacementString);
 
-                    value = item;
+                    value = replacementMap.get(replacementString);
                 }
             }
         });

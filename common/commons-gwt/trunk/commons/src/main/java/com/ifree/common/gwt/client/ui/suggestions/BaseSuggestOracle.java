@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 /**
 * Created by alex on 13.05.14.
 */
+@SuppressWarnings("Convert2Diamond")
 class BaseSuggestOracle<T> extends SuggestOracle {
 
     private final BaseDataProxy<T> dataProxy;
@@ -35,13 +36,12 @@ class BaseSuggestOracle<T> extends SuggestOracle {
 
     @Override
     public void requestSuggestions(Request request, Callback callback) {
-        String query = request.getQuery();
-        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback(callback, request, renderer));
+        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback<T>(callback, request, renderer));
     }
 
     @Override
     public void requestDefaultSuggestions(Request request, Callback callback) {
-        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback(callback, request, renderer));
+        dataProxy.load(createFilterBean(request), new PagingLoadResultCallback<T>(callback, request, renderer));
     }
 
     private FilterPagingLoadConfig createFilterBean(Request request) {
@@ -59,6 +59,7 @@ class BaseSuggestOracle<T> extends SuggestOracle {
         return bean;
     }
 
+    @SuppressWarnings("Convert2Lambda")
     private static class PagingLoadResultCallback<T> implements com.google.gwt.core.client.Callback<PagingLoadResult<T>, Throwable> {
         private final Callback callback;
         private final Request request;
@@ -85,8 +86,7 @@ class BaseSuggestOracle<T> extends SuggestOracle {
                 public Suggestion apply(@Nullable T input) {
                     if (input != null) {
 
-                        String str = renderer.render(input);
-                        return new ValuedSuggestion<T>(input, str, str);
+                        return new EmphasizedSuggestion<T>(input, renderer, regExp);
                     }
                     return null;
 

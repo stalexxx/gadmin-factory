@@ -1,8 +1,6 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.IsEditor;
@@ -11,7 +9,6 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.text.shared.Renderer;
@@ -19,12 +16,11 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.*;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
+import com.ifree.common.gwt.client.ui.widgets.BagePanel;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.TextBox;
 
-import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /*
@@ -90,8 +86,8 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
                 final T item;
 
 
-                if (event.getSelectedItem() instanceof ValuedSuggestion) {
-                    ValuedSuggestion<T> selectedItem = (ValuedSuggestion) event.getSelectedItem();
+                if (event.getSelectedItem() instanceof Suggestion) {
+                    Suggestion<T> selectedItem = (Suggestion) event.getSelectedItem();
                     item = selectedItem.getValue();
                 } else {
                     throw new IllegalStateException();
