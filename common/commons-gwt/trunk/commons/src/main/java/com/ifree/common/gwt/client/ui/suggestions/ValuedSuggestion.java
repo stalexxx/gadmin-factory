@@ -1,4 +1,4 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.SuggestOracle;
@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.SuggestOracle;
 /**
 * Created by alex on 13.05.14.
 */
-public class ValuedSuggestion<T> implements SuggestOracle.Suggestion, IsSerializable {
+public class ValuedSuggestion<T> implements Suggestion<T>, IsSerializable {
     private T value;
     private String displayString;
     private String replacementString;
@@ -18,7 +18,6 @@ public class ValuedSuggestion<T> implements SuggestOracle.Suggestion, IsSerializ
     }
 
     /**
-     * Constructor for <code>MultiWordSuggestion</code>.
      *
      * @param replacementString the string to enter into the SuggestBox's text
      *          box if the suggestion is chosen

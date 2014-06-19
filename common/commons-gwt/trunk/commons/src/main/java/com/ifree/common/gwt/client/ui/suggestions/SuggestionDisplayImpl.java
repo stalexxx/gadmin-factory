@@ -1,7 +1,6 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.suggestions;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
