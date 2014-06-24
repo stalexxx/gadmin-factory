@@ -10,7 +10,6 @@
     </parent>
 
 
-    <groupId>com.ifree.common</groupId>
     <artifactId>infrastucture-gwt</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -46,7 +45,6 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-
         </dependency>
 
         <dependency>

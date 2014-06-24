@@ -201,7 +201,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         return addColumn(dataGrid, column, header, width);
     }
 
-
     protected static <T> Column<T, T> addSafeHtmlColumn(final CellTable<T> dataGrid, SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
 
         final IdentityColumn<T> column = new IdentityColumn<T>(new AbstractSafeHtmlCell<T>(renderer) {
