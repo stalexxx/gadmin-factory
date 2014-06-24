@@ -128,7 +128,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
                 throw new UnsupportedOperationException();
             } else {
-                return createSpecificationByUnfound(filter);
+                return screateSpecificationByUnfound(filter);
             }
         }
         return NONE_SPECIFICATION;
