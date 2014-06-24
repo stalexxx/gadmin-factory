@@ -8,6 +8,7 @@ import org.springframework.core.convert.support.GenericConversionService;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class BaseConversionService extends GenericConversionService {
     @Nullable
     public <F, T> Collection<T> transform(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
-            return Collections2.transform(fromCollection, getConvertFuction(dest));
+            return transformToList(fromCollection, dest);
         } else {
             return null;
         }
@@ -38,27 +39,49 @@ public class BaseConversionService extends GenericConversionService {
     @Nullable
     public <F, T> List<T> transformToList(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
-            return Lists.newArrayList(Collections2.transform(fromCollection, getConvertFuction(dest)));
+            ArrayList<T> result = Lists.newArrayList();
+
+            for (F from : fromCollection) {
+                if (from != null) {
+                    result.add(convert(from, dest));
+                }
+            }
+
+            return result;
         } else {
+
             return null;
         }
     }
-
     @Nullable
     public <F, T> Set<T> transformToSet(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
-            return Sets.newHashSet(Collections2.transform(fromCollection, getConvertFuction(dest)));
+            Set<T> result = Sets.newHashSet();
+
+            for (F from : fromCollection) {
+                if (from != null) {
+                    result.add(convert(from, dest));
+                }
+            }
+
+            return result;
         } else {
+
             return null;
         }
     }
 
     @Nonnull
-    public <F, T> List<T> transformToListNotNull(@Nonnull Collection<F> fromCollection, Class<T> dest) {
-        return Lists.newArrayList(Collections2.transform(fromCollection, getConvertFuction(dest)));
+    public <F, T> List<T> transformToListNotNull(@Nullable Collection<F> fromCollection, Class<T> dest) {
+        if (fromCollection != null) {
+            return transformToList(fromCollection, dest);
+        }
+        return Lists.newArrayList();
+
     }
 
     @Nonnull
+    @Deprecated
     public <F, T> List<T> transformToListNotNull(@Nonnull Iterable<F> fromCollection, Class<T> dest) {
         return Lists.newArrayList(Collections2.transform(Lists.newArrayList(fromCollection), getConvertFuction(dest)));
     }
