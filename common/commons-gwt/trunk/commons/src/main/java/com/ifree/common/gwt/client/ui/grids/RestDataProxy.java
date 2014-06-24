@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by alex on 05.05.14.
  */
-public abstract class RestDataProxy<T,
+public class RestDataProxy<T,
         ID extends Serializable,
         REST extends CRUDRestService<T, ID>& ListingRestService<T>>
         extends BaseDataProxy<T> implements ItemLoader<T, ID> {
