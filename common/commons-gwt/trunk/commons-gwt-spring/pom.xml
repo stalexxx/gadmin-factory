@@ -86,6 +86,12 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>${version.spring-data-jpa}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>1.7.7</version>
+        </dependency>
     </dependencies>
 
 
