@@ -10,12 +10,9 @@ import java.util.List;
  * Created by alex on 10.06.14.
  */
 public final class BaseAbstractFilterHandler extends AbstractFilterHandler<BaseFilter> {
-    private final ValueProvider property;
-    private BaseFilterHelper helper;
 
     public BaseAbstractFilterHandler(ValueProvider property, BaseFilterHelper helper) {
-        this.property = property;
-        this.helper = helper;
+        super(property);
     }
 
     @Override
@@ -23,9 +20,6 @@ public final class BaseAbstractFilterHandler extends AbstractFilterHandler<BaseF
         return new BaseFilter();
     }
 
-    @Override
-    public void addCustomFields(BaseFilter filter, List<FilterConfigBean> filterConfigs) {
-        helper.appendTo(filterConfigs, property, filter.getName());
-    }
+
 
 }

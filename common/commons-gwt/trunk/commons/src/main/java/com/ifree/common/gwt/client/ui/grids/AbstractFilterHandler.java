@@ -31,13 +31,12 @@ public abstract class AbstractFilterHandler<T extends BaseFilter> extends Filter
         }
 
     };
-    private ValueProvider<T, ?>[] providers;
+    protected final ValueProvider<T, ?>[] providers;
 
     @Inject
     protected BaseFilterHelper filterHelper;
 
     public AbstractFilterHandler(ValueProvider<T, ?> ... providers) {
-
         this.providers = providers;
     }
 
@@ -124,4 +123,13 @@ public abstract class AbstractFilterHandler<T extends BaseFilter> extends Filter
             return input != null && input.getValue() != null ? input.getField() + "/" + input.getType() + "=" + input.getValue() : null;
         }
     }
+
+    @Override
+    public final void addCustomFields(T filter, List<FilterConfigBean> filterConfigs) {
+        for (ValueProvider<T, ?> provider : providers) {
+            filterHelper.appendTo(filterConfigs, provider, provider.getValue(filter));
+        }
+    }
+
+
 }
