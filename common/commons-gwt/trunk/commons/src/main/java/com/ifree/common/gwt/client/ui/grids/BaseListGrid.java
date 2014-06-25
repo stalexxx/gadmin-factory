@@ -135,7 +135,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             public String getValue(T object) {
                 return object != null ? NumberFormat.getDecimalFormat().format(valueProvider.getValue(object)) : EMPTY_STRING;
             }
-        }, header, width, sortable, valueProvider.getPath());
+        }, header, width, sortable, sortable ? valueProvider.getPath() : null);
     }
 
     protected <V> Column<T, String> addRenderedColumn(CellTable<T> dataGrid, final ValueProvider<T, V> valueProvider, final Renderer<V> renderer,
@@ -155,7 +155,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             public String getValue(T object) {
                 return object != null ? String.valueOf(provider.getValue(object)) : null;
             }
-        }, header, width, sortable, provider.getPath());
+        }, header, width, sortable, sortable ? provider.getPath() : null);
     }
 
     protected Column<T, T> addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
@@ -172,7 +172,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
                     return SafeHtmlUtils.EMPTY_SAFE_HTML;
                 }
             }
-        }, header, width, sortable, field.getPath());
+        }, header, width, sortable, sortable ? field.getPath() : null);
     }
 
 
