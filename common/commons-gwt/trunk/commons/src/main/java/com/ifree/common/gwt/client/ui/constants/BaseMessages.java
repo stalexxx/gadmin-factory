@@ -145,6 +145,15 @@ public interface BaseMessages extends Messages {
 
     @DefaultMessage("Кто обновил")
     String modificator();
+
+    @DefaultMessage("Роли")
+    String roles();
+
+    @DefaultMessage("Пароль")
+    String password();
+
+    @DefaultMessage("Имя пользователя")
+    String username();
 }
 
 
