@@ -115,6 +115,10 @@ public abstract class AbstractFilterHandler<T extends BaseFilter> extends Filter
         return Joiner.on(";").join(Collections2.filter(transform, NOT_NULL));
     }
 
+    public BaseFilterConfigBuilder<T> createConfigBuilder() {
+        return new BaseFilterConfigBuilder<T>(this);
+    }
+
 
     private static class FilterConfigBeanStringFunction implements Function<FilterConfigBean, String> {
         @Nullable

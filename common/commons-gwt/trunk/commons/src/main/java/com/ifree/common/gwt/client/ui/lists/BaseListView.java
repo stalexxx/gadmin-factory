@@ -44,18 +44,18 @@ public abstract class BaseListView<
         extends ViewWithUiHandlers<_Handler> implements ListView<T, _Filter> {
 
     protected final PageHeader header;
-    protected final BaseListGrid<T> dataGrid;
+    protected final BaseListGrid<T, _Filter> dataGrid;
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
 
     private UIActionBuilder<T, AnchorListItem> actionBuilder = new ListItemActionBuilder<T>();
     private Map<Action<T>, AnchorListItem> actionMap = Maps.newHashMap();
 
-    protected BaseListView(BaseListGrid<T> dataGrid) {
+    protected BaseListView(BaseListGrid<T, _Filter> dataGrid) {
         this(dataGrid, null);
     }
 
-    protected BaseListView(@Nonnull BaseListGrid<T> grid,
+    protected BaseListView(@Nonnull BaseListGrid<T, _Filter> grid,
                            @Nullable BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel) {
         Preconditions.checkNotNull(grid);
 
@@ -79,7 +79,7 @@ public abstract class BaseListView<
             }
         });
 
-        BaseViewPanel<T> viewPanel = new BaseViewPanel<T>(dataGrid, toolbar, header);
+        BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar, header);
         viewPanel.addPager(dataGrid.getPager());
 
         initWidget(viewPanel);
@@ -110,17 +110,6 @@ public abstract class BaseListView<
     public void setupRoles(List<String> roles) {
 
     }
-
-    @Override
-    public HandlerRegistration addColumnSortHandler(ColumnSortEvent.Handler handler) {
-        return dataGrid.addColumnSortHandler(handler);
-    }
-
-    @Override
-    public HasData<T> getGridDataDisplay() {
-        return dataGrid.getDisplay();
-    }
-
 
     @Override
     public Object getKey(T item) {
@@ -162,6 +151,8 @@ public abstract class BaseListView<
         if (filterPeer != null) {
             filterPeer.setValue(filter);
         }
+
+        getGrid().setFilter(filter);
     }
 
     @Override
@@ -197,4 +188,8 @@ public abstract class BaseListView<
         return dataGrid.getColumnSortList();
     }
 
+    @Override
+    public BaseListGrid<T, _Filter> getGrid() {
+        return dataGrid;
+    }
 }
