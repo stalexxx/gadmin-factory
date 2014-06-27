@@ -6,6 +6,7 @@
 package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
@@ -23,9 +24,13 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.view.client.*;
 import com.google.web.bindery.event.shared.EventBus;
+import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
+import com.ifree.common.gwt.shared.SortDir;
+import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.ValueProvider;
+import com.ifree.common.gwt.shared.loader.*;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
@@ -38,7 +43,7 @@ import java.util.Date;
  * @since 08.07.13
  */
 @SuppressWarnings("UnusedDeclaration")
-public abstract class BaseListGrid<T> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T> {
+public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler{
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -50,8 +55,12 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     protected SingleSelectionModel<T> selectionModel;
 
     protected CellTable<T> dataGrid;
+
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
-    private ModelKeyProvider<T> keyProvider;
+    private final ModelKeyProvider<T> keyProvider;
+    private final BaseDataProvider<T> dataProvider;
+    private final FilterPagingLoader<T, _Filter> loader;
+
     private Integer pageSize;
     protected BasePager pager;
 
@@ -61,21 +70,28 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     protected BaseTemplates templates;
     /*===========================================[ CONSTRUCTORS ]=================*/
 
-    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key, Integer pageSize) {
+    protected BaseListGrid(CellTable.Resources resources,
+                           ModelKeyProvider<T> key,
+                           BaseDataProxy<T> dataProxy,
+                           Integer pageSize) {
         this.resources = resources;
-        keyProvider = key;
+        this.keyProvider = key;
         this.pageSize = pageSize;
+
+        loader = new FilterPagingLoader<T, _Filter>(dataProxy);
+        dataProvider = new BaseDataProvider<T>(loader, keyProvider);
 
         init();
     }
 
 
-    protected BaseListGrid(CellTable.Resources resources, ModelKeyProvider<T> key) {
-        this(resources, key, null);
+    protected BaseListGrid(CellTable.Resources resources,
+                           ModelKeyProvider<T> key,
+                           BaseDataProxy<T> dataProxy) {
+        this(resources, key, dataProxy, null);
     }
 
-    protected Column<T, String> addTextEditColumn(CellTable<T> dataGrid,
-                                                  FieldUpdater<T, String> updater,
+    protected Column<T, String> addTextEditColumn(FieldUpdater<T, String> updater,
                                                   final Function<T, String> valueGetter,
                                                   String header,
                                                   int width,
@@ -102,7 +118,7 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected Column<T, T> addIdentityColumn(CellTable<T> dataGrid, AbstractCell<T> abstractCell, String header, int width, boolean sortable, String dataStore) {
+    protected Column<T, T> addIdentityColumn(AbstractCell<T> abstractCell, String header, int width, boolean sortable, String dataStore) {
         Column<T, T> column = new IdentityColumn<T>(abstractCell);
 
 
@@ -114,13 +130,13 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     }
 
-    protected Column<T, String> addTextColumn(CellTable<T> dataGrid, Column<T, String> column, String header, int width, boolean sortable, String dataStore) {
-        return addColumn(dataGrid, column, header, width, sortable, dataStore);
+    protected Column<T, String> addTextColumn(Column<T, String> column, String header, int width, boolean sortable, String dataStore) {
+        return addColumn(column, header, width, sortable, dataStore);
 
     }
 
-    protected Column<T, String> addTextColumn(CellTable<T> dataGrid, final ValueProvider<T, String> valueProvider, String header, int width, boolean sortable) {
-        return addColumn(dataGrid, new TextColumn<T>() {
+    protected Column<T, String> addTextColumn(final ValueProvider<T, String> valueProvider, String header, int width, boolean sortable) {
+        return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
                 return object != null ? valueProvider.getValue(object) : EMPTY_STRING;
@@ -129,8 +145,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected Column<T, String> addNumberColumn(CellTable<T> dataGrid, final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
-        return addColumn(dataGrid, new TextColumn<T>() {
+    protected Column<T, String> addNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
+        return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
                 return object != null ? NumberFormat.getDecimalFormat().format(valueProvider.getValue(object)) : EMPTY_STRING;
@@ -138,9 +154,9 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         }, header, width, sortable, sortable ? valueProvider.getPath() : null);
     }
 
-    protected <V> Column<T, String> addRenderedColumn(CellTable<T> dataGrid, final ValueProvider<T, V> valueProvider, final Renderer<V> renderer,
-                                         String header, int width, boolean sortable) {
-        return addColumn(dataGrid, new TextColumn<T>() {
+    protected <V> Column<T, String> addRenderedColumn(final ValueProvider<T, V> valueProvider, final Renderer<V> renderer,
+                                                      String header, int width, boolean sortable) {
+        return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
                 return object != null ? renderer.render(valueProvider.getValue(object)) : EMPTY_STRING;
@@ -149,8 +165,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected Column<T, String> addDateColumn(CellTable<T> dataGrid, final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
-        return addColumn(dataGrid, new TextColumn<T>() {
+    protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
+        return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
                 return object != null ? String.valueOf(provider.getValue(object)) : null;
@@ -158,9 +174,9 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         }, header, width, sortable, sortable ? provider.getPath() : null);
     }
 
-    protected Column<T, T> addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
-                                    final IconType yes, final IconType no, String header, int width, boolean sortable) {
-        return addSafeHtmlColumn(dataGrid, new AbstractSafeHtmlRenderer<T>() {
+    protected Column<T, T> addBooleanColumn(final ValueProvider<T, Boolean> field,
+                                            final IconType yes, final IconType no, String header, int width, boolean sortable) {
+        return addSafeHtmlColumn(new AbstractSafeHtmlRenderer<T>() {
             @Override
             public SafeHtml render(T object) {
                 Boolean b = field.getValue(object);
@@ -176,14 +192,14 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
     }
 
 
-    protected Column<T, T> addBooleanColumn(CellTable<T> dataGrid, final ValueProvider<T, Boolean> field,
-                                    String header, int width, boolean sortable) {
+    protected Column<T, T> addBooleanColumn(final ValueProvider<T, Boolean> field,
+                                            String header, int width, boolean sortable) {
 
-        return addBooleanColumn(dataGrid, field, IconType.CHECK,IconType.TIMES, header, width, sortable);
+        return addBooleanColumn(field, IconType.CHECK, IconType.TIMES, header, width, sortable);
     }
 
 
-    protected static <T, R> Column<T, R> addSafeHtmlColumn(final CellTable<T> dataGrid, final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
+    protected < R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
         final Column<T, R> column = new Column<T, R>(new AbstractSafeHtmlCell<R>(renderer) {
             @Override
             protected void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
@@ -198,10 +214,10 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             }
 
         };
-        return addColumn(dataGrid, column, header, width);
+        return addColumn(column, header, width);
     }
 
-    protected static <T> Column<T, T> addSafeHtmlColumn(final CellTable<T> dataGrid, SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
+    protected Column<T, T> addSafeHtmlColumn(SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
 
         final IdentityColumn<T> column = new IdentityColumn<T>(new AbstractSafeHtmlCell<T>(renderer) {
             @Override
@@ -212,11 +228,11 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
             }
         });
 
-        return addColumn(dataGrid, column, header, width, sortable, dataStore);
+        return addColumn(column, header, width, sortable, dataStore);
     }
 
 
-    protected static <T, C> Column<T, C> addColumn(CellTable<T> dataGrid, Column<T, C> column, String header, int width, boolean sortable, String dataStore) {
+    protected <C> Column<T, C> addColumn(Column<T, C> column, String header, int width, boolean sortable, String dataStore) {
         dataGrid.addColumn(column, header);
         dataGrid.setColumnWidth(column, width, Style.Unit.PX);
         column.setSortable(sortable);
@@ -225,8 +241,8 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
 
     }
 
-    protected static <T, C> Column<T, C> addColumn(CellTable<T> dataGrid, Column<T, C> column, String header, int width) {
-        return addColumn(dataGrid, column, header, width, false, null);
+    protected < C> Column<T, C> addColumn(Column<T, C> column, String header, int width) {
+        return addColumn(column, header, width, false, null);
     }
 
 
@@ -265,23 +281,21 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         dataGrid.setStriped(false);
         dataGrid.setBordered(true);
         dataGrid.setCondensed(true);
-//        dataGrid.setHover(true);
 
 
         if (pageSize() != PAGE_SIZE_UNLIMIT) {
             SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
             pager = new BasePager();
-            //pager = new NumberedPager();
             pager.addStyleName(Styles.PULL_LEFT);
             pager.setDisplay(dataGrid);
         }
 
-
         selectionModel = new SingleSelectionModel<T>(this);
 
         dataGrid.setSelectionModel(selectionModel);
-
-        initColumns(dataGrid);
+        dataGrid.addColumnSortHandler(this);
+        dataProvider.addDataDisplay(dataGrid);
+        loader.addLoadHandler(dataProvider);
 
         return dataGrid;
     }
@@ -290,7 +304,6 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         return pageSize != null ? pageSize : PAGE_SIZE_UNLIMIT;
     }
 
-    protected final void initColumns(CellTable<T> dataGrid){}
 
     public HasData<T> getDisplay() {
         return dataGrid;
@@ -325,11 +338,42 @@ public abstract class BaseListGrid<T> extends Composite implements SelectionChan
         ColumnSortList columnSortList = dataGrid.getColumnSortList();
         columnSortList.push(column);
         ColumnSortEvent.fire(this, columnSortList);
-
     }
 
 
     public ColumnSortList getColumnSortList() {
         return dataGrid.getColumnSortList();
+    }
+
+    @Override
+    public void onColumnSort(ColumnSortEvent event) {
+        loader.clearSortInfo();
+        ColumnSortList sorting = event.getColumnSortList();
+        for (int i = 0; i < sorting.size(); i++) {
+            ColumnSortList.ColumnSortInfo columnSortInfo = sorting.get(i);
+            String field = columnSortInfo.getColumn().getDataStoreName();
+
+            Preconditions.checkNotNull(field);
+
+            SortInfoBean sortInfoBean = new SortInfoBean(field, columnSortInfo.isAscending() ? SortDir.ASC : SortDir.DESC);
+            loader.addSortInfo(sortInfoBean);
+
+        }
+    }
+
+    public void reload() {
+        loader.load();
+    }
+
+    public BaseDataProvider<T> getDataPrivider() {
+        return dataProvider;
+    }
+
+    public void setFilter(_Filter filter) {
+        loader.setFilter(filter);
+    }
+
+    public void setFilterConfigBuilder(BaseFilterConfigBuilder<_Filter> configBuilder) {
+        loader.setConfigBuilder(configBuilder);
     }
 }

@@ -16,6 +16,7 @@ import com.gwtplatform.mvp.client.View;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.ui.application.CustomizedWithRoles;
 import com.ifree.common.gwt.client.ui.application.Filter;
+import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 
 /**
  *
@@ -26,12 +27,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     boolean isSelected(M item);
 
-    HandlerRegistration addColumnSortHandler(ColumnSortEvent.Handler handler);
-
     HandlerRegistration addSelectionChangeHandler(SelectionChangeEvent.Handler handler);
-
-
-    HasData<M> getGridDataDisplay();
 
     void setSelection(M newSelection);
 
@@ -54,4 +50,6 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
     void focusFilter(Character symbol);
 
     ColumnSortList getColumnSortList();
+
+    BaseListGrid<M, F> getGrid();
 }

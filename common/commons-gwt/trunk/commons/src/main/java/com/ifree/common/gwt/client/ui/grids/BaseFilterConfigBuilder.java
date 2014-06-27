@@ -7,6 +7,8 @@ package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.BaseFilter;
+import com.ifree.common.gwt.client.ui.application.Filter;
+import com.ifree.common.gwt.client.ui.lists.FilterConfigBuilder;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.*;
 
@@ -16,7 +18,7 @@ import java.util.List;
 * @author Alexander Ostrovskiy (a.ostrovskiy)
 * @since 24.09.13
 */
-public class BaseFilterConfigBuilder<F extends BaseFilter> implements PagingSortingFilteringDataProvider.FilterConfigBuilder<F> {
+public class BaseFilterConfigBuilder<F extends Filter> implements FilterConfigBuilder<F> {
 
     protected F filter;
     private CustomFilterAppender<F> appender;

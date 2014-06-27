@@ -56,7 +56,7 @@ public abstract class BaseListPresenter<T,
         Properties_ extends PropertyAccess<T>
         >
         extends Presenter<View_, Proxy_>
-        implements ColumnSortEvent.Handler,
+        implements
         SelectionChangeEvent.Handler, ListUiHandler<T, Filter_>, PerformFilterEvent.PerformFilterHandler,
         StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig, PagingLoadResult<T>>
        {
@@ -80,8 +80,6 @@ public abstract class BaseListPresenter<T,
     protected final Service_ listService;
     protected final Properties_ properties;
 
-    protected final PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
-    protected final PagingSortingFilteringDataProvider<T, Filter_> provider;
 
     private List<Action<T>> actionList = Lists.newArrayList();
 
@@ -93,9 +91,6 @@ public abstract class BaseListPresenter<T,
         super(eventBus, view, proxy, slot);
         this.listService = listService;
         this.properties = properties;
-        loader = new FilterPagingLoader(dataProxy);
-        loader.addLoadHandler(this);
-        provider = createProvider(view);
 
 
     }
@@ -107,44 +102,20 @@ public abstract class BaseListPresenter<T,
 
     protected abstract List<Action<T>> createActions();
 
-    private PagingSortingFilteringDataProvider<T, Filter_> createProvider(View_ view) {
-        return new PagingSortingFilteringDataProvider<T, Filter_>(loader, view, new Provider<PagingSortingFilteringDataProvider.FilterConfigBuilder<Filter_>>() {
-            @Override
-            public PagingSortingFilteringDataProvider.FilterConfigBuilder<Filter_> get() {
-                return new BaseFilterConfigBuilder<Filter_>(getFilterHandler());
-            }
-        });
-    }
-
-
     @Override
     protected void onBind() {
         super.onBind();
 
         initAction();
 
-        registerHandler(getView().addColumnSortHandler(this));
         registerHandler(getView().addSelectionChangeHandler(this));
 
-        provider.setSortListProvider(new Provider<ColumnSortList>() {
-
-            @Override
-            public ColumnSortList get() {
-                return getView().getColumnSortList();
-            }
-        });
-        provider.addDataDisplay(getView().getGridDataDisplay());
+        getView().getGrid().setFilterConfigBuilder(getFilterHandler().createConfigBuilder());
 
         onSelectionChanged(getSelectedObject());
-
-
     }
 
 
-    @Override
-    protected void onUnbind() {
-        provider.removeDataDisplay(getView().getGridDataDisplay());
-    }
 
     @Override
     protected void onReveal() {
@@ -169,7 +140,6 @@ public abstract class BaseListPresenter<T,
         AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
         if (filterHandler != null && filter != null && !filter.isEmpty()) {
             Filter_ filter_ = filterHandler.convertToObject(filter);
-            provider.setFilter(filter_);
             getView().setFilter(filter_);
         }
 
@@ -183,7 +153,7 @@ public abstract class BaseListPresenter<T,
     }
 
     protected void refresh() {
-        loader.load();
+        getView().getGrid().reload();
     }
 
 
@@ -193,7 +163,7 @@ public abstract class BaseListPresenter<T,
 
         if (selectedObject != null) {
             final Object key = getView().getKey(selectedObject);
-            return provider.findModel(key);
+            return getView().getGrid().getDataPrivider().findModel(key);
         }
 
         return null;
@@ -209,11 +179,12 @@ public abstract class BaseListPresenter<T,
     @Override
     public void onPerformFilter(PerformFilterEvent filterEvent) {
         Filter_ filter = (Filter_) filterEvent.getFilter();
-        provider.setFilter(filter);
+
+        getView().setFilter(filter);
 
         getView().firstPage();
 
-        loader.load();
+        refresh();
 
         AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
         if (filterHandler != null) {
@@ -238,12 +209,6 @@ public abstract class BaseListPresenter<T,
 
     public abstract AbstractFilterHandler<Filter_> getFilterHandler();
 
-    @Override
-    public void onColumnSort(ColumnSortEvent event) {
-        //provider.toSortingBeanList(event.getColumnSortList());
-        HasData<T> hasData = getView().getGridDataDisplay();
-        hasData.setVisibleRangeAndClearData(hasData.getVisibleRange(), true);
-    }
 
     @Override
     public void onSelectionChange(SelectionChangeEvent event) {
