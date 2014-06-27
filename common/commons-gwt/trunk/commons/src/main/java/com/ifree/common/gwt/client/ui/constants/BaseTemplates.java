@@ -14,6 +14,13 @@ import com.google.gwt.safehtml.shared.SafeHtml;
  */
 public interface BaseTemplates extends SafeHtmlTemplates {
 
+    /**
+     *
+     * @param fa use Styles.FONT_AWESOME_BASE
+     * @param icon
+     * @param color
+     * @return
+     */
     @Template("<i class=\"{0} {1} {2}\"></i>" )
     SafeHtml icon(String fa, String icon, String color);
 
