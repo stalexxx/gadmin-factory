@@ -27,6 +27,7 @@ import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.events.StartTypingEvent;
+import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.rest.ListingRestService;
 import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;

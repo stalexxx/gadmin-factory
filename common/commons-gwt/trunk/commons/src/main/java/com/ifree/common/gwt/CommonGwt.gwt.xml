@@ -23,6 +23,9 @@
     <inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
     <inherits name="org.gwtbootstrap3.extras.select.Select"/>
     <inherits name="org.gwtbootstrap3.extras.datetimepicker.DateTimePicker"/>
+    <inherits name="org.gwtbootstrap3.extras.summernote.Summernote" />
+    <inherits name="org.gwtbootstrap3.extras.bootbox.Bootbox"/>
+
 
     <entry-point class='com.ifree.common.gwt.client.CommonGwt'/>
 
