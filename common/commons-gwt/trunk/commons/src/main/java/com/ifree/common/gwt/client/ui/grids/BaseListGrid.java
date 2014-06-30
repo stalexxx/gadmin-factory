@@ -42,7 +42,7 @@ import java.util.Date;
  * @author Alexander Ostrovskiy (a.ostrovskiy)
  * @since 08.07.13
  */
-@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings({"UnusedDeclaration", "SpringJavaAutowiringInspection"})
 public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler{
 
     /*===========================================[ STATIC VARIABLES ]=============*/
@@ -55,6 +55,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     protected SingleSelectionModel<T> selectionModel;
 
     protected CellTable<T> dataGrid;
+    protected ValueProvider<T, ?> secondSortingField;
 
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
     private final ModelKeyProvider<T> keyProvider;
@@ -338,6 +339,8 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         ColumnSortList columnSortList = dataGrid.getColumnSortList();
         columnSortList.push(column);
         ColumnSortEvent.fire(this, columnSortList);
+
+        loader.addSortInfo(new SortInfoBean(column.getDataStoreName(), column.isDefaultSortAscending() ? SortDir.ASC :SortDir.DESC));
     }
 
 
@@ -359,6 +362,12 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             loader.addSortInfo(sortInfoBean);
 
         }
+
+        if (secondSortingField != null) {
+            loader.addSortInfo(new SortInfoBean(secondSortingField, SortDir.ASC));
+        }
+
+        loader.load();
     }
 
     public void reload() {
@@ -375,5 +384,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     public void setFilterConfigBuilder(BaseFilterConfigBuilder<_Filter> configBuilder) {
         loader.setConfigBuilder(configBuilder);
+    }
+
+    public void setSecondSortingField(ValueProvider<T,? > secondSortingField) {
+        this.secondSortingField = secondSortingField;
     }
 }

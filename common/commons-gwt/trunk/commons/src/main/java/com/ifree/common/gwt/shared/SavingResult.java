@@ -24,6 +24,11 @@ public class SavingResult<T extends Serializable> implements Serializable {
         saved = true;
 
     }
+    public SavingResult(boolean saved, T id) {
+        this.saved = saved;
+        this.id = id;
+
+    }
 
     public T getId() {
         return id;

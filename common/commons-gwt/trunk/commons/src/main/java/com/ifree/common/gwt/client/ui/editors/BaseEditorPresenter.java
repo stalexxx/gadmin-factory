@@ -89,8 +89,6 @@ public abstract class BaseEditorPresenter<
         this.logger = logger;
         this.service = service;
 
-
-
     }
 
     @Override
