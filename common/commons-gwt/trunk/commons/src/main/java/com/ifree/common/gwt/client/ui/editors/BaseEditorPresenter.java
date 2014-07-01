@@ -198,13 +198,7 @@ public abstract class BaseEditorPresenter<
 
         } else {
             RestAction<SavingResult<ID>> action;
-            if (getId(dto) == null) {
-                action = service.create(dto);
-            } else {
-                action = service.update(dto);
-            }
-
-
+            action = service.save(dto);
             dispatcher.execute(action, new AlertingAsyncCallback<SavingResult<ID>>(getEventBus()) {
                 @Override
                 public void onSuccess(SavingResult<ID> result) {
@@ -302,16 +296,13 @@ public abstract class BaseEditorPresenter<
 
     protected abstract Set<ConstraintViolation<T>> doValidate(T dto, Validator validator);
 
-    protected  RestAction<SavingResult<ID>> getSaveOrCreateAction(T dto) {
-        return service.create(dto);
-    }
-
     protected List<EditorError> makeCustomValidation(T currentProxy) {
         return Lists.newArrayList();
     }
 
     protected abstract String getEntityDisplayName();
 
+    @Deprecated
     protected abstract Object getId(T currentProxy);
 
     protected void loadDto(T proxy) {
