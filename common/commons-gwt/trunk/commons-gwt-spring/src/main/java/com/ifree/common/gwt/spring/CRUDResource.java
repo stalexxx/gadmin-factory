@@ -18,11 +18,11 @@ public interface CRUDResource<T, ID extends Serializable> {
 
     @POST
     //RestAction<ID> create(T dto);
-    Response create(T dto);
+    Response save(T dto);
 
-    @PUT
+    /*@PUT
 //    RestAction<Boolean> update(T dto);
-    Response update(T dto);
+    Response update(T dto);*/
 
     @DELETE @Path("/{id}")
 //    RestAction<Boolean> delete(@PathParam("id") ID id);

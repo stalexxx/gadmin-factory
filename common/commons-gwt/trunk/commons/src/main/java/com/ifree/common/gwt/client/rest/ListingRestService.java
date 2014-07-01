@@ -5,7 +5,6 @@ import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
 import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
 
 import javax.ws.rs.*;
-import java.io.Serializable;
 
 /**
  * Created by alex on 28.04.14.
@@ -16,6 +15,6 @@ public interface ListingRestService<T> {
     RestAction<PagingLoadResultBean<T>> getItems();
 
     @POST
-    @Path(BasePaths.FILTER)
+    @Path(BaseResourcePaths.FILTER)
     RestAction<PagingLoadResultBean<T>> getItems(FilterPagingLoadConfigBean loadConfig);
 }
