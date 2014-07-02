@@ -27,7 +27,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     public final Specification<Entity_> NONE_SPECIFICATION = null;
 
     protected PagingLoadResultBean<EntityDto_> getPagingLoadResultBean(FilterPagingLoadConfigBean config) {
-        Specifications<Entity_> spec = null;
+        Specifications<Entity_> spec = createInitSpecification();
 
         List<FilterConfigBean> filters = config.getFilters();
         for (FilterConfigBean filter : filters) {
@@ -48,6 +48,10 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         postProcessPagingLoadDtos(dtos, entities);
 
         return new PagingLoadResultBean<EntityDto_>(dtos, (int) page.getTotalElements(), config.getOffset());
+    }
+
+    protected Specifications<Entity_> createInitSpecification() {
+        return null;
     }
 
     private void postProcessPagingLoadDtos(List<EntityDto_> dtos, List<Entity_> entities) {

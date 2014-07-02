@@ -37,7 +37,7 @@
         <version.guava>17.0</version.guava>
 
         <version.gwt.bootstrap3>0.8-SNAPSHOT</version.gwt.bootstrap3>
-        <source.version>1.6</source.version>
+        <source.version>1.7</source.version>
 
         <gwtupload.version>1.0.1</gwtupload.version>
     </properties>

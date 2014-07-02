@@ -55,6 +55,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     }
 
     @Override
+    @POST
     public Response save(EntityDto_ dto) {
         Entity_ entity = getConversionService().convert(dto, getEntityClazz());
         ID id = getId(entity);
@@ -138,12 +139,12 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
 
 
     @Override
-     protected Page findAll(FilterPagingLoadConfigBean config) {
+     protected Page<Entity_> findAll(FilterPagingLoadConfigBean config) {
          return getJpaRepository().findAll(pageable(config));
      }
 
     @Override
-     protected Page findAll(Specifications spec, FilterPagingLoadConfigBean config) {
+     protected Page<Entity_> findAll(Specifications<Entity_> spec, FilterPagingLoadConfigBean config) {
          return getJpaRepository().findAll(spec, pageable(config));
      }
 
