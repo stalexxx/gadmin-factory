@@ -15,13 +15,13 @@ import java.util.List;
  */
 public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHandler<FilterPagingLoadConfig,PagingLoadResult<T>> {
 
-    protected Loader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
+    protected PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
 
     protected ProvidesKey<T> providesKey;
 
     protected List<T> currentData;
 
-    public BaseDataProvider(Loader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey) {
+    public BaseDataProvider(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey) {
         this.loader = loader;
         this.providesKey = providesKey;
     }
@@ -51,8 +51,9 @@ public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHan
 
     @Override
     protected void onRangeChanged(HasData display) {
-        //Range visibleRange = display.getVisibleRange();
-        loader.load();
+        Range visibleRange = display.getVisibleRange();
+        loader.load(visibleRange.getStart(), visibleRange.getLength());
+      //  loader.load();
     }
 
     @Override

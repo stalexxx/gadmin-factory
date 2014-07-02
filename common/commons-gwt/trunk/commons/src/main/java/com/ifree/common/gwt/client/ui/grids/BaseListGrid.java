@@ -150,7 +150,13 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return object != null ? NumberFormat.getDecimalFormat().format(valueProvider.getValue(object)) : EMPTY_STRING;
+                if (object != null) {
+                    Number value = valueProvider.getValue(object);
+                    if (value != null) {
+                        return NumberFormat.getDecimalFormat().format(value);
+                    }
+                }
+                return EMPTY_STRING;
             }
         }, header, width, sortable, sortable ? valueProvider.getPath() : null);
     }
