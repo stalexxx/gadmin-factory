@@ -27,11 +27,11 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
 
     private final SuggestedEditor<T> suggestedEditor;
 
-    private final Function<T, ID> idFunction;
+    private final ValueProvider<T, ID> idFunction;
 
     private final ItemLoader<T, ID> itemLoader;
 
-    public MappedSuggestedEditor(Renderer<T> renderer, Function<T, ID> idFunction,
+    public MappedSuggestedEditor(Renderer<T> renderer, ValueProvider<T, ID> idFunction,
                                  ItemLoader<T, ID> itemLoader, BaseDataProxy<T> dataProxy, ValueProvider<T, String> valueProvider) {
         this.idFunction = idFunction;
         this.itemLoader = itemLoader;
@@ -88,7 +88,7 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
     @Override
     public ID getValue() {
         T value = suggestedEditor.getValue();
-        return idFunction.apply(value);
+        return value != null ? idFunction.getValue(value) : null;
     }
 
     public void setAcceptableValues(Collection<T> values) {

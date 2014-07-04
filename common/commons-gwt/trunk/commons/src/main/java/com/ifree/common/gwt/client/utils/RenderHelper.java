@@ -18,7 +18,7 @@ public class RenderHelper {
 
                 if (line != null) {
 
-                    builder.append(SafeHtmlUtils.fromString("<div>" + line + "</div>"));
+                    builder.append(SafeHtmlUtils.fromTrustedString("<div>" + line + "</div>"));
                 }
 
             }
