@@ -79,11 +79,10 @@ public abstract class BaseListPresenter<T,
     protected BaseFilterHelper filterHelper;
 
     protected final Service_ listService;
+
     protected final Properties_ properties;
 
-
     private List<Action<T>> actionList = Lists.newArrayList();
-
 
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
@@ -110,7 +109,7 @@ public abstract class BaseListPresenter<T,
         initAction();
 
         registerHandler(getView().addSelectionChangeHandler(this));
-
+        registerHandler(getView().addLoadHandler(this));
         getView().getGrid().setFilterConfigBuilder(getFilterHandler().createConfigBuilder());
 
         onSelectionChanged(getSelectedObject());
@@ -260,10 +259,11 @@ public abstract class BaseListPresenter<T,
     public void onLoad(LoadEvent<FilterPagingLoadConfig, PagingLoadResult<T>> event) {
         //мы должны быть уверены что updateActions будет вызвано ПОСЛЕ того как все желающие получили LoadEvent
         // потому что именно его слушает провайдер
+        updateActions();
+
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
-                updateActions();
             }
         });
     }

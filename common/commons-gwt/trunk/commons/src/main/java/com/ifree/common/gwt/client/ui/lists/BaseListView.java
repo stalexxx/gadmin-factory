@@ -24,6 +24,7 @@ import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
 import com.ifree.common.gwt.client.ui.grids.BasePager;
+import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.PageHeader;
 
@@ -124,6 +125,11 @@ public abstract class BaseListView<
     @Override
     public final HandlerRegistration addSelectionChangeHandler(SelectionChangeEvent.Handler handler) {
         return dataGrid.addSelectionChangeHandler(handler);
+    }
+
+    @Override
+    public HandlerRegistration addLoadHandler(LoadHandler handler) {
+        return dataGrid.addLoadHandler(handler);
     }
 
     @Override
