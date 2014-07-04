@@ -107,7 +107,15 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     }
 
     protected Specification<Entity_> createSpecification(FilterConfig filter) {
+
+        Specification<Entity_> specification = createExactSpecification(filter.getField(), filter);
+        if (specification != null) {
+            return specification;
+        }
+
+
         if (filter.getValue() != null) {
+
 
             String type = filter.getType();
 
@@ -118,7 +126,6 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
                 }
                 return stringSpecification(filter, type);
-
 
             } else if (type.equals(BaseFilterHelper.BOOLEAN_TYPE)) {
 
@@ -136,6 +143,17 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             }
         }
         return NONE_SPECIFICATION;
+    }
+
+    /**
+     * This method intended to be overriden when exact type of specification should be provided;
+     * Использовать этот метод, когда надо переопределить спецификацию для определенного поля фильтрации
+     * @param field
+     * @param filter
+     * @return
+     */
+    private Specification<Entity_> createExactSpecification(String field, FilterConfig filter) {
+        return null;
     }
 
     protected abstract Specification<Entity_> createSpecificationByUnfound(FilterConfig filter);
