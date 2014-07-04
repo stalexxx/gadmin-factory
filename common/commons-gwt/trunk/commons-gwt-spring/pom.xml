@@ -20,6 +20,11 @@
 
         <version.spring-data-jpa>1.6.0.M1</version.spring-data-jpa>
 
+
+        <maven-compiler-plugin.source>1.8</maven-compiler-plugin.source>
+        <maven-compiler-plugin.target>1.8</maven-compiler-plugin.target>
+
+
     </properties>
 
 
