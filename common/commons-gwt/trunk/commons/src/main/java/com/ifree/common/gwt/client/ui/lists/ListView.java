@@ -17,6 +17,8 @@ import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.ui.application.CustomizedWithRoles;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
+import com.ifree.common.gwt.shared.loader.LoadEvent;
+import com.ifree.common.gwt.shared.loader.LoadHandler;
 
 /**
  *
@@ -28,6 +30,8 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
     boolean isSelected(M item);
 
     HandlerRegistration addSelectionChangeHandler(SelectionChangeEvent.Handler handler);
+
+    HandlerRegistration addLoadHandler(LoadHandler handler);
 
     void setSelection(M newSelection);
 

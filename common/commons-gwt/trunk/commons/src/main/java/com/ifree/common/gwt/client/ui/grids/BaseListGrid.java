@@ -395,4 +395,8 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public void setSecondSortingField(ValueProvider<T,? > secondSortingField) {
         this.secondSortingField = secondSortingField;
     }
+
+    public HandlerRegistration addLoadHandler(LoadHandler handler) {
+        return loader.addLoadHandler(handler);
+    }
 }
