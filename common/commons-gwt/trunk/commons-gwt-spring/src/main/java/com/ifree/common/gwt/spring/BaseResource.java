@@ -54,7 +54,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         return null;
     }
 
-    private void postProcessPagingLoadDtos(List<EntityDto_> dtos, List<Entity_> entities) {
+    protected void postProcessPagingLoadDtos(List<EntityDto_> dtos, List<Entity_> entities) {
 
         Iterator<EntityDto_> iteratorDto = dtos.iterator();
 

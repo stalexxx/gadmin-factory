@@ -31,6 +31,16 @@ public class BaseSpecifications {
 
 
 
+    public static <T> Specification<T> isNullSpecification(final String field) {
+        return new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.isNull(root.get(field));
+            }
+        };
+
+    }
+
     public static <T> Specification<T> stringSpecification(final String value, final String field) {
         return new Specification<T>() {
             @Override
