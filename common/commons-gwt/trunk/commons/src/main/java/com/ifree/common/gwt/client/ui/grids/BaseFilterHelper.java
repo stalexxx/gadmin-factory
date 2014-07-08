@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.gwt.text.shared.Parser;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.*;
+import com.ifree.common.gwt.shared.types.DateInterval;
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -18,6 +19,8 @@ public abstract class BaseFilterHelper {
     public static final String STRING_TYPE = "string";
     public static final String FLOAT_TYPE = "float";
     public static final String INTEGER_TYPE = "integer";
+    public static final String DATE_INTERVAL_TYPE = "dateint";
+
 
 
     private static BooleanFilterHandler booleanFilterHandler;
@@ -29,6 +32,8 @@ public abstract class BaseFilterHelper {
 
     private Map<String, FilterHandler> handlerMap = Maps.newHashMap();
     private Map<Class, String> typeMap = Maps.newHashMap();
+
+    private static DateIntervalFilterHandler dateIntervalFilterHandler;
 
     static {
         booleanFilterHandler = new BooleanFilterHandler();
@@ -45,6 +50,7 @@ public abstract class BaseFilterHelper {
                 return Integer.parseInt(text.toString());
             }
         });
+        dateIntervalFilterHandler = new DateIntervalFilterHandler();
     }
 
     protected BaseFilterHelper()
@@ -53,15 +59,15 @@ public abstract class BaseFilterHelper {
         handlerMap.put(BOOLEAN_TYPE, booleanFilterHandler);
         handlerMap.put(FLOAT_TYPE, floatNumberFilterHandler);
         handlerMap.put(INTEGER_TYPE, integerFilterHandler);
+        handlerMap.put(DATE_INTERVAL_TYPE, dateIntervalFilterHandler);
 
         typeMap.put(String.class, STRING_TYPE);
         typeMap.put(Boolean.class, BOOLEAN_TYPE);
         typeMap.put(Float.class, FLOAT_TYPE);
         typeMap.put(Integer.class, INTEGER_TYPE);
+        typeMap.put(DateInterval.class, DATE_INTERVAL_TYPE);
 
         registerCustom();
-
-
     }
 
     protected abstract void registerCustom();
