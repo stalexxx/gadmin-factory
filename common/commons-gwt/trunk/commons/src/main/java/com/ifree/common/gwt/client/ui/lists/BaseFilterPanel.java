@@ -46,6 +46,7 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
         driver.edit(createEmpty());
 
         ButtonGroup buttonGroup = new ButtonGroup();
+
         form.add(buttonGroup);
 
         buttonGroup.add(apply = initApply());
