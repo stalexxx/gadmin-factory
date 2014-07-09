@@ -1,7 +1,9 @@
 package com.ifree.common.gwt.spring;
 
+import com.ifree.common.gwt.shared.types.DateInterval;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.annotation.Nonnull;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -62,6 +64,27 @@ public class BaseSpecifications {
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.equal(root.get(field), value);
+            }
+        };
+    }
+
+    public static <T> Specification<T> dateIntervalSpecification(@Nonnull DateInterval interval, String field) {
+        if (interval.getFrom() == null && interval.getTo() == null) {
+            return null;
+
+        }
+        return new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                if (interval.getFrom() != null && interval.getTo() != null) {
+                    return cb.between(root.get(field), interval.getFrom(), interval.getTo());
+                } else {
+                    if (interval.getFrom() != null) {
+                        return cb.greaterThanOrEqualTo(root.get(field), interval.getFrom());
+                    } else /*(interval.getTo() != null)*/ {
+                        return cb.lessThanOrEqualTo(root.get(field), interval.getTo());
+                    }
+                }
             }
         };
     }

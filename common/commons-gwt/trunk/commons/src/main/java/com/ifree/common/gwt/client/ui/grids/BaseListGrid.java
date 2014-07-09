@@ -11,6 +11,7 @@ import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -176,7 +177,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return object != null ? String.valueOf(provider.getValue(object)) : null;
+                return object != null ?
+                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(provider.getValue(object))
+                        : null;
             }
         }, header, width, sortable, sortable ? provider.getPath() : null);
     }
