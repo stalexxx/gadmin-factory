@@ -5,6 +5,7 @@ import com.ifree.common.gwt.shared.SavingResult;
 import com.ifree.common.gwt.shared.loader.FilterConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
 import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
+import com.ifree.common.gwt.shared.types.DateInterval;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +32,16 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     protected Specification<Entity_> booleanSpecification(FilterConfig filter, String type) {
         return BaseSpecifications.booleanSpecification(getFilterHelper().<Boolean>getValue(type, filter.getValue()),
                 filter.getField());
+    }
+
+    @Override
+    protected Specification<Entity_> dateIntervalSecification(FilterConfig filter, String field) {
+        DateInterval value = getFilterHelper().getValue(filter.getType(), filter.getValue());
+
+        if (value != null ) {
+            return BaseSpecifications.dateIntervalSpecification(value, field);
+        }
+        return null;
     }
 
     @Override
@@ -135,8 +146,8 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
          }
      }
 
-    protected abstract Logger getLogger();
 
+    protected abstract Logger getLogger();
 
     @Override
      protected Page<Entity_> findAll(FilterPagingLoadConfigBean config) {

@@ -6,6 +6,7 @@ import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
 import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
+import com.ifree.common.gwt.shared.types.DateInterval;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -138,6 +139,9 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             } else if (type.equals(BaseFilterHelper.FLOAT_TYPE)) {
 
                 throw new UnsupportedOperationException();
+            } else if (type.equals(BaseFilterHelper.DATE_INTERVAL_TYPE)) {
+
+                return dateIntervalSecification(filter, filter.getField());
             } else {
                 return createSpecificationByUnfound(filter);
             }
@@ -157,6 +161,8 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     }
 
     protected abstract Specification<Entity_> createSpecificationByUnfound(FilterConfig filter);
+
+    protected abstract Specification<Entity_> dateIntervalSecification(FilterConfig interval, String field);
 
     protected abstract Specification<Entity_> booleanSpecification(FilterConfig filter, String type);
 
