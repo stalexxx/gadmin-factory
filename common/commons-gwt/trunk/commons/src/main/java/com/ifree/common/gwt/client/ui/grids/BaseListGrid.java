@@ -23,7 +23,10 @@ import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.view.client.*;
+import com.google.gwt.view.client.HasData;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.web.bindery.event.shared.EventBus;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
@@ -31,10 +34,11 @@ import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.ValueProvider;
-import com.ifree.common.gwt.shared.loader.*;
-import org.gwtbootstrap3.client.ui.gwt.CellTable;
+import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
+import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
+import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -189,9 +193,15 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
-                return object != null ?
-                        DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(provider.getValue(object))
-                        : null;
+                if (object != null) {
+
+                    Date date = provider.getValue(object);
+                    if (date != null) {
+                        return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date);
+                    }
+
+                }
+                return null;
             }
         }, header, width, sortable, sortable ? provider.getPath() : null);
     }
