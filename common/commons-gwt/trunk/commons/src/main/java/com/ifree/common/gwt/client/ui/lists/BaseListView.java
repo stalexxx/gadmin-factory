@@ -163,11 +163,13 @@ public abstract class BaseListView<
 
     @Override
     public void addAction(Action<T> action, final Command command) {
-        AnchorListItem actionWidget = actionBuilder.build(action);
+        final AnchorListItem actionWidget = actionBuilder.build(action);
         actionWidget.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                command.execute();
+                if (actionWidget.isEnabled()) {
+                    command.execute();
+                }
             }
         });
         actionMap.put(action, actionWidget);
