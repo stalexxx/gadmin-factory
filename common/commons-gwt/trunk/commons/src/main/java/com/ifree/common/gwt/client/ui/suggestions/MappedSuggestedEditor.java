@@ -103,4 +103,8 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
     public String getPlaceholder() {
         return suggestedEditor.getPlaceholder();
     }
+
+    public void setShortListExpected(boolean shortListExpected) {
+        suggestedEditor.setShortListExpected(shortListExpected);
+    }
 }

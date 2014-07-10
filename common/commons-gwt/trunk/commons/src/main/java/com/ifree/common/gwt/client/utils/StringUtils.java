@@ -5,6 +5,7 @@
 
 package com.ifree.common.gwt.client.utils;
 
+import com.google.common.base.Preconditions;
 import com.google.gwt.regexp.shared.MatchResult;
 import com.google.gwt.regexp.shared.RegExp;
 
@@ -189,6 +190,8 @@ public class StringUtils {
 
 
     public static String markFound(final String str, final RegExp pattern) {
+        Preconditions.checkNotNull(str);
+
         final StringBuilder sb = new StringBuilder();
 
         String substring = str;

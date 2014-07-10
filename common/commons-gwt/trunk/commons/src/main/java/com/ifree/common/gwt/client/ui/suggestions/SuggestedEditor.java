@@ -3,6 +3,8 @@ package com.ifree.common.gwt.client.ui.suggestions;
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Maps;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -15,6 +17,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.text.shared.Renderer;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.*;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.shared.ValueProvider;
@@ -48,6 +51,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
 
     private Map<String, T> replacementMap = Maps.newHashMap();
     private Button removeButton;
+    private boolean shortListExpected = true;
 
 
     /*===========================================[ CONSTRUCTORS ]=================*/
@@ -76,9 +80,15 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         box.addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                if (getValue() == null) {
-                    suggestBox.showSuggestionList();
-                }
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        if (getValue() == null && isShortListExpected()) {
+                            suggestBox.showSuggestionList();
+                        }
+                    }
+                });
+
             }
         });
 
@@ -210,6 +220,14 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
             box.getPlaceholder();
         }
         return null;
+    }
+
+    public boolean isShortListExpected() {
+        return shortListExpected;
+    }
+
+    public void setShortListExpected(boolean shortListExpected) {
+        this.shortListExpected = shortListExpected;
     }
 
     /*===========================================[ INNER CLASSES ]================*/
