@@ -147,6 +147,18 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
+    protected Column<T, SafeHtml> addTrustedHtmlColumn(final ValueProvider<T, String> valueProvider, String header, int width, boolean sortable) {
+        return addColumn(new Column<T, SafeHtml>(new SafeHtmlCell()) {
+            @Override
+            public SafeHtml getValue(T object) {
+                return object != null ? SafeHtmlUtils.fromTrustedString(valueProvider.getValue(object)) : SafeHtmlUtils.EMPTY_SAFE_HTML;
+            }
+        }, header, width, sortable, valueProvider.getPath());
+    }
+
+
+
+
     protected Column<T, String> addNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         return addColumn(new TextColumn<T>() {
             @Override
