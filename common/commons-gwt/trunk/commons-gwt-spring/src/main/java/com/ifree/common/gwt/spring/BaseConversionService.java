@@ -53,6 +53,8 @@ public class BaseConversionService extends GenericConversionService {
             return null;
         }
     }
+
+
     @Nullable
     public <F, T> Set<T> transformToSet(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
@@ -77,6 +79,15 @@ public class BaseConversionService extends GenericConversionService {
             return transformToList(fromCollection, dest);
         }
         return Lists.newArrayList();
+
+    }
+
+    @Nonnull
+    public <F, T> Set<T> transformToSetNotNull(@Nullable Collection<F> fromCollection, Class<T> dest) {
+        if (fromCollection != null) {
+            return transformToSet(fromCollection, dest);
+        }
+        return Sets.newHashSet();
 
     }
 
