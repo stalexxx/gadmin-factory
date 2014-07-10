@@ -25,7 +25,8 @@ public class MySummernote extends Summernote implements LeafValueEditor<String> 
     @Override
     public void setValue(String value, boolean fireEvents) {
         String oldValue = fireEvents ? this.getValue() : null;
-        setCode(value);
+
+        setCode(value != null ? value : "");
 
         reconfigure();
 
