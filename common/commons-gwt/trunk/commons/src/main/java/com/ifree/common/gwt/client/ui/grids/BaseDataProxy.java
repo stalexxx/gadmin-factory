@@ -172,4 +172,5 @@ public abstract class BaseDataProxy<T>
 
     protected abstract RestAction<PagingLoadResultBean<T>> getAction();
 
+
 }
