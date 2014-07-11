@@ -6,10 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.LeafValueEditor;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.FocusEvent;
-import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.logical.shared.*;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.text.shared.Renderer;
@@ -51,7 +48,6 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
     private Button removeButton;
     private boolean shortListExpected = true;
 
-
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     public SuggestedEditor(Renderer<T> renderer) {
@@ -68,9 +64,6 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
 
         }
 
-
-
-
         final TextBox box = new TextBox();
         suggestBox = new SuggestBox(oracle,  box, new SuggestionDisplayImpl());
         box.setStyleName("form-control");
@@ -78,17 +71,23 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         box.addFocusHandler(new FocusHandler() {
             @Override
             public void onFocus(FocusEvent event) {
-                Scheduler.get().scheduleDeferred(new Command() {
-                    @Override
-                    public void execute() {
-                        if (getValue() == null && isShortListExpected()) {
-                            suggestBox.showSuggestionList();
-                        }
-                    }
-                });
+                scheduleShowSuggestList();
 
             }
         });
+
+        box.addKeyDownHandler(new KeyDownHandler() {
+            @Override
+            public void onKeyDown(KeyDownEvent event) {
+                if (event.getNativeKeyCode() == KeyCodes.KEY_BACKSPACE) {
+                    if (getValue() != null) {
+                        setValue(null);
+                        scheduleShowSuggestList();
+                    }
+                }
+            }
+        });
+
 
 
         suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
@@ -111,6 +110,17 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
         InputGroup inputGroup = createGroup(suggestBox);
 
         initWidget(inputGroup);
+    }
+
+    protected void scheduleShowSuggestList() {
+        Scheduler.get().scheduleDeferred(new Command() {
+            @Override
+            public void execute() {
+                if (getValue() == null && isShortListExpected()) {
+                    suggestBox.showSuggestionList();
+                }
+            }
+        });
     }
 
     private InputGroup createGroup(SuggestBox widget) {
