@@ -23,6 +23,12 @@
             <b:NavbarCollapse>
 
 
+                <b:NavbarHeader>
+                <b:NavbarBrand ui:field="header"></b:NavbarBrand>
+                <b:NavbarCollapseButton dataTarget="#navbar-collapse"/>
+                </b:NavbarHeader>
+
+
                 <b:NavbarNav pull="LEFT" ui:field="listItemContainer">
 
 
