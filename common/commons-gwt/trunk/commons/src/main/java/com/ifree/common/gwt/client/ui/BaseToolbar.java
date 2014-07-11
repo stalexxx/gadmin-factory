@@ -35,17 +35,7 @@ import java.util.Iterator;
 @SuppressWarnings({"PackageVisibleField", "UnusedParameters"})
 public class BaseToolbar extends Composite implements HasWidgets, PerformFilterEvent.HasPerformFilterHandlers {
 
-    /*===========================================[ STATIC VARIABLES ]=============*/
-
-
-
     /*===========================================[ INSTANCE VARIABLES ]===========*/
-/*
-
-    @UiField
-    FlowPanel panel;
-*/
-
     @UiField
     TextBox search;
     @UiField
@@ -62,13 +52,14 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     DropDownMenu elseSubmenu;
     @UiField
     ListDropDown elseDropdown;
+    @UiField
+    NavbarBrand header;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     public BaseToolbar() {
         init();
     }
-
 
 
     protected void init() {
@@ -193,6 +184,10 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
             search.setFocus(true);
 
         }
+    }
+
+    public void setHeader(String displayHeader) {
+        header.setText(displayHeader);
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")

@@ -11,22 +11,19 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
-import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
+import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.grids.BasePager;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
-import org.gwtbootstrap3.client.ui.PageHeader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -44,7 +41,6 @@ public abstract class BaseListView<
         >
         extends ViewWithUiHandlers<_Handler> implements ListView<T, _Filter> {
 
-    protected final PageHeader header;
     protected final BaseListGrid<T, _Filter> dataGrid;
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
@@ -71,7 +67,6 @@ public abstract class BaseListView<
             toolbar.add(filterPanel);
         }
 
-        header = new PageHeader();
 
         toolbar.addPerformFilterHandler(new PerformFilterEvent.PerformFilterHandler() {
             @Override
@@ -80,7 +75,7 @@ public abstract class BaseListView<
             }
         });
 
-        BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar, header);
+        BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar);
         viewPanel.addPager(dataGrid.getPager());
 
         initWidget(viewPanel);
@@ -148,7 +143,7 @@ public abstract class BaseListView<
 
     @Override
     public void updateHeader(String displayHeader) {
-        header.setText(displayHeader);
+        toolbar.setHeader(displayHeader);
     }
 
     @Override
