@@ -5,7 +5,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.rest.ListingRestService;
+import com.ifree.common.gwt.shared.SortDir;
+import com.ifree.common.gwt.shared.SortInfoBean;
+import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
+import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
 import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
 
@@ -64,5 +68,40 @@ public class RestDataProxy<T,
 
     protected List<FilterConfigBean> createConstraints() {
         return null;
+    }
+
+
+    protected FilterPagingLoadConfig prepareLoadConfig(FilterPagingLoadConfig loadConfig) {
+        FilterPagingLoadConfig config = super.prepareLoadConfig(loadConfig);
+
+        ValueProvider<T, ?> column = getSecondSortColumn();
+
+        if (column != null) {
+
+            List<SortInfoBean> sortInfo = config.getSortInfo();
+            if (sortInfo == null) {
+                sortInfo = Lists.newArrayList();
+
+            }
+
+            if (!contains(sortInfo, column.getPath())) {
+                sortInfo.add(new SortInfoBean(column.getPath(), SortDir.DESC));
+            }
+        }
+
+        return config;
+    }
+
+    protected ValueProvider<T, ?> getSecondSortColumn() {
+        return null;
+    }
+
+    private boolean contains(List<SortInfoBean> sortInfo, String field) {
+        for (SortInfoBean sortInfoBean : sortInfo) {
+            if (field.equals(sortInfoBean.getSortField())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
