@@ -199,7 +199,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
                     if (date != null) {
                         return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date);
                     }
-
                 }
                 return null;
             }
