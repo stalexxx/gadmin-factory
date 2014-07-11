@@ -44,7 +44,7 @@ class BaseSuggestOracle<T> extends SuggestOracle {
         dataProxy.load(createFilterBean(request), new PagingLoadResultCallback<T>(callback, request, renderer));
     }
 
-    private FilterPagingLoadConfig createFilterBean(Request request) {
+    protected FilterPagingLoadConfig createFilterBean(Request request) {
 
         FilterPagingLoadConfigBean bean = new FilterPagingLoadConfigBean();
         bean.setLimit(request.getLimit());

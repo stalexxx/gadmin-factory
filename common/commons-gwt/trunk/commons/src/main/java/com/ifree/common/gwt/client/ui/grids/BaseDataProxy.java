@@ -15,7 +15,6 @@ import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -56,12 +55,17 @@ public abstract class BaseDataProxy<T>
     @Override
     public void load(FilterPagingLoadConfig loadConfig, final Callback<PagingLoadResult<T>, Throwable> callback) {
 
-        this.loadConfig = loadConfig;
+        this.loadConfig = prepareLoadConfig(loadConfig);
         this.callback = callback;
 
         timer.cancel();
         timer.schedule(DELAY_MILLIS);
     }
+
+    protected FilterPagingLoadConfig prepareLoadConfig(FilterPagingLoadConfig loadConfig) {
+        return loadConfig;
+    }
+
     public void load(final Callback<PagingLoadResult<T>, Throwable> callback) {
         load(null, callback);
     }
