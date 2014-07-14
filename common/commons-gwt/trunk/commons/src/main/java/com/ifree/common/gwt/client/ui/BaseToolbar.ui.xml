@@ -47,7 +47,9 @@
                         </b:InputGroupButton>
 
 
-                        <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}"/>
+
+                        <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}" />
+
 
 
                         <b:InputGroupButton>

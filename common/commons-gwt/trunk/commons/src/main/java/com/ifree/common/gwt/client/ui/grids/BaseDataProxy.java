@@ -9,8 +9,10 @@ import com.google.gwt.core.client.Callback;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
+import com.gwtplatform.mvp.client.proxy.NotifyingAsyncCallback;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
 
@@ -25,6 +27,9 @@ public abstract class BaseDataProxy<T>
         implements DataProxy<FilterPagingLoadConfig, PagingLoadResult<T>> {
 
     public static final int DELAY_MILLIS = 500;
+
+    @Inject
+    private EventBus eventBus;
 
     @Inject
     protected RestDispatch restDispatch;
@@ -92,17 +97,20 @@ public abstract class BaseDataProxy<T>
             action = getAction();
         }
 
-        restDispatch.execute(action, new AsyncCallback<PagingLoadResultBean<T>>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                callback.onFailure(caught);
-            }
+            NotifyingAsyncCallback<PagingLoadResultBean<T>> notifyingAsyncCallback = new NotifyingAsyncCallback<PagingLoadResultBean<T>>(eventBus) {
 
             @Override
-            public void onSuccess(PagingLoadResultBean<T> result) {
+            protected void success(PagingLoadResultBean<T> result) {
                 callback.onSuccess(result);
+
             }
-        });
+        };
+
+        notifyingAsyncCallback.prepare();
+
+        restDispatch.execute(action, notifyingAsyncCallback);
+
+        notifyingAsyncCallback.checkLoading();
     }
 
     private String filter;
