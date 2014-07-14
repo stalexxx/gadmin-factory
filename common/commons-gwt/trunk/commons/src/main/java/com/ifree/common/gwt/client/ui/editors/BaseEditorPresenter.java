@@ -22,6 +22,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
+import com.ifree.common.gwt.client.ui.application.AlertingNotifingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.BlockingOverlay;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
 import com.ifree.common.gwt.client.ui.constants.BaseMessages;
@@ -105,7 +106,6 @@ public abstract class BaseEditorPresenter<
     /*===========================================[ CLASS METHODS ]================*/
 
 
-
     @Override
     protected void onReveal() {
 
@@ -173,7 +173,7 @@ public abstract class BaseEditorPresenter<
         Set<ConstraintViolation<T>> violations = doValidate(dto, validator);
 
         if (!violations.isEmpty()) {
-           getView().handleViolations(violations);
+            getView().handleViolations(violations);
         }
     }
 
@@ -199,28 +199,27 @@ public abstract class BaseEditorPresenter<
         } else {
             RestAction<SavingResult<ID>> action;
             action = service.save(dto);
-            dispatcher.execute(action, new AlertingAsyncCallback<SavingResult<ID>>(getEventBus()) {
+            AlertingNotifingAsyncCallback<SavingResult<ID>> callback = new AlertingNotifingAsyncCallback<SavingResult<ID>>(getEventBus()) {
                 @Override
-                public void onSuccess(SavingResult<ID> result) {
+                public void success(SavingResult<ID> result) {
                     if (result.isSaved()) {
                         //placeManager.navigateBack();
                         onBack();
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
                     }
-
-
-
-                    //onBack();
                 }
+
 
                 @Override
-                public void onFailure(Throwable caught) {
-                    super.onFailure(caught);
-                   getView().setSaveButtonEnabled(true);
+                public void failure(Throwable caught) {
+                    super.failure(caught);
+                    getView().setSaveButtonEnabled(true);
 
                 }
-            });
+            };
+            dispatcher.execute(action, callback);
+            callback.checkLoading();
         }
 
 /*
@@ -288,7 +287,7 @@ public abstract class BaseEditorPresenter<
     }
 
     private Set<ConstraintViolation<T>> validate(T dto) {
-       // Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        // Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         return doValidate(dto, null);
 
 
@@ -333,7 +332,7 @@ public abstract class BaseEditorPresenter<
 
     @Override
     public void onBack() {
-       placeManager.navigateBack();
+        placeManager.navigateBack();
     }
 
     protected abstract String getListPlace();
