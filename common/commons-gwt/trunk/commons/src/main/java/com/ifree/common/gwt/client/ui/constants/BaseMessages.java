@@ -96,7 +96,7 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("{0}(Выйти)")
     String logout(String userName);
 
-    @DefaultMessage("Войти")
+    @DefaultMessage("Логин")
     String login();
 
     @DefaultMessage("Да")
