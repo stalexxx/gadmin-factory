@@ -134,6 +134,12 @@
                 <artifactId>gwtp-tester</artifactId>
                 <version>${version.gwtp}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>13.0</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
