@@ -1,19 +1,16 @@
 package com.ifree.common.gwt.client.ui.lists;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.BaseFilter;
-import com.ifree.common.gwt.client.ui.application.Filter;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.Form;
@@ -61,8 +58,13 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
             public void onClick(ClickEvent event) {
                 uiHandlers.onPerformFilter(new PerformFilterEvent(null));
                 BaseFilterPanel.this.setValue(createEmpty());
+                onReset();
             }
         });
+
+    }
+
+    protected void onReset() {
 
     }
 

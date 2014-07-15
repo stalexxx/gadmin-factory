@@ -95,11 +95,10 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
             public void onSelection(SelectionEvent<SuggestOracle.Suggestion> event) {
                 if (event.getSelectedItem() instanceof Suggestion) {
                     Suggestion<T> selectedItem = (Suggestion) event.getSelectedItem();
-                    value = selectedItem.getValue();
+                    setValue( selectedItem.getValue(), true);
                 } else {
                     final String replacementString = event.getSelectedItem().getReplacementString();
-
-                    value = replacementMap.get(replacementString);
+                    setValue(replacementMap.get(replacementString), true);
                 }
 
                 SelectionEvent.fire(SuggestedEditor.this, value);

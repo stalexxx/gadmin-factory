@@ -1,7 +1,8 @@
 package com.ifree.common.gwt.client.ui.suggestions;
 
-import com.google.common.base.Function;
 import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -12,7 +13,6 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
 import com.ifree.common.gwt.client.ui.grids.ItemLoader;
-import com.ifree.common.gwt.client.ui.suggestions.SuggestedEditor;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.base.HasPlaceholder;
 
@@ -23,7 +23,7 @@ import java.util.Collection;
  * Created by alex on 22.05.14.
  */
 public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite implements LeafValueEditor<ID>,
-        HasValue<ID>, HasEnabled, HasPlaceholder {
+        HasValue<ID>, HasEnabled, HasPlaceholder, HasSelectionHandlers<T> {
 
     private final SuggestedEditor<T> suggestedEditor;
 
@@ -62,7 +62,7 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
                 }
             });
         } else {
-            setValueX(null, false);
+            setValueX(null, fireEvents);
         }
 
     }
@@ -74,10 +74,11 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
         }
     }
 
-    @Override
-    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<ID> handler) {
-        return addHandler(handler, ValueChangeEvent.getType());
+/*
+    public HandlerRegistration addValueChangeHandlerSource(final ValueChangeHandler<T> handler) {
+        return suggestedEditor.addHandler(handler, ValueChangeEvent.getType());
     }
+*/
 
     @Override
     public void setValue(ID value) {
@@ -87,8 +88,12 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
 
     @Override
     public ID getValue() {
-        T value = suggestedEditor.getValue();
+        T value = getSourceValue();
         return value != null ? idFunction.getValue(value) : null;
+    }
+
+    public T getSourceValue() {
+        return suggestedEditor.getValue();
     }
 
     public void setAcceptableValues(Collection<T> values) {
@@ -107,4 +112,22 @@ public class MappedSuggestedEditor<T, ID extends Serializable> extends Composite
     public void setShortListExpected(boolean shortListExpected) {
         suggestedEditor.setShortListExpected(shortListExpected);
     }
+
+    @Override
+    public HandlerRegistration addSelectionHandler(SelectionHandler<T> handler) {
+        return suggestedEditor.addSelectionHandler(handler);
+    }
+
+    @Override
+    public HandlerRegistration addValueChangeHandler(final ValueChangeHandler<ID> handler) {
+        return suggestedEditor.addValueChangeHandler(new ValueChangeHandler<T>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<T> event) {
+                handler.onValueChange(new ValueChangeEvent<ID>(getValue()) {
+
+                });
+            }
+        });
+    }
+
 }
