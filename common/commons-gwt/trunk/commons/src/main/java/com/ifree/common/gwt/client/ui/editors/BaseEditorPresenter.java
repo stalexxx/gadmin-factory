@@ -207,6 +207,7 @@ public abstract class BaseEditorPresenter<
                         onBack();
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
+                        getView().setSaveButtonEnabled(true);
                     }
                 }
 

@@ -69,17 +69,24 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     @POST
     public Response save(EntityDto_ dto) {
         Entity_ entity = getConversionService().convert(dto, getEntityClazz());
+
         ID id = getId(entity);
+        boolean exist = exist(dto, entity);
 
         SavingResult<ID> savingResult;
 
-        if (id != null && getJpaRepository().exists(id)) {
+        if (exist &&  id != null && getJpaRepository().exists(id)) {
             savingResult = update(dto, entity, id);
         } else {
             savingResult = create(dto, entity);
         }
 
         return Response.ok(savingResult).build();
+    }
+
+    protected boolean exist(EntityDto_ dto, Entity_ entity) {
+        ID id = getId(entity);
+        return id != null;
     }
 
     //  @Override
