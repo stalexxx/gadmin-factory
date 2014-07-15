@@ -162,6 +162,11 @@
             <version>${version.gin}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+        </dependency>
+
     </dependencies>
 
     <scm>
