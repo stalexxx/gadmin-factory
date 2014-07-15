@@ -1,19 +1,18 @@
-package com.ifree.common.gwt.client.ui.widgets;
+package com.ifree.common.gwt.client.ui.labels;
 
 import com.google.gwt.editor.client.LeafValueEditor;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 
 /**
  * Created by alex on 04.07.14.
  */
 public class RenderedLabel<T> extends Composite implements LeafValueEditor<T> {
 
-    private final HTML label;
+    protected final HTML label;
 
-    private final Renderer<T> renderer;
+    protected final Renderer<T> renderer;
 
 
     public RenderedLabel(Renderer<T> renderer) {
@@ -27,7 +26,7 @@ public class RenderedLabel<T> extends Composite implements LeafValueEditor<T> {
 
     @Override
     public void setValue(T value) {
-        label .setHTML(renderer.render(value));
+        label.setText(renderer.render(value));
     }
 
     @Override
