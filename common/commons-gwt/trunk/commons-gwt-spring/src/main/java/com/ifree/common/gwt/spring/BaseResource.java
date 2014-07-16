@@ -5,8 +5,10 @@ import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
 import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
-import com.ifree.common.gwt.shared.loader.*;
-import com.ifree.common.gwt.shared.types.DateInterval;
+import com.ifree.common.gwt.shared.loader.FilterConfig;
+import com.ifree.common.gwt.shared.loader.FilterConfigBean;
+import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
+import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -156,7 +158,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
      * @param filter
      * @return
      */
-    private Specification<Entity_> createExactSpecification(String field, FilterConfig filter) {
+    protected Specification<Entity_> createExactSpecification(String field, FilterConfig filter) {
         return null;
     }
 

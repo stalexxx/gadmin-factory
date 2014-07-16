@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.ifree.common.gwt.shared.types.DateInterval;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.DateTimePicker;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerLanguage;
+import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerPosition;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerView;
 
 /**
@@ -48,6 +49,8 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         //from.setStartView(DateTimePickerView.MONTH);
         normalize(from);
         normalize(to);
+        from.setPosition(DateTimePickerPosition.TOP_RIGHT);
+        to.setPosition(DateTimePickerPosition.TOP_LEFT);
 
         panel.add(sfrom);
         panel.add(sto);
