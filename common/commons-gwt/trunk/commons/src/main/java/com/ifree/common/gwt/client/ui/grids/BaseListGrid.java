@@ -381,12 +381,15 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         return keyProvider.getKey(item);
     }
 
-    public void setDefaultSortingColumn(Column<?, ?> column) {
+
+    public void setDefaultSortingColumn(Column<?, ?> column, boolean isAsc) {
+        column.setDefaultSortAscending(isAsc);
+
         ColumnSortList columnSortList = dataGrid.getColumnSortList();
         columnSortList.push(column);
         ColumnSortEvent.fire(this, columnSortList);
 
-        loader.addSortInfo(new SortInfoBean(column.getDataStoreName(), column.isDefaultSortAscending() ? SortDir.ASC :SortDir.DESC));
+        loader.addSortInfo(new SortInfoBean(column.getDataStoreName(), column.isDefaultSortAscending() ? SortDir.ASC : SortDir.DESC));
     }
 
 
