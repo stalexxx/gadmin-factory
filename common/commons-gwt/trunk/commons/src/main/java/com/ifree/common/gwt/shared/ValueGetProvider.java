@@ -15,7 +15,7 @@ public abstract class ValueGetProvider<T, V> implements ValueProvider<T, V> {
     }
 
     @Override
-    public final void setValue(T object, V value) {
+    public void setValue(T object, V value) {
         throw new UnsupportedOperationException();
     }
 

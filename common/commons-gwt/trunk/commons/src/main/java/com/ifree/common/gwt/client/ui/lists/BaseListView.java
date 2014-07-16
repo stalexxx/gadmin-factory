@@ -148,12 +148,27 @@ public abstract class BaseListView<
 
     @Override
     public void setFilter(_Filter filter) {
-        TakesValue<_Filter> filterPeer = filterPanel;
+        TakesValue<_Filter> filterPeer = filterPanel!= null ? filterPanel : getBaseFilterPeer();
+
         if (filterPeer != null) {
             filterPeer.setValue(filter);
         }
 
         getGrid().setFilter(filter);
+    }
+
+    private TakesValue<_Filter> getBaseFilterPeer() {
+        return new TakesValue<_Filter>() {
+            @Override
+            public void setValue(_Filter value) {
+                toolbar.setSearchFieldText(value.getName());
+            }
+
+            @Override
+            public _Filter getValue() {
+                return null;
+            }
+        };
     }
 
     @Override

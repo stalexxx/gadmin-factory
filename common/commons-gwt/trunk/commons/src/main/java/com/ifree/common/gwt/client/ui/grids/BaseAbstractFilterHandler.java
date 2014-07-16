@@ -29,5 +29,11 @@ public final class BaseAbstractFilterHandler extends AbstractFilterHandler<BaseF
         public String getValue(BaseFilter object) {
             return object.getName();
         }
+
+
+        @Override
+        public void setValue(BaseFilter object, String value) {
+            object.setName(value);
+        }
     }
 }
