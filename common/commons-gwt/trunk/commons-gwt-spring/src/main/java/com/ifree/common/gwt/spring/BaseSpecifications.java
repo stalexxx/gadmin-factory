@@ -65,6 +65,8 @@ public class BaseSpecifications {
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 return cb.equal(root.get(field), value);
             }
+
+
         };
     }
 
