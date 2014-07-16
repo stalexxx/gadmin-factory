@@ -190,6 +190,10 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
         header.setText(displayHeader);
     }
 
+    public void setSearchFieldText(String value) {
+        search.setText(value);
+    }
+
     @SuppressWarnings("PackageVisibleInnerClass")
     interface Binder extends UiBinder<Widget, BaseToolbar> {
 
