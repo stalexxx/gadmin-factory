@@ -178,6 +178,22 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         }, header, width, sortable, sortable ? valueProvider.getPath() : null);
     }
 
+    protected Column<T, String> addSimpleNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
+        return addColumn(new TextColumn<T>() {
+            @Override
+            public String getValue(T object) {
+                if (object != null) {
+                    Number value = valueProvider.getValue(object);
+                    if (value != null) {
+                        return String.valueOf(value);
+                    }
+
+                }
+                return EMPTY_STRING;
+            }
+        }, header, width, sortable, sortable ? valueProvider.getPath() : null);
+    }
+
     protected <V> Column<T, String> addRenderedColumn(final ValueProvider<T, V> valueProvider, final Renderer<V> renderer,
                                                       String header, int width, boolean sortable) {
         return addColumn(new TextColumn<T>() {
