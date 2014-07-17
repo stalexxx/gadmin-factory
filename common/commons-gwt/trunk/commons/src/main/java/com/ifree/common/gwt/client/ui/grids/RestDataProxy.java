@@ -5,9 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.rest.ListingRestService;
-import com.ifree.common.gwt.shared.SortDir;
 import com.ifree.common.gwt.shared.SortInfoBean;
-import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
@@ -74,9 +72,9 @@ public class RestDataProxy<T,
     protected FilterPagingLoadConfig prepareLoadConfig(FilterPagingLoadConfig loadConfig) {
         FilterPagingLoadConfig config = super.prepareLoadConfig(loadConfig);
 
-        ValueProvider<T, ?> column = getSecondSortColumn();
+        SortInfoBean sortColumn = getSecondSortColumn();
 
-        if (column != null) {
+        if (sortColumn != null) {
 
             List<SortInfoBean> sortInfo = config.getSortInfo();
             if (sortInfo == null) {
@@ -84,15 +82,15 @@ public class RestDataProxy<T,
 
             }
 
-            if (!contains(sortInfo, column.getPath())) {
-                sortInfo.add(new SortInfoBean(column.getPath(), SortDir.DESC));
+            if (!contains(sortInfo, sortColumn.getSortField())) {
+                sortInfo.add(sortColumn);
             }
         }
 
         return config;
     }
 
-    protected ValueProvider<T, ?> getSecondSortColumn() {
+    protected SortInfoBean getSecondSortColumn() {
         return null;
     }
 
