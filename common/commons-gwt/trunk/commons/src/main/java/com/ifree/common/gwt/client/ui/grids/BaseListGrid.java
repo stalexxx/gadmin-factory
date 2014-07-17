@@ -163,7 +163,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
 
 
-    protected Column<T, String> addNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
+    protected Column<T, String> addFormattedNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
@@ -178,7 +178,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         }, header, width, sortable, sortable ? valueProvider.getPath() : null);
     }
 
-    protected Column<T, String> addSimpleNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
+    protected Column<T, String> addNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         return addColumn(new TextColumn<T>() {
             @Override
             public String getValue(T object) {
