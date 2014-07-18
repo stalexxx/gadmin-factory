@@ -1,23 +1,31 @@
 package com.ifree.common.gwt.client.ui.widgets;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.editor.client.LeafValueEditor;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.ifree.common.gwt.shared.types.DateInterval;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.DateTimePicker;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerLanguage;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerPosition;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerView;
+import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.events.ChangeDateEvent;
+import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.events.ChangeDateHandler;
 
 import java.util.Date;
 
 /**
  * Created by alex on 08.07.14.
  */
-public class DateIntervalEditor extends Composite implements LeafValueEditor<DateInterval> {
+public class DateIntervalEditor extends Composite implements LeafValueEditor<DateInterval>, HasValue<DateInterval> {
 
     private final DateTimePicker from;
     private final DateTimePicker to;
@@ -60,6 +68,19 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         panel.add(sto);
         initWidget(panel);
 
+        ChangeDateHandler changeDateHandler = new ChangeDateHandler() {
+            @Override
+            public void onChangeDate(ChangeDateEvent evt) {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        ValueChangeEvent.fire(DateIntervalEditor.this, getValue());
+                    }
+                });
+            }
+        };
+        from.addChangeDateHandler(changeDateHandler);
+        to.addChangeDateHandler(changeDateHandler);
     }
 
     public static void normalize(DateTimePicker picker) {
@@ -74,12 +95,22 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
 
     @Override
     public void setValue(DateInterval value) {
+        setValue(value, false);
+    }
+
+    @Override
+    public void setValue(DateInterval value, boolean fireEvents) {
+
         if (value != null) {
             from.setValue(value.getFrom());
             to.setValue(value.getTo() != null ? new Date(value.getTo().getTime() - DAY) : null);
         } else {
             from.setValue(null);
             to.setValue(null);
+        }
+
+        if (fireEvents) {
+            ValueChangeEvent.fire(this, value);
         }
     }
 
@@ -91,5 +122,10 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         } else {
             return null;
         }
+    }
+
+    @Override
+    public HandlerRegistration addValueChangeHandler(ValueChangeHandler<DateInterval> handler) {
+        return addHandler(handler, ValueChangeEvent.getType());
     }
 }
