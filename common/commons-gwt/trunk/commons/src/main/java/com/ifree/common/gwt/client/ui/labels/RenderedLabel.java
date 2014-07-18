@@ -13,6 +13,7 @@ public class RenderedLabel<T> extends Composite implements LeafValueEditor<T> {
     protected final HTML label;
 
     protected final Renderer<T> renderer;
+    private T value;
 
 
     public RenderedLabel(Renderer<T> renderer) {
@@ -26,11 +27,12 @@ public class RenderedLabel<T> extends Composite implements LeafValueEditor<T> {
 
     @Override
     public void setValue(T value) {
+        this.value = value;
         label.setText(renderer.render(value));
     }
 
     @Override
     public T getValue() {
-        return null;
+        return value;
     }
 }
