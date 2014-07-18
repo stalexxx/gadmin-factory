@@ -17,11 +17,16 @@ public class GenericEditAction<T> extends SingleItemAlwaysVisibleAction<T> {
     private final String token;
     private ModelKeyProvider<T> keyProvider;
 
-    public GenericEditAction(PlaceManager placeManager, String token, ModelKeyProvider<T> keyProvider) {
-        super("Редактировать");
+    public GenericEditAction(PlaceManager placeManager, String token, ModelKeyProvider<T> keyProvider, String caption) {
+        super(caption);
         this.placeManager = placeManager;
         this.token = token;
         this.keyProvider = keyProvider;
+
+    }
+
+    public GenericEditAction(PlaceManager placeManager, String token, ModelKeyProvider<T> keyProvider) {
+        this(placeManager, token, keyProvider, "Редактировать");
     }
 
     @Override
