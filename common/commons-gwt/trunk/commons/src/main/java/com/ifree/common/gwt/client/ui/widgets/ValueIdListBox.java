@@ -12,7 +12,10 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.text.shared.Renderer;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasEnabled;
+import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.ifree.common.gwt.shared.ValueProvider;
@@ -63,7 +66,7 @@ public class ValueIdListBox<T, ID> extends Composite implements LeafValueEditor<
             @Override
             public void onValueChange(ValueChangeEvent<T> event) {
                 SelectionChangeEvent.fire(ValueIdListBox.this);
-
+                ValueChangeEvent.fire(ValueIdListBox.this, getValue());
             }
         });
 

@@ -4,6 +4,9 @@ import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.TakesValue;
@@ -16,6 +19,7 @@ import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.Form;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.constants.Styles;
 
 /**
  * Created by alex on 23.04.14.
@@ -46,14 +50,30 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
 
         form.add(buttonGroup);
 
-        buttonGroup.add(apply = initApply());
+        buttonGroup.addStyleName(Styles.CLEARFIX);
+
+//        buttonGroup.add(apply = initApply());
         buttonGroup.add(reset = initReset());
+
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void addChangeHandlers(HasValueChangeHandlers... hasHandlerEditors) {
+        ValueChangeHandler handler = new ValueChangeHandler() {
+            @Override
+            public void onValueChange(ValueChangeEvent event) {
+                onApplyFilter();
+            }
+        };
+        for (HasValueChangeHandlers<?> editor : hasHandlerEditors) {
+            editor.addValueChangeHandler(handler);
+        }
     }
 
     protected abstract UiBinder<HTMLPanel, E> createBinder();
 
     private Button initReset() {
-        return new Button("Сбросить", IconType.REFRESH, new ClickHandler() {
+        Button reset = new Button("Сбросить", IconType.TIMES, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 uiHandlers.onPerformFilter(new PerformFilterEvent(null));
@@ -61,6 +81,8 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
                 onReset();
             }
         });
+        reset.setType(ButtonType.PRIMARY);
+        return reset;
 
     }
 
@@ -72,12 +94,17 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
         Button apply = new Button("Применить", IconType.BELL, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                uiHandlers.onPerformFilter(new PerformFilterEvent(getFilter()));
+                onApplyFilter();
             }
         });
         apply.setType(ButtonType.PRIMARY);
+        apply.addStyleName(Styles.PULL_LEFT);
         return apply;
 
+    }
+
+    protected void onApplyFilter() {
+        uiHandlers.onPerformFilter(new PerformFilterEvent(getFilter()));
     }
 
     protected abstract SimpleBeanEditorDriver<F, E> createDriver();
