@@ -16,8 +16,8 @@ public class DateIntervalFilterHandler extends FilterHandler<DateInterval> {
     @Override
   public DateInterval convertToObject(String value) {
       String[] strings = value.split(DELIM);
-      String from = strings.length > 0 ? strings[0] : null;
-      String to = strings.length > 1 ? strings[1] : null;
+      String from = strings.length > 0 && strings[0].length() > 0 ? strings[0] : null;
+      String to = strings.length > 1 && strings[1].length() > 0 ? strings[1] : null;
 
       return new DateInterval(from != null ? new Date(Long.parseLong(from)) : null,
               to != null ? new Date(Long.parseLong(to)) : null

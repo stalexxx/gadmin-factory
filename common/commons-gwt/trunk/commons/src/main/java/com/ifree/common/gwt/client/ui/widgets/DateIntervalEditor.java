@@ -12,6 +12,8 @@ import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTime
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerPosition;
 import org.gwtbootstrap3.extras.datetimepicker.client.ui.base.constants.DateTimePickerView;
 
+import java.util.Date;
+
 /**
  * Created by alex on 08.07.14.
  */
@@ -21,6 +23,8 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
     private final DateTimePicker to;
     public static final String PATTERN = "dd-mm-yy";
     public static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(PATTERN);
+
+    private static final int DAY = 24 * 60 * 60 * 1000;
 
     public DateIntervalEditor() {
         FlowPanel panel = new FlowPanel();
@@ -72,7 +76,7 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
     public void setValue(DateInterval value) {
         if (value != null) {
             from.setValue(value.getFrom());
-            to.setValue(value.getTo());
+            to.setValue(value.getTo() != null ? new Date(value.getTo().getTime() - DAY) : null);
         } else {
             from.setValue(null);
             to.setValue(null);
@@ -82,7 +86,8 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
     @Override
     public DateInterval getValue() {
         if (from.getValue() != null || to.getValue() != null) {
-            return new DateInterval(from.getValue(), to.getValue());
+            return new DateInterval(from.getValue(),
+                    to.getValue() != null ? new Date(to.getValue().getTime() + DAY) : null);
         } else {
             return null;
         }
