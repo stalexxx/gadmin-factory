@@ -29,8 +29,9 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
 
     private final DateTimePicker from;
     private final DateTimePicker to;
-    public static final String PATTERN = "dd-mm-yy";
-    public static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(PATTERN);
+    public static final String DATE_PATTERN = "dd-mm-yy";
+    public static final String DATE_TIME_PATTERN = "dd-mm-yy HH:ii";
+    public static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
 
     private static final int DAY = 24 * 60 * 60 * 1000;
 
@@ -59,8 +60,8 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         sto.setWidth("49%");
 
         //from.setStartView(DateTimePickerView.MONTH);
-        normalize(from);
-        normalize(to);
+        makeDatePicker(from);
+        makeDatePicker(to);
         from.setPosition(DateTimePickerPosition.TOP_RIGHT);
         to.setPosition(DateTimePickerPosition.TOP_LEFT);
 
@@ -83,10 +84,20 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         to.addChangeDateHandler(changeDateHandler);
     }
 
-    public static void normalize(DateTimePicker picker) {
+    public static void makeDatePicker(DateTimePicker picker) {
         picker.setMaxView(DateTimePickerView.MONTH);
         picker.setMinView(DateTimePickerView.MONTH);
-        picker.setFormat(PATTERN);
+        picker.setFormat(DATE_PATTERN);
+        picker.setHasKeyboardNavigation(true);
+        picker.setShowTodayButton(true);
+        picker.setAutoClose(true);
+        picker.setLanguage(DateTimePickerLanguage.RU);
+    }
+
+    public static void makeDateTimePicker(DateTimePicker picker) {
+        picker.setMaxView(DateTimePickerView.MONTH);
+        picker.setMinView(DateTimePickerView.HOUR);
+        picker.setFormat(DATE_TIME_PATTERN);
         picker.setHasKeyboardNavigation(true);
         picker.setShowTodayButton(true);
         picker.setAutoClose(true);

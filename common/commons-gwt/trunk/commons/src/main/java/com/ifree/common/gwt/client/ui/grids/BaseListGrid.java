@@ -205,20 +205,31 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
-        return addColumn(new TextColumn<T>() {
+    private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat dateShort) {
+        return new TextColumn<T>() {
             @Override
             public String getValue(T object) {
                 if (object != null) {
 
                     Date date = provider.getValue(object);
                     if (date != null) {
-                        return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(date);
+                        return DateTimeFormat.getFormat(dateShort).format(date);
                     }
                 }
                 return null;
             }
-        }, header, width, sortable, sortable ? provider.getPath() : null);
+        };
+    }
+
+    protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
+
+        return addColumn(dateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_SHORT),
+                header, width, sortable, sortable ? provider.getPath() : null);
+    }
+
+    protected Column<T, String> addDateTimeColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
+        return addColumn(dateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT),
+                header, width, sortable, sortable ? provider.getPath() : null);
     }
 
     protected Column<T, T> addBooleanColumn(final ValueProvider<T, Boolean> field,
