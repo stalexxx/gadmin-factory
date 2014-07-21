@@ -114,28 +114,33 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
 
     }
 
+    // @Override
+    public SavingResult<ID> update(EntityDto_ dto, Entity_ entity, ID id) {
+
+        Entity_ toUpdate = getJpaRepository().findOne(id);
+        copyFields(entity, toUpdate);
+
+        try {
+            validateOnUpdate(dto);
+
+            doPreSave(dto, toUpdate, id);
+
+            Entity_ saved = getJpaRepository().save(toUpdate);
+
+            doAdditionalSave(dto, saved, id);
+
+            return new SavingResult<ID>(getId(saved));
+        } catch (ValidationException e) {
+            return new SavingResult<ID>(e.getMessage());
+        }
+    }
+
     protected void doAdditionalSave(EntityDto_ dto, Entity_ result, ID id) {}
 
     protected void validateOnCreation(EntityDto_ dto) throws ValidationException {}
+    protected void validateOnUpdate(EntityDto_ dto) throws ValidationException {}
 
     protected void doPreSave(EntityDto_ dto, Entity_ entity, ID id) {}
-
-    // @Override
-     public SavingResult<ID> update(EntityDto_ dto, Entity_ entity, ID id) {
-
-         Entity_ toUpdate = getJpaRepository().findOne(id);
-         copyFields(entity, toUpdate);
-
-         doPreSave(dto, toUpdate, id);
-
-
-         Entity_ saved = getJpaRepository().save(toUpdate);
-
-         doAdditionalSave(dto, saved, id);
-
-         return new SavingResult<ID>(getId(saved));
-
-     }
 
     protected abstract void copyFields(Entity_ from, Entity_ to);
 
