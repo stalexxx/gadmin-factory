@@ -428,6 +428,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
     public void setFilter(_Filter filter) {
+        pager.setPageStart(0);
         loader.setFilter(filter);
     }
 

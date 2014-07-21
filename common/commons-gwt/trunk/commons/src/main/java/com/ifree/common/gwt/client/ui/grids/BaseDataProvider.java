@@ -53,7 +53,6 @@ public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHan
     protected void onRangeChanged(HasData display) {
         Range visibleRange = display.getVisibleRange();
         loader.load(visibleRange.getStart(), visibleRange.getLength());
-      //  loader.load();
     }
 
     @Override
