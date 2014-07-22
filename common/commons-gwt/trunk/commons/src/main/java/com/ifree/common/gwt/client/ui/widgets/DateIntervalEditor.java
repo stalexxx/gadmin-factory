@@ -62,8 +62,8 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         //from.setStartView(DateTimePickerView.MONTH);
         makeDatePicker(from);
         makeDatePicker(to);
-        from.setPosition(DateTimePickerPosition.TOP_RIGHT);
-        to.setPosition(DateTimePickerPosition.TOP_LEFT);
+
+        setPosition(DateTimePickerPosition.TOP_RIGHT, DateTimePickerPosition.TOP_LEFT);
 
         panel.add(sfrom);
         panel.add(sto);
@@ -82,6 +82,11 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         };
         from.addChangeDateHandler(changeDateHandler);
         to.addChangeDateHandler(changeDateHandler);
+    }
+
+    public void setPosition(DateTimePickerPosition fromPosition, DateTimePickerPosition toPosition) {
+        from.setPosition(fromPosition);
+        to.setPosition(toPosition);
     }
 
     public static void makeDatePicker(DateTimePicker picker) {
