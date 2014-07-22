@@ -65,6 +65,7 @@ public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHan
 
             updateRowCount(result.getTotalLength(), true);
             updateRowData(result.getOffset(), currentData);
+
         }
     }
 }

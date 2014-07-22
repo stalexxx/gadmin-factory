@@ -109,6 +109,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         }));
     }
 
+
     protected Specification<Entity_> createSpecification(FilterConfig filter) {
 
         Specification<Entity_> specification = createExactSpecification(filter.getField(), filter);
@@ -159,7 +160,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
      * @return
      */
     protected Specification<Entity_> createExactSpecification(String field, FilterConfig filter) {
-        return null;
+        return NONE_SPECIFICATION;
     }
 
     protected abstract Specification<Entity_> createSpecificationByUnfound(FilterConfig filter);
