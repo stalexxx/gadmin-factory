@@ -193,6 +193,7 @@ public abstract class BaseListView<
             listItem.setEnabled(enabled);
             listItem.setText(displayText);
             listItem.setVisible(visible);
+
         }
     }
 

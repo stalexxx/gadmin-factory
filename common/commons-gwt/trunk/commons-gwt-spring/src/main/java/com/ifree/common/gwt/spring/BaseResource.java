@@ -38,6 +38,8 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             spec = andOrWhere(spec, specification);
         }
 
+        spec = andOrWhere(spec, postProcessSpecifications());
+
         Page<Entity_> page;
         if (spec != null) {
             page = findAll(spec, config);
@@ -53,6 +55,13 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         return new PagingLoadResultBean<EntityDto_>(dtos, (int) page.getTotalElements(), config.getOffset());
     }
 
+    /**
+     *
+     * @return
+     */
+    protected Specification<Entity_> postProcessSpecifications() {
+        return null;
+    }
     protected Specifications<Entity_> createInitSpecification() {
         return null;
     }
@@ -117,9 +126,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
             return specification;
         }
 
-
         if (filter.getValue() != null) {
-
 
             String type = filter.getType();
 
