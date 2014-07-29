@@ -134,4 +134,8 @@ public class BooleanEditor extends Composite implements LeafValueEditor<Boolean>
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
+    public void setNoEnabled(boolean b) {
+        no.setEnabled(b);
+
+    }
 }
