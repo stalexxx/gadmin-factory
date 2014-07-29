@@ -36,7 +36,7 @@
 
         <version.guava>17.0</version.guava>
 
-        <version.gwt.bootstrap3>0.8-SNAPSHOT</version.gwt.bootstrap3>
+        <version.gwt.bootstrap3>0.7.1</version.gwt.bootstrap3>
         <source.version>1.7</source.version>
 
         <maven-compiler-plugin.source>1.7</maven-compiler-plugin.source>
