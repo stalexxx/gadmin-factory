@@ -6,10 +6,7 @@
 package com.ifree.common.gwt.client.ui.lists;
 
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.ColumnSortList;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.View;
@@ -17,8 +14,9 @@ import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.ui.application.CustomizedWithRoles;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
-import com.ifree.common.gwt.shared.loader.LoadEvent;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
+
+import javax.inject.Provider;
 
 /**
  *
@@ -43,7 +41,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void setFilter(F filter);
 
-    void addAction(Action<M> action, Command command);
+    void addAction(Action<M> action, Provider<M> selectedProvider);
 
     void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText);
 

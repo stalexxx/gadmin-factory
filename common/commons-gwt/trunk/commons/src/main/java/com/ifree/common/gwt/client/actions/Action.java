@@ -20,4 +20,7 @@ public interface Action<T> {
 
     Action<T> action();
 
+    boolean hasHistoryToken();
+
+    String actualHistoryToken(@Nullable T item);
 }

@@ -8,10 +8,6 @@ package com.ifree.common.gwt.client.ui.lists;
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
-import com.google.gwt.user.cellview.client.ColumnSortList;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -27,17 +23,21 @@ import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.events.StartTypingEvent;
-import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.rest.ListingRestService;
+import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.AlertingAsyncCallback;
 import com.ifree.common.gwt.client.ui.application.CountBackAsyncCallback;
-import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
-import com.ifree.common.gwt.client.ui.grids.*;
-import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.application.security.CurrentUser;
+import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
+import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
+import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
+import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
 import com.ifree.common.gwt.client.utils.ViewHeaderResolver;
 import com.ifree.common.gwt.shared.PropertyAccess;
-import com.ifree.common.gwt.shared.loader.*;
+import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
+import com.ifree.common.gwt.shared.loader.LoadEvent;
+import com.ifree.common.gwt.shared.loader.LoadHandler;
+import com.ifree.common.gwt.shared.loader.PagingLoadResult;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 
 import javax.annotation.Nullable;
@@ -233,15 +233,18 @@ public abstract class BaseListPresenter<T,
 
     public void addActions(List<Action<T>> actions) {
         if (actions != null) {
+
+            Provider<T> selectedProvider = new Provider<T>() {
+                @Override
+                public T get() {
+                    return getSelectedObject();
+                }
+            };
+
             for (final Action<T> action : actions) {
                 actionList.add(action);
-                getView().addAction(action, new Command() {
 
-                    @Override
-                    public void execute() {
-                        action.perform(getSelectedObject());
-                    }
-                });
+                getView().addAction(action, selectedProvider);
             }
         }
     }
