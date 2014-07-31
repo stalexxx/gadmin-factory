@@ -69,7 +69,7 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
         panel.add(sto);
         initWidget(panel);
 
-        ChangeDateHandler changeDateHandler = new ChangeDateHandler() {
+        from.addChangeDateHandler(new ChangeDateHandler() {
             @Override
             public void onChangeDate(ChangeDateEvent evt) {
                 Scheduler.get().scheduleDeferred(new Command() {
@@ -78,10 +78,27 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
                         ValueChangeEvent.fire(DateIntervalEditor.this, getValue());
                     }
                 });
+                to.setStartDate(from.getValue());
+
             }
-        };
-        from.addChangeDateHandler(changeDateHandler);
-        to.addChangeDateHandler(changeDateHandler);
+        });
+        to.addChangeDateHandler(new ChangeDateHandler() {
+            @Override
+            public void onChangeDate(ChangeDateEvent evt) {
+                Scheduler.get().scheduleDeferred(new Command() {
+                    @Override
+                    public void execute() {
+                        ValueChangeEvent.fire(DateIntervalEditor.this, getValue());
+                    }
+
+                });
+
+                from.setEndDate(to.getValue());
+            }
+
+        });
+
+
     }
 
     public void setPosition(DateTimePickerPosition fromPosition, DateTimePickerPosition toPosition) {
@@ -118,11 +135,22 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
     public void setValue(DateInterval value, boolean fireEvents) {
 
         if (value != null) {
+
             from.setValue(value.getFrom());
             to.setValue(value.getTo() != null ? new Date(value.getTo().getTime() - DAY) : null);
+
+            if (value.getTo() != null) {
+                from.setEndDate(new Date(value.getTo().getTime() - DAY));
+            }
+            if (value.getFrom() != null) {
+                to.setStartDate(value.getFrom());
+            }
+
         } else {
             from.setValue(null);
             to.setValue(null);
+            from.setStartDate((String)null);
+            to.setStartDate((String)null);
         }
 
         if (fireEvents) {
