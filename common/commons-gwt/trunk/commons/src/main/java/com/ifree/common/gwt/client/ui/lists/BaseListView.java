@@ -12,7 +12,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortList;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.TakesValue;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
@@ -27,6 +26,7 @@ import org.gwtbootstrap3.client.ui.AnchorListItem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Provider;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +34,7 @@ import java.util.Map;
  * @author Alexander Ostrovskiy (alex)
  * @since 03.09.13
  */
+@SuppressWarnings("GWTStyleCheck")
 public abstract class BaseListView<
         T,
         _Filter extends BaseFilter,
@@ -172,16 +173,18 @@ public abstract class BaseListView<
     }
 
     @Override
-    public void addAction(Action<T> action, final Command command) {
+    public void addAction(final Action<T> action, Provider<T> selectedProvider) {
         final AnchorListItem actionWidget = actionBuilder.build(action);
-        actionWidget.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                if (actionWidget.isEnabled()) {
-                    command.execute();
+        if (!action.hasHistoryToken()) {
+            actionWidget.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent event) {
+                    if (actionWidget.isEnabled()) {
+                        action.perform(getSelectedObject());
+                    }
                 }
-            }
-        });
+            });
+        }
         actionMap.put(action, actionWidget);
         toolbar.addAction(action, actionWidget);
     }
@@ -194,6 +197,10 @@ public abstract class BaseListView<
             listItem.setText(displayText);
             listItem.setVisible(visible);
 
+            if (action.hasHistoryToken()) {
+                listItem.setTargetHistoryToken(action.actualHistoryToken(getSelectedObject()));
+
+            }
         }
     }
 

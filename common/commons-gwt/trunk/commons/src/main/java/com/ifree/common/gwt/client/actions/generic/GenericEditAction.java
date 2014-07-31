@@ -7,6 +7,7 @@ import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
 * Created by alex on 28.04.14.
@@ -29,13 +30,24 @@ public class GenericEditAction<T> extends SingleItemAlwaysVisibleAction<T> {
         this(placeManager, token, keyProvider, "Редактировать");
     }
 
+
     @Override
-    protected void nonNullPerform(@Nonnull T item) {
-        PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(token).
-                with(BaseNameTokes.ID_PARAM, getId(item)).build();
-        placeManager.revealPlace(placeRequest);
+    public boolean hasHistoryToken() {
+        return true;
     }
 
+    @Override
+    protected void nonNullPerform(@Nonnull T item) {
+
+        //placeManager.revealPlace(placeRequest);
+    }
+
+    @Override
+    public String actualHistoryToken(@Nullable T item) {
+        PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(token).
+                with(BaseNameTokes.ID_PARAM, getId(item)).build();
+        return placeManager.buildHistoryToken(placeRequest);
+    }
 
     protected String getId(T item) {
         return item != null ? keyProvider.getKey(item) : null;

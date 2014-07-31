@@ -1,5 +1,7 @@
 package com.ifree.common.gwt.client.actions;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by alex on 23.04.14.
  */
@@ -38,5 +40,14 @@ public abstract class BaseAction<T> implements Action<T> {
         return this;
     }
 
+    @Override
+    public boolean hasHistoryToken() {
+        return false;
+    }
+
+    @Override
+    public String actualHistoryToken(@Nullable T item) {
+        return null;
+    }
 
 }
