@@ -78,6 +78,7 @@ public abstract class BaseListView<
 
         BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar);
         viewPanel.addPager(dataGrid.getPager());
+        viewPanel.addPageSizeWidget(dataGrid.getPageSizeWidget());
 
         initWidget(viewPanel);
     }
