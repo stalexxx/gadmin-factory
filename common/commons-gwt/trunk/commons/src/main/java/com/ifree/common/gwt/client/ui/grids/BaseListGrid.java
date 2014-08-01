@@ -7,15 +7,19 @@ package com.ifree.common.gwt.client.ui.grids;
 
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.*;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.text.shared.AbstractRenderer;
 import com.google.gwt.text.shared.AbstractSafeHtmlRenderer;
 import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
@@ -23,10 +27,8 @@ import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.*;
 import com.google.web.bindery.event.shared.EventBus;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
@@ -36,6 +38,7 @@ import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
+import org.gwtbootstrap3.client.ui.ValueListBox;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
@@ -54,6 +57,11 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     private static final int PAGE_SIZE_UNLIMIT = 1000000;
     public static final String EMPTY_STRING = "";
+    public static final int PSIZE_15 = 5;
+    public static final int PSIZE_25 = 25;
+    public static final int PSIZE_50 = 50;
+    public static final int PSIZE_100 = 100;
+    public static final int PSIZE_200 = 200;
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -68,7 +76,11 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     private final FilterPagingLoader<T, _Filter> loader;
 
     private Integer pageSize;
+
     protected BasePager pager;
+    protected ValueListBox<Integer> itemsPerPage;
+
+
 
     @Inject
     protected EventBus eventBus;
@@ -346,6 +358,28 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             pager = new BasePager();
             pager.addStyleName(Styles.PULL_LEFT);
             pager.setDisplay(dataGrid);
+
+            itemsPerPage = new ValueListBox<Integer>(new AbstractRenderer<Integer>() {
+                @Override
+                public String render(Integer object) {
+                    return object !=  null ? object.toString() : null;
+                }
+            });
+
+            itemsPerPage.setValue(pageSize());
+
+            itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200));
+            itemsPerPage.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+                @Override
+                public void onValueChange(ValueChangeEvent<Integer> event) {
+                    Integer value = event.getValue();
+                    if (value != null) {
+                        dataGrid.setVisibleRange(new Range(0, value));
+                    }
+
+                }
+            });
+
         }
 
         selectionModel = new SingleSelectionModel<T>(this);
@@ -434,12 +468,18 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         loader.load();
     }
 
+    public Widget getPageSizeWidget() {
+        return itemsPerPage;
+    }
+
     public BaseDataProvider<T> getDataPrivider() {
         return dataProvider;
     }
 
     public void setFilter(_Filter filter) {
-        pager.setPageStart(0);
+        if (pager != null) {
+            pager.setPageStart(0);
+        }
         loader.setFilter(filter);
     }
 

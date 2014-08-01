@@ -15,10 +15,10 @@ import com.google.gwt.text.shared.Renderer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.ValueListBox;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.ifree.common.gwt.shared.ValueProvider;
+import org.gwtbootstrap3.client.ui.ValueListBox;
 
 import javax.annotation.Nullable;
 import java.util.List;
