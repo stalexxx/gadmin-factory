@@ -39,7 +39,6 @@ public class BaseViewPanel<T, F extends Filter> extends FlowPanel {
         if (pageSizeWidget != null) {
             pageSizeWidget.addStyleName("pagination");
             row.add(wrap(pageSizeWidget, ColumnSize.MD_1));
-
         }
     }
 

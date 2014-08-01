@@ -70,7 +70,7 @@ public class ValueIdListBox<T, ID> extends Composite implements LeafValueEditor<
             }
         });
 
-        initWidget(listBox);
+        initWidget(CleareableWrapper.of(listBox));
     }
 
     /*===========================================[ CLASS METHODS ]================*/
