@@ -117,7 +117,7 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
 
     @Override
     public void setValue(F value) {
-        driver.edit(value);
+        driver.edit(value != null ? value : createEmpty());
     }
 
     @Override

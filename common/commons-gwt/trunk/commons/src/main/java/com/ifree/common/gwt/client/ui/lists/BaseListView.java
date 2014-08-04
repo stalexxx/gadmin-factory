@@ -159,6 +159,11 @@ public abstract class BaseListView<
         getGrid().setFilter(filter);
     }
 
+    @Override
+    public void clearFilter() {
+        setFilter(null);
+    }
+
     private TakesValue<_Filter> getBaseFilterPeer() {
         return new TakesValue<_Filter>() {
             @Override
