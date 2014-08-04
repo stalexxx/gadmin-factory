@@ -12,12 +12,20 @@ import com.ifree.common.gwt.client.ui.grids.AbstractFilterHandler;
 public class PlaceManagerHelper {
     public static  <F extends BaseFilter> void revealFilter(F filter, AbstractFilterHandler<F> handler,
                                                             PlaceManager placeManager, String placeToken) {
+
+        placeManager.revealPlace(buildFilterRequest(filter, handler, placeToken));
+    }
+
+
+    public static  <F extends BaseFilter> PlaceRequest buildFilterRequest(F filter, AbstractFilterHandler<F> handler,
+                                                                           String placeToken) {
         PlaceRequest.Builder builder = new PlaceRequest.Builder();
         builder.nameToken(placeToken);
 
         String filterString = handler.convertToString(filter);
         builder.with(BaseNameTokes.FILTER, filterString).build();
 
-        placeManager.revealPlace(builder.build());
+        return builder.build();
+
     }
 }
