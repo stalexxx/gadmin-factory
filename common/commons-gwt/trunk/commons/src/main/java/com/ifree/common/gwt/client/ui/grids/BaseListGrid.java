@@ -30,7 +30,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.*;
 import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.ui.application.Filter;
+import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 import com.ifree.common.gwt.shared.SortDir;
@@ -44,6 +47,7 @@ import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
 import javax.inject.Inject;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -51,7 +55,7 @@ import java.util.Date;
  * @since 08.07.13
  */
 @SuppressWarnings({"UnusedDeclaration", "SpringJavaAutowiringInspection"})
-public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler{
+public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -79,7 +83,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected BasePager pager;
     protected ValueListBox<Integer> itemsPerPage;
-
 
 
     @Inject
@@ -173,8 +176,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-
-
     protected Column<T, String> addFormattedNumberColumn(final ValueProvider<T, ? extends Number> valueProvider, String header, int width, boolean sortable) {
         return addColumn(new TextColumn<T>() {
             @Override
@@ -215,6 +216,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             }
         }, header, width, sortable, valueProvider.getPath());
     }
+
 
     private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat dateShort) {
         return new TextColumn<T>() {
@@ -268,7 +270,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    protected < R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
+    protected <R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
         final Column<T, R> column = new Column<T, R>(new AbstractSafeHtmlCell<R>(renderer) {
             @Override
             protected void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
@@ -310,7 +312,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     }
 
-    protected < C> Column<T, C> addColumn(Column<T, C> column, String header, int width) {
+    protected <C> Column<T, C> addColumn(Column<T, C> column, String header, int width) {
         return addColumn(column, header, width, false, null);
     }
 
@@ -361,7 +363,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             itemsPerPage = new ValueListBox<Integer>(new AbstractRenderer<Integer>() {
                 @Override
                 public String render(Integer object) {
-                    return object !=  null ? object.toString() : null;
+                    return object != null ? object.toString() : null;
                 }
             });
 
@@ -486,11 +488,46 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         loader.setConfigBuilder(configBuilder);
     }
 
-    public void setSecondSortingField(ValueProvider<T,? > secondSortingField) {
+    public void setSecondSortingField(ValueProvider<T, ?> secondSortingField) {
         this.secondSortingField = secondSortingField;
     }
 
     public HandlerRegistration addLoadHandler(LoadHandler handler) {
         return loader.addLoadHandler(handler);
+    }
+
+
+    protected class LinkRenderer<T, V, ID extends Serializable> extends AbstractSafeHtmlRenderer<T> {
+        private final PlaceManager placeManager;
+        private final Renderer<V> renderer;
+        private final ValueProvider<T, V> provider;
+        private final ValueProvider<V, ID> idProvider;
+        private final String nameToken;
+
+        public LinkRenderer(Renderer<V> renderer, PlaceManager placeManager, ValueProvider<T, V> provider, ValueProvider<V, ID> idProvider, String nameToken) {
+            this.renderer = renderer;
+            this.placeManager = placeManager;
+            this.provider = provider;
+            this.idProvider = idProvider;
+            this.nameToken = nameToken;
+        }
+
+        @Override
+        public SafeHtml render(T object) {
+            V value = provider.getValue(object);
+            if (value != null) {
+                PlaceRequest pr = new PlaceRequest.Builder().nameToken(nameToken).with(BaseNameTokes.ID_PARAM, String.valueOf(idProvider.getValue(value))).build();
+                String token = placeManager.buildHistoryToken(pr);
+
+
+                String rendered = renderer.render(value);
+                if (rendered == null) {
+                    rendered = "???";
+                }
+                return templates.historyTokenHref(token, rendered);
+            }
+
+            return SafeHtmlUtils.EMPTY_SAFE_HTML;
+        }
     }
 }
