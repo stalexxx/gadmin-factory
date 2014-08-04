@@ -36,4 +36,6 @@ public interface BaseTemplates extends SafeHtmlTemplates {
     @Template("<span class=\"badge\" style=\"margin: {1}px\">{0}</span>")
     SafeHtml badge(String text, int padding);
 
+    @Template("<a href=\"#{0}\">{1}</a>")
+    SafeHtml historyTokenHref(String token, String text);
 }

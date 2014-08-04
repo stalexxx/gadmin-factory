@@ -203,8 +203,7 @@ public abstract class BaseEditorPresenter<
                 @Override
                 public void success(SavingResult<ID> result) {
                     if (result.isSaved()) {
-                        //placeManager.navigateBack();
-                        onBack();
+                        onSaved();
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
                         getView().setSaveButtonEnabled(true);
@@ -287,6 +286,8 @@ public abstract class BaseEditorPresenter<
 */
     }
 
+
+
     private Set<ConstraintViolation<T>> validate(T dto) {
         // Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         return doValidate(dto, null);
@@ -334,6 +335,10 @@ public abstract class BaseEditorPresenter<
     @Override
     public void onBack() {
         placeManager.navigateBack();
+    }
+
+    protected void onSaved() {
+        onBack();
     }
 
     protected abstract String getListPlace();

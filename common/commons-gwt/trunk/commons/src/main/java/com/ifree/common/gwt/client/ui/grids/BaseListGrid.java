@@ -216,7 +216,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         }, header, width, sortable, valueProvider.getPath());
     }
 
-
     private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat dateShort) {
         return new TextColumn<T>() {
             @Override
