@@ -154,6 +154,9 @@ public interface BaseMessages extends Messages {
 
     @DefaultMessage("Имя пользователя")
     String username();
+
+    @DefaultMessage("Сохранен")
+    String savedSuccessfull();
 }
 
 
