@@ -41,6 +41,8 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void setFilter(F filter);
 
+    void clearFilter();
+
     void addAction(Action<M> action, Provider<M> selectedProvider);
 
     void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText);
@@ -54,4 +56,5 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
     ColumnSortList getColumnSortList();
 
     BaseListGrid<M, F> getGrid();
+
 }

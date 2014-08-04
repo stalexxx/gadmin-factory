@@ -141,6 +141,9 @@ public abstract class BaseListPresenter<T,
         if (filterHandler != null && filter != null && !filter.isEmpty()) {
             Filter_ filter_ = filterHandler.convertToObject(filter);
             getView().setFilter(filter_);
+        } else {
+            getView().clearFilter();
+
         }
 
     }
