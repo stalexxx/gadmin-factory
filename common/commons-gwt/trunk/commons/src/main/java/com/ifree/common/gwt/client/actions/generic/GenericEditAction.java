@@ -2,25 +2,22 @@ package com.ifree.common.gwt.client.actions.generic;
 
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
-import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
+import com.ifree.common.gwt.client.actions.SinglePlaceRequestAction;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
 * Created by alex on 28.04.14.
 */
-public class GenericEditAction<T> extends SingleItemAlwaysVisibleAction<T> {
+public class GenericEditAction<T> extends SinglePlaceRequestAction<T> {
 
-    private PlaceManager placeManager;
     private final String token;
     private ModelKeyProvider<T> keyProvider;
 
     public GenericEditAction(PlaceManager placeManager, String token, ModelKeyProvider<T> keyProvider, String caption) {
-        super(caption);
-        this.placeManager = placeManager;
+        super(caption, placeManager);
         this.token = token;
         this.keyProvider = keyProvider;
 
@@ -32,21 +29,10 @@ public class GenericEditAction<T> extends SingleItemAlwaysVisibleAction<T> {
 
 
     @Override
-    public boolean hasHistoryToken() {
-        return true;
-    }
-
-    @Override
-    protected void nonNullPerform(@Nonnull T item) {
-
-        //placeManager.revealPlace(placeRequest);
-    }
-
-    @Override
-    public String actualHistoryToken(@Nullable T item) {
-        PlaceRequest placeRequest = new PlaceRequest.Builder().nameToken(token).
+    protected PlaceRequest buildToken(@Nonnull T item) {
+        return new PlaceRequest.Builder().nameToken(token).
                 with(BaseNameTokes.ID_PARAM, getId(item)).build();
-        return placeManager.buildHistoryToken(placeRequest);
+
     }
 
     protected String getId(T item) {
