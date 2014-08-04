@@ -168,7 +168,7 @@ public abstract class BaseListView<
         return new TakesValue<_Filter>() {
             @Override
             public void setValue(_Filter value) {
-                toolbar.setSearchFieldText(value.getName());
+                toolbar.setSearchFieldText(value != null ? value.getName() : null);
             }
 
             @Override
