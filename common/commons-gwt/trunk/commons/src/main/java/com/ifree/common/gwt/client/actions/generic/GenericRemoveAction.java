@@ -4,8 +4,10 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
+import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
-import com.ifree.common.gwt.shared.ModelKeyProvider;
+import com.ifree.common.gwt.shared.ValueProvider;
+import org.gwtbootstrap3.client.ui.constants.AlertType;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.extras.bootbox.client.Bootbox;
 import org.gwtbootstrap3.extras.bootbox.client.callback.ConfirmCallback;
@@ -17,13 +19,13 @@ import javax.annotation.Nonnull;
 */
 public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisibleAction<T> {
 
-    private ModelKeyProvider<T> keyProvider;
+    private ValueProvider<T, ID> idProvider;
     private RestDispatch dispatch;
     private EventBus eventBus;
 
-    public GenericRemoveAction(ModelKeyProvider<T> keyProvider, RestDispatch dispatch, EventBus eventBus) {
+    public GenericRemoveAction(ValueProvider<T, ID> idProvider, RestDispatch dispatch, EventBus eventBus) {
         super("Удалить");
-        this.keyProvider = keyProvider;
+        this.idProvider = idProvider;
         this.dispatch = dispatch;
         this.eventBus = eventBus;
         setIconType(IconType.TRASH_O);
@@ -35,13 +37,12 @@ public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisible
             @Override
             public void callback(boolean b) {
                 if (b) {
-                    String id = getId(item);
+                    ID id = getId(item);
                     dispatch.execute(createAction(id), new AbstractAsyncCallback<Boolean>() {
                         @Override
                         public void onSuccess(Boolean result) {
-//                        eventBus.fireEvent(new ShowAlertEvent(""));
+                            eventBus.fireEvent(new ShowAlertEvent("Успешно удален", AlertType.SUCCESS));
                             onDeleted(item);
-
                         }
                     });
 
@@ -53,9 +54,9 @@ public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisible
 
     protected abstract void onDeleted(T item);
 
-    protected abstract RestAction<Boolean> createAction(String id);
+    protected abstract RestAction<Boolean> createAction(ID id);
 
-    protected String getId(T item) {
-        return item != null ? keyProvider.getKey(item) : null;
+    protected ID getId(T item) {
+        return item != null ? idProvider.getValue(item) : null;
     }
 }
