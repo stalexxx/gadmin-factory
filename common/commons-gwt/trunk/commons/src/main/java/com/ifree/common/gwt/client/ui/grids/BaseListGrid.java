@@ -121,8 +121,10 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         super.onAttach();
 
         int pageSize = pageSize();
-        itemsPerPage.setValue(pageSize);
-        dataGrid.setPageSize(pageSize);
+        if (itemsPerPage != null) {
+            itemsPerPage.setValue(pageSize);
+            dataGrid.setPageSize(pageSize);
+        }
     }
 
     private String getViewName() {
