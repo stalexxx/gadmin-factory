@@ -1,5 +1,7 @@
 package com.ifree.common.gwt.client.actions;
 
+import org.gwtbootstrap3.client.ui.constants.IconType;
+
 import javax.annotation.Nullable;
 
 /**
@@ -23,4 +25,6 @@ public interface Action<T> {
     boolean hasHistoryToken();
 
     String actualHistoryToken(@Nullable T item);
+
+    IconType getDisplayIcon();
 }

@@ -23,6 +23,7 @@ import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.grids.BasePager;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.AnchorListItem;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -196,12 +197,13 @@ public abstract class BaseListView<
     }
 
     @Override
-    public void updateAction(Action<T> action, boolean enabled, boolean visible, String displayText) {
+    public void updateAction(Action<T> action, boolean enabled, boolean visible, String displayText, IconType displayIcon) {
         AnchorListItem listItem = actionMap.get(action);
         if (listItem != null) {
             listItem.setEnabled(enabled);
             listItem.setText(displayText);
             listItem.setVisible(visible);
+            listItem.setIcon(displayIcon);
 
             if (action.hasHistoryToken()) {
                 listItem.setTargetHistoryToken(action.actualHistoryToken(getSelectedObject()));

@@ -1,5 +1,7 @@
 package com.ifree.common.gwt.client.actions;
 
+import org.gwtbootstrap3.client.ui.constants.IconType;
+
 import javax.annotation.Nullable;
 
 /**
@@ -9,6 +11,7 @@ public abstract class BaseAction<T> implements Action<T> {
 
     protected String text;
     private boolean additional;
+    private IconType iconType;
 
     public BaseAction(String text) {
         this.text = text;
@@ -50,4 +53,13 @@ public abstract class BaseAction<T> implements Action<T> {
         return null;
     }
 
+    @Override
+    public IconType getDisplayIcon() {
+        return iconType;
+    }
+
+
+    public void setIconType(IconType iconType) {
+        this.iconType = iconType;
+    }
 }

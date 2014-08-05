@@ -57,7 +57,10 @@ public abstract class AbstractFilterHandler<T extends BaseFilter> extends Filter
 
                 ValueProvider provider = findProvider(configBean.getField());
 
-                provider.setValue(result, filterHelper.getValue(configBean.getType(), configBean.getValue()));
+                if (provider != null) {
+                    provider.setValue(result, filterHelper.getValue(configBean.getType(), configBean.getValue()));
+                }
+
             }
 
 

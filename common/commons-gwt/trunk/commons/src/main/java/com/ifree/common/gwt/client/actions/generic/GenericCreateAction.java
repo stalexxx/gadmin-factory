@@ -3,6 +3,7 @@ package com.ifree.common.gwt.client.actions.generic;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.SimpleAction;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nullable;
 
@@ -18,6 +19,8 @@ public class GenericCreateAction<T> extends SimpleAction<T> {
         super("Создать");
         this.placeManager = placeManager;
         this.token = token;
+
+        setIconType(IconType.FILE_TEXT_O);
     }
 
     @Override
