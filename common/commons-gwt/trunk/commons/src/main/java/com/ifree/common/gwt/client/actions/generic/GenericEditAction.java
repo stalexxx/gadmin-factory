@@ -5,6 +5,7 @@ import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.SinglePlaceRequestAction;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nonnull;
 
@@ -20,7 +21,7 @@ public class GenericEditAction<T> extends SinglePlaceRequestAction<T> {
         super(caption, placeManager);
         this.token = token;
         this.keyProvider = keyProvider;
-
+        setIconType(IconType.PENCIL);
     }
 
     public GenericEditAction(PlaceManager placeManager, String token, ModelKeyProvider<T> keyProvider) {

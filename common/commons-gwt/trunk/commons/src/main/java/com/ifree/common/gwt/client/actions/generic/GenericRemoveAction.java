@@ -3,16 +3,11 @@ package com.ifree.common.gwt.client.actions.generic;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
-import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
 import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
-import com.ifree.common.gwt.client.events.ShowAlertEvent;
-import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
-import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.shared.ModelKeyProvider;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.extras.bootbox.client.Bootbox;
-import org.gwtbootstrap3.extras.bootbox.client.callback.AlertCallback;
 import org.gwtbootstrap3.extras.bootbox.client.callback.ConfirmCallback;
 
 import javax.annotation.Nonnull;
@@ -31,6 +26,7 @@ public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisible
         this.keyProvider = keyProvider;
         this.dispatch = dispatch;
         this.eventBus = eventBus;
+        setIconType(IconType.TRASH_O);
     }
 
     @Override

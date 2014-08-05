@@ -15,6 +15,7 @@ import com.ifree.common.gwt.client.ui.application.CustomizedWithRoles;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.inject.Provider;
 
@@ -45,7 +46,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void addAction(Action<M> action, Provider<M> selectedProvider);
 
-    void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText);
+    void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText, IconType displayIcon);
 
     /**
      * first input symbol

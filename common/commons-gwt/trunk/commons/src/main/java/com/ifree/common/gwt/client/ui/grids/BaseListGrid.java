@@ -41,7 +41,9 @@ import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
+import org.gwtbootstrap3.client.ui.Icon;
 import org.gwtbootstrap3.client.ui.ValueListBox;
+import org.gwtbootstrap3.client.ui.constants.IconSize;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
@@ -353,6 +355,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         dataGrid.setBordered(true);
         dataGrid.setCondensed(true);
 
+        dataGrid.setEmptyTableWidget(createEmptyWidget());
+        dataGrid.setLoadingIndicator(createLoadingWidget());
+
 
         if (pageSize() != PAGE_SIZE_UNLIMIT) {
             SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -391,6 +396,17 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         loader.addLoadHandler(dataProvider);
 
         return dataGrid;
+    }
+
+    private Widget createLoadingWidget() {
+        Icon icon = new Icon(IconType.SPINNER);
+        icon.setSpin(true);
+        icon.setSize(IconSize.TIMES5);
+        return icon;
+    }
+
+    private Widget createEmptyWidget() {
+        return new org.gwtbootstrap3.client.ui.Label("Тут ничего нет");
     }
 
     protected int pageSize() {

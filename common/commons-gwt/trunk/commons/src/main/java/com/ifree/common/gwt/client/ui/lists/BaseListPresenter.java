@@ -39,6 +39,7 @@ import com.ifree.common.gwt.shared.loader.LoadEvent;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
 import com.ifree.common.gwt.shared.loader.PagingLoadResult;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -59,8 +60,7 @@ public abstract class BaseListPresenter<T,
         extends Presenter<View_, Proxy_>
         implements
         SelectionChangeEvent.Handler, ListUiHandler<T, Filter_>, PerformFilterEvent.PerformFilterHandler,
-        StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig, PagingLoadResult<T>>
-       {
+        StartTypingEvent.StartTypingHandler, LoadHandler<FilterPagingLoadConfig, PagingLoadResult<T>> {
 
 
     @Inject
@@ -114,7 +114,6 @@ public abstract class BaseListPresenter<T,
 
         onSelectionChanged(getSelectedObject());
     }
-
 
 
     @Override
@@ -227,10 +226,12 @@ public abstract class BaseListPresenter<T,
 
         for (Action<T> action : actionList) {
             String displayText = action.getDisplayText(selectedObject);
+            IconType displayIcon = action.getDisplayIcon();
+
             getView().updateAction(action,
                     action.isEnabled(selectedObject),
                     action.isVisible(selectedObject),
-                    displayText);
+                    displayText, displayIcon);
         }
     }
 
@@ -289,5 +290,9 @@ public abstract class BaseListPresenter<T,
 
             refresh();
         }
+    }
+
+    public void alert(String message, AlertType type) {
+        getEventBus().fireEvent(new ShowAlertEvent(message, type));
     }
 }
