@@ -26,12 +26,13 @@ import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.user.cellview.client.*;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.*;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.shared.proxy.PlaceRequest;
+import com.ifree.common.gwt.client.data.IntegerProperty;
+import com.ifree.common.gwt.client.data.StorageService;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
@@ -68,6 +69,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public static final int PSIZE_50 = 50;
     public static final int PSIZE_100 = 100;
     public static final int PSIZE_200 = 200;
+    public static final IntegerProperty PAGE_SIZE = new IntegerProperty("pageSize");
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -81,7 +83,8 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     private final BaseDataProvider<T> dataProvider;
     private final FilterPagingLoader<T, _Filter> loader;
 
-    private Integer pageSize;
+
+    private Integer defaultPageSize;
 
     protected BasePager pager;
     protected ValueListBox<Integer> itemsPerPage;
@@ -91,15 +94,21 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     protected EventBus eventBus;
     @Inject
     protected BaseTemplates templates;
+
+    @Inject
+    protected  StorageService storageService;
+
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     protected BaseListGrid(CellTable.Resources resources,
                            ModelKeyProvider<T> key,
                            BaseDataProxy<T> dataProxy,
-                           Integer pageSize) {
+                        //   StorageService storageService,
+                           Integer defaultPageSize) {
         this.resources = resources;
         this.keyProvider = key;
-        this.pageSize = pageSize;
+        this.storageService = storageService;
+        this.defaultPageSize = defaultPageSize;
 
         loader = new FilterPagingLoader<T, _Filter>(dataProxy);
         dataProvider = new BaseDataProvider<T>(loader, keyProvider);
@@ -107,6 +116,18 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         init();
     }
 
+    @Override
+    protected void onAttach() {
+        super.onAttach();
+
+        int pageSize = pageSize();
+        itemsPerPage.setValue(pageSize);
+        dataGrid.setPageSize(pageSize);
+    }
+
+    private String getViewName() {
+        return getClass().getSimpleName();
+    }
 
     protected BaseListGrid(CellTable.Resources resources,
                            ModelKeyProvider<T> key,
@@ -344,9 +365,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected CellTable<T> createDataGrid() {
         if (resources != null) {
-            dataGrid = new CellTable<T>(pageSize(), resources, this, new Label());
+            dataGrid = new CellTable<T>(pageSize(), resources, this, null);
         } else {
-            dataGrid = new CellTable<T>(pageSize(), this);
+            dataGrid = new CellTable<T>(this);
         }
         dataGrid.setAutoHeaderRefreshDisabled(true);
         dataGrid.setAutoFooterRefreshDisabled(true);
@@ -372,8 +393,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
                 }
             });
 
-            itemsPerPage.setValue(pageSize());
-
+            itemsPerPage.setValue(defaultPageSize);
             itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200));
             itemsPerPage.addValueChangeHandler(new ValueChangeHandler<Integer>() {
                 @Override
@@ -382,6 +402,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
                     if (value != null) {
                         dataGrid.setVisibleRange(new Range(0, value));
                     }
+                    storageService.putValue(PAGE_SIZE, value, getViewName());
 
                 }
             });
@@ -410,7 +431,17 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
     protected int pageSize() {
-        return pageSize != null ? pageSize : PAGE_SIZE_UNLIMIT;
+
+        if (defaultPageSize != null) {
+            if (storageService != null) {
+                Integer loadedPageSize = storageService.getValue(PAGE_SIZE, getViewName());
+                return loadedPageSize != null ? loadedPageSize : defaultPageSize;
+            } else {
+                return defaultPageSize;
+            }
+        }
+
+        return PAGE_SIZE_UNLIMIT;
     }
 
 
