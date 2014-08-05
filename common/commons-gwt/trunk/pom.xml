@@ -24,7 +24,7 @@
 
         <maven.javadoc.skip>true</maven.javadoc.skip>
 
-        <version.gwtp>1.2.1</version.gwtp>
+        <version.gwtp>1.3</version.gwtp>
         <version.gin>2.1.2</version.gin>
         <version.gwt>2.6.1</version.gwt>
         <version.maven-processor-plugin>2.2.4</version.maven-processor-plugin>
