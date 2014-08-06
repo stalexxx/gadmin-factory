@@ -56,6 +56,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     ColumnSortList getColumnSortList();
 
-    BaseListGrid<M, F> getGrid();
+    BaseListGrid<M, F, ?> getGrid();
 
+    void onLoad();
 }

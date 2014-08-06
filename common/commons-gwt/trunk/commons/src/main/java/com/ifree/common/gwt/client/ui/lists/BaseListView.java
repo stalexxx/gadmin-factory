@@ -13,6 +13,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.TakesValue;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.actions.Action;
@@ -43,23 +44,22 @@ public abstract class BaseListView<
         >
         extends ViewWithUiHandlers<_Handler> implements ListView<T, _Filter> {
 
-    protected final BaseListGrid<T, _Filter> dataGrid;
+    protected final BaseListGrid<T, _Filter, ?> dataGrid;
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
 
     private UIActionBuilder<T, AnchorListItem> actionBuilder = new ListItemActionBuilder<T>();
     private Map<Action<T>, AnchorListItem> actionMap = Maps.newHashMap();
 
-    protected BaseListView(BaseListGrid<T, _Filter> dataGrid) {
+    protected BaseListView(BaseListGrid<T, _Filter, ?> dataGrid) {
         this(dataGrid, null);
     }
 
-    protected BaseListView(@Nonnull BaseListGrid<T, _Filter> grid,
+    protected BaseListView(@Nonnull BaseListGrid<T, _Filter, ?> grid,
                            @Nullable BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel) {
         Preconditions.checkNotNull(grid);
 
         dataGrid = grid;
-        dataGrid.addStyleName("gridAfterFixedBar");
         this.filterPanel = filterPanel;
 
         toolbar = new BaseToolbar();
@@ -84,6 +84,11 @@ public abstract class BaseListView<
         initWidget(viewPanel);
     }
 
+
+    @Override
+    protected void initWidget(Widget widget) {
+        super.initWidget(widget);
+    }
 
     @Override
     public void setUiHandlers(_Handler uiHandlers) {
@@ -223,7 +228,7 @@ public abstract class BaseListView<
     }
 
     @Override
-    public BaseListGrid<T, _Filter> getGrid() {
+    public  BaseListGrid<T, _Filter, ?> getGrid() {
         return dataGrid;
     }
 }

@@ -36,10 +36,8 @@ import com.ifree.common.gwt.client.data.StorageService;
 import com.ifree.common.gwt.client.ui.application.Filter;
 import com.ifree.common.gwt.client.ui.constants.BaseNameTokes;
 import com.ifree.common.gwt.client.ui.constants.BaseTemplates;
-import com.ifree.common.gwt.shared.ModelKeyProvider;
-import com.ifree.common.gwt.shared.SortDir;
-import com.ifree.common.gwt.shared.SortInfoBean;
-import com.ifree.common.gwt.shared.ValueProvider;
+import com.ifree.common.gwt.client.utils.RendererResolver;
+import com.ifree.common.gwt.shared.*;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoader;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.Icon;
@@ -58,7 +56,8 @@ import java.util.Date;
  * @since 08.07.13
  */
 @SuppressWarnings({"UnusedDeclaration", "SpringJavaAutowiringInspection"})
-public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler {
+public abstract class BaseListGrid<T, _Filter extends Filter, P extends PropertyAccess<T>>
+        extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -73,21 +72,24 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
-    protected SingleSelectionModel<T> selectionModel;
+    protected SingleSelectionModel<T> selectionModel = new SingleSelectionModel<T>(this);
 
     protected CellTable<T> dataGrid;
     protected ValueProvider<T, ?> secondSortingField;
 
     private com.google.gwt.user.cellview.client.CellTable.Resources resources;
+
     private final ModelKeyProvider<T> keyProvider;
     private final BaseDataProvider<T> dataProvider;
     private final FilterPagingLoader<T, _Filter> loader;
+    protected final P properties;
 
 
     private Integer defaultPageSize;
 
     protected BasePager pager;
     protected ValueListBox<Integer> itemsPerPage;
+
 
 
     @Inject
@@ -98,43 +100,57 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     @Inject
     protected  StorageService storageService;
 
+    @Inject
+    protected RendererResolver rendererResolver;
+
+    private FlowPanel panel;
+
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     protected BaseListGrid(CellTable.Resources resources,
                            ModelKeyProvider<T> key,
                            BaseDataProxy<T> dataProxy,
-                        //   StorageService storageService,
+                           P properties,
                            Integer defaultPageSize) {
         this.resources = resources;
         this.keyProvider = key;
-        this.storageService = storageService;
+        this.properties = properties;
         this.defaultPageSize = defaultPageSize;
 
         loader = new FilterPagingLoader<T, _Filter>(dataProxy);
         dataProvider = new BaseDataProvider<T>(loader, keyProvider);
 
-        init();
+        panel = new FlowPanel();
+
+        initWidget(panel);
+
+    }
+
+    protected BaseListGrid(CellTable.Resources resources,
+                           ModelKeyProvider<T> key,
+                           BaseDataProxy<T> dataProxy,
+                           P properties) {
+        this(resources, key, dataProxy, properties, null);
     }
 
     @Override
-    protected void onAttach() {
-        super.onAttach();
+    protected void onLoad() {
+        init();
 
         int pageSize = pageSize();
         if (itemsPerPage != null) {
             itemsPerPage.setValue(pageSize);
             dataGrid.setPageSize(pageSize);
         }
+
+        initColumns();
     }
+
+
+    protected abstract void initColumns();
 
     private String getViewName() {
         return getClass().getSimpleName();
-    }
-
-    protected BaseListGrid(CellTable.Resources resources,
-                           ModelKeyProvider<T> key,
-                           BaseDataProxy<T> dataProxy) {
-        this(resources, key, dataProxy, null);
     }
 
     protected Column<T, String> addTextEditColumn(FieldUpdater<T, String> updater,
@@ -345,12 +361,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     private void init() {
 
         dataGrid = createDataGrid();
-
-        FlowPanel panel = new FlowPanel();
-
         panel.add(dataGrid);
-
-        initWidget(panel);
     }
 
     /*===========================================[ CLASS METHODS ]================*/
@@ -381,6 +392,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         dataGrid.setEmptyTableWidget(createEmptyWidget());
         dataGrid.setLoadingIndicator(createLoadingWidget());
 
+        dataGrid.addStyleName("gridAfterFixedBar");
 
         if (pageSize() != PAGE_SIZE_UNLIMIT) {
             SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
@@ -411,7 +423,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
         }
 
-        selectionModel = new SingleSelectionModel<T>(this);
 
         dataGrid.setSelectionModel(selectionModel);
         dataGrid.addColumnSortHandler(this);
