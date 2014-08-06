@@ -17,7 +17,8 @@ import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 public class BaseViewPanel<T, F extends Filter> extends FlowPanel {
 
     private final Row row;
-    public BaseViewPanel(BaseListGrid<T, F> dataGrid, BaseToolbar toolbar) {
+
+    public BaseViewPanel(BaseListGrid<T, F, ?> dataGrid, BaseToolbar toolbar) {
         add(toolbar);
         add(dataGrid);
 
