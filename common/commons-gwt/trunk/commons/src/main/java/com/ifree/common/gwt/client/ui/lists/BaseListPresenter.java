@@ -119,18 +119,16 @@ public abstract class BaseListPresenter<T,
     @Override
     protected void onReveal() {
         super.onReveal();
-
-        setupFilter();
-
-        refresh();
-
         getView().setupRoles(currentUser.getRoles());
         getView().updateToolbar();
-
         getView().updateHeader(getDisplayHeader());
+    }
 
+    @Override
+    protected void onReset() {
+        setupFilter();
+        refresh();
         updateActions();
-
     }
 
     private void setupFilter() {
@@ -142,7 +140,6 @@ public abstract class BaseListPresenter<T,
             getView().setFilter(filter_);
         } else {
             getView().clearFilter();
-
         }
 
     }
