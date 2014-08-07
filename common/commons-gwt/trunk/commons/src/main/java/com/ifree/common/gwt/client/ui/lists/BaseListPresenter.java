@@ -107,11 +107,11 @@ public abstract class BaseListPresenter<T,
         super.onBind();
 
         initAction();
+        getView().postConstruct();
 
         registerHandler(getView().addSelectionChangeHandler(this));
         registerHandler(getView().addLoadHandler(this));
         getView().getGrid().setFilterConfigBuilder(getFilterHandler().createConfigBuilder());
-
         onSelectionChanged(getSelectedObject());
     }
 

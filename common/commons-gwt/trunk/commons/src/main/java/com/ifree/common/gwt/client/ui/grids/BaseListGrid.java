@@ -48,6 +48,7 @@ import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.Styles;
 import org.gwtbootstrap3.client.ui.gwt.CellTable;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
@@ -115,16 +116,18 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         init();
     }
 
-    @Override
-    protected void onAttach() {
-        super.onAttach();
 
+
+    @PostConstruct
+    public void postConstruct() {
         int pageSize = pageSize();
         if (itemsPerPage != null) {
             itemsPerPage.setValue(pageSize);
             dataGrid.setPageSize(pageSize);
         }
+
     }
+
 
     private String getViewName() {
         return getClass().getSimpleName();

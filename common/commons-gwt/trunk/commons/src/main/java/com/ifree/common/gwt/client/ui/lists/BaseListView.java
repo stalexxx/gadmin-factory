@@ -226,4 +226,9 @@ public abstract class BaseListView<
     public BaseListGrid<T, _Filter> getGrid() {
         return dataGrid;
     }
+
+    @Override
+    public void postConstruct() {
+        dataGrid.postConstruct();
+    }
 }
