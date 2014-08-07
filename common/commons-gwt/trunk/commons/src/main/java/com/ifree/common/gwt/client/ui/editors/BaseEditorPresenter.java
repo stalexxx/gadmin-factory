@@ -301,8 +301,6 @@ public abstract class BaseEditorPresenter<
         return Lists.newArrayList();
     }
 
-    protected abstract String getEntityDisplayName();
-
     @Deprecated
     protected abstract Object getId(T currentProxy);
 
