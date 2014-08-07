@@ -22,7 +22,7 @@ public abstract class TextAreaModal extends Modal {
         final TextArea area = new TextArea();
         area.setVisibleLines(5);
 
-        area.setText(getInitText());
+        area.setValue(getInitText());
 
         body.add(area);
 
@@ -35,14 +35,12 @@ public abstract class TextAreaModal extends Modal {
             }
         });
 
-
-
         Button save = new Button("Сохранить", new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 hide();
 
-                doSave(area.getText());
+                doSave(area.getValue());
 
             }
         });
