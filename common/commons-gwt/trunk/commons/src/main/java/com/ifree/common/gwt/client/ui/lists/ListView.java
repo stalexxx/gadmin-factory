@@ -58,4 +58,5 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     BaseListGrid<M, F> getGrid();
 
+    void postConstruct();
 }
