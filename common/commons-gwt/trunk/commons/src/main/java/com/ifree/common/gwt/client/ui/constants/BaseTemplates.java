@@ -38,4 +38,7 @@ public interface BaseTemplates extends SafeHtmlTemplates {
 
     @Template("<a href=\"#{0}\">{1}</a>")
     SafeHtml historyTokenHref(String token, String text);
+
+    @Template("<div>{0}</div>")
+    SafeHtml div(String token);
 }

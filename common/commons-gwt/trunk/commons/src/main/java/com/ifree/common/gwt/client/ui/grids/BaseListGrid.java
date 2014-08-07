@@ -297,7 +297,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    protected <R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
+    protected <R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width, boolean sortable) {
         final Column<T, R> column = new Column<T, R>(new AbstractSafeHtmlCell<R>(renderer) {
             @Override
             protected void render(Context context, SafeHtml data, SafeHtmlBuilder sb) {
@@ -312,7 +312,11 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             }
 
         };
-        return addColumn(column, header, width);
+        return addColumn(column, header, width, sortable, sortable ? provider.getPath() : null);
+    }
+
+    protected <R> Column<T, R> addSafeHtmlColumn(final ValueProvider<T, R> provider, SafeHtmlRenderer<R> renderer, String header, int width) {
+        return addSafeHtmlColumn(provider, renderer, header, width, false);
     }
 
     protected Column<T, T> addSafeHtmlColumn(SafeHtmlRenderer<T> renderer, String header, int width, boolean sortable, String dataStore) {
