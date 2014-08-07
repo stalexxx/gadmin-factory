@@ -118,7 +118,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     public SavingResult<ID> update(EntityDto_ dto, Entity_ entity, ID id) {
 
         Entity_ toUpdate = getJpaRepository().findOne(id);
-        copyFields(entity, toUpdate);
+        merge(entity, toUpdate);
 
         try {
             validateOnUpdate(dto);
@@ -142,7 +142,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
 
     protected void doPreSave(EntityDto_ dto, Entity_ entity, ID id) {}
 
-    protected abstract void copyFields(Entity_ from, Entity_ to);
+    protected abstract void merge(Entity_ from, Entity_ to);
 
     protected abstract ID getId(Entity_ entity);
 
