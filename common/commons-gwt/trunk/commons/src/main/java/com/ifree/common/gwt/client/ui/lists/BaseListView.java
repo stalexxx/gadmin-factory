@@ -17,12 +17,12 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
+import com.ifree.common.gwt.client.gwtbootstrap3.ExtendedAnchorListItem;
 import com.ifree.common.gwt.client.ui.BaseFilter;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
 import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.client.ui.grids.BasePager;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
-import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nonnull;
@@ -30,6 +30,8 @@ import javax.annotation.Nullable;
 import javax.inject.Provider;
 import java.util.List;
 import java.util.Map;
+
+import static com.ifree.common.gwt.client.actions.Action.ACTION_TYPE.*;
 
 /**
  * @author Alexander Ostrovskiy (alex)
@@ -47,8 +49,8 @@ public abstract class BaseListView<
     protected final BaseFilterPanel<_Filter, ? extends BaseFilterPanel> filterPanel;
     protected final BaseToolbar toolbar;
 
-    private UIActionBuilder<T, AnchorListItem> actionBuilder = new ListItemActionBuilder<T>();
-    private Map<Action<T>, AnchorListItem> actionMap = Maps.newHashMap();
+    private UIActionBuilder<T, ExtendedAnchorListItem> actionBuilder = new ListItemActionBuilder<T>();
+    private Map<Action<T>, ExtendedAnchorListItem> actionMap = Maps.newHashMap();
 
     protected BaseListView(BaseListGrid<T, _Filter> dataGrid) {
         this(dataGrid, null);
@@ -181,8 +183,8 @@ public abstract class BaseListView<
 
     @Override
     public void addAction(final Action<T> action, Provider<T> selectedProvider) {
-        final AnchorListItem actionWidget = actionBuilder.build(action);
-        if (!action.hasHistoryToken()) {
+        final ExtendedAnchorListItem actionWidget = actionBuilder.build(action);
+        if (action.getType().equals(Action.ACTION_TYPE.SCRIPT)) {
             actionWidget.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
@@ -198,17 +200,27 @@ public abstract class BaseListView<
 
     @Override
     public void updateAction(Action<T> action, boolean enabled, boolean visible, String displayText, IconType displayIcon) {
-        AnchorListItem listItem = actionMap.get(action);
+        ExtendedAnchorListItem listItem = actionMap.get(action);
         if (listItem != null) {
             listItem.setEnabled(enabled);
             listItem.setText(displayText);
             listItem.setVisible(visible);
             listItem.setIcon(displayIcon);
 
-            if (action.hasHistoryToken()) {
-                listItem.setTargetHistoryToken(action.actualHistoryToken(getSelectedObject()));
 
+            Action.ACTION_TYPE type = action.getType();
+            if (HISTORY_TOKEN.equals(type)) {
+                listItem.setTargetHistoryToken(action.actualHistoryTokenOrLink(getSelectedObject()));
             }
+
+            if (LINK.equals(type) || type.equals(LINK_BLANK)) {
+                listItem.setHref(action.actualHistoryTokenOrLink(getSelectedObject()));
+            }
+
+            if (LINK_BLANK.equals(type)) {
+                listItem.setTarget("_blank");
+            }
+
         }
     }
 

@@ -8,6 +8,14 @@ import javax.annotation.Nullable;
 * Created by alex on 23.04.14.
 */
 public interface Action<T> {
+
+    public enum ACTION_TYPE {
+        LINK,
+        LINK_BLANK,
+        HISTORY_TOKEN,
+        SCRIPT
+    }
+
     String getDisplayText(@Nullable T item);
 
     boolean isEnabled(@Nullable T item);
@@ -22,9 +30,9 @@ public interface Action<T> {
 
     Action<T> action();
 
-    boolean hasHistoryToken();
+    ACTION_TYPE getType();
 
-    String actualHistoryToken(@Nullable T item);
+    String actualHistoryTokenOrLink(@Nullable T item);
 
     IconType getDisplayIcon();
 }

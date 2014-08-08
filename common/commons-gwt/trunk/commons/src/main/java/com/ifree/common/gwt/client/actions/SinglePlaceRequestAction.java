@@ -21,13 +21,14 @@ public abstract class SinglePlaceRequestAction<T> extends SingleItemAlwaysVisibl
         this.placeManager = placeManager;
     }
 
+
     @Override
-    public final boolean hasHistoryToken() {
-        return true;
+    public ACTION_TYPE getType() {
+        return ACTION_TYPE.HISTORY_TOKEN;
     }
 
     @Override
-    public String actualHistoryToken(@Nullable T item) {
+    public String actualHistoryTokenOrLink(@Nullable T item) {
         if (item != null) {
             PlaceRequest placeRequest = buildToken(item);
             return placeManager.buildHistoryToken(placeRequest);

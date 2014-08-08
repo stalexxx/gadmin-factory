@@ -44,12 +44,12 @@ public abstract class BaseAction<T> implements Action<T> {
     }
 
     @Override
-    public boolean hasHistoryToken() {
-        return false;
+    public ACTION_TYPE getType() {
+        return ACTION_TYPE.SCRIPT;
     }
 
     @Override
-    public String actualHistoryToken(@Nullable T item) {
+    public String actualHistoryTokenOrLink(@Nullable T item) {
         return null;
     }
 
