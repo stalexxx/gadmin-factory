@@ -5,6 +5,7 @@
 
 package com.ifree.common.gwt.client.ui.lists;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.view.client.ProvidesKey;
@@ -24,6 +25,10 @@ import javax.inject.Provider;
  */
 public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles, ProvidesKey<M> {
 
+    /**
+     * Нельзя использовать чтобы получить конкретный объект, только чтобы отдать в ProvidesKey
+     * @return
+     */
     M getSelectedObject();
 
     boolean isSelected(M item);
@@ -44,7 +49,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void clearFilter();
 
-    void addAction(Action<M> action, Provider<M> selectedProvider);
+    <W extends HasClickHandlers> W addAction(Action<M> action, Provider<M> selectedProvider);
 
     void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText, IconType displayIcon);
 

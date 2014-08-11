@@ -2,6 +2,7 @@ package com.ifree.common.gwt.client.ui.modals;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.TakesValue;
 import org.gwtbootstrap3.client.ui.*;
 import org.gwtbootstrap3.client.ui.constants.ButtonType;
 import org.gwtbootstrap3.client.ui.gwt.HTMLPanel;
@@ -9,7 +10,11 @@ import org.gwtbootstrap3.client.ui.gwt.HTMLPanel;
 /**
 * Created by alex on 09.07.14.
 */
-public abstract class TextAreaModal extends Modal {
+public abstract class TextAreaModal<ID> extends Modal implements TakesValue<String> {
+
+    private final TextArea area;
+    private ID itemId;
+
     public TextAreaModal() {
 
         ModalHeader header = new ModalHeader();
@@ -19,10 +24,8 @@ public abstract class TextAreaModal extends Modal {
         add(header);
 
         ModalBody body = new ModalBody();
-        final TextArea area = new TextArea();
+        area = new TextArea();
         area.setVisibleLines(5);
-
-        area.setValue(getInitText());
 
         body.add(area);
 
@@ -40,7 +43,7 @@ public abstract class TextAreaModal extends Modal {
             public void onClick(ClickEvent event) {
                 hide();
 
-                doSave(area.getValue());
+                doSave(itemId, area.getValue());
 
             }
         });
@@ -52,7 +55,24 @@ public abstract class TextAreaModal extends Modal {
 
     }
 
-    protected abstract String getInitText();
 
-    protected abstract void doSave(String text);
+    @Override
+    public void setValue(String value) {
+        area.setValue(value);
+    }
+
+    @Override
+    public String getValue() {
+        return area.getValue();
+    }
+
+    protected abstract void doSave(ID itemId, String text);
+
+    public void setItemId(ID itemId) {
+        this.itemId = itemId;
+    }
+
+    public ID getItemId() {
+        return itemId;
+    }
 }
