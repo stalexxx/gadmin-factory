@@ -8,8 +8,7 @@ package com.ifree.common.gwt.client.ui.lists;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.TakesValue;
@@ -182,20 +181,12 @@ public abstract class BaseListView<
     }
 
     @Override
-    public void addAction(final Action<T> action, Provider<T> selectedProvider) {
+    public <W extends HasClickHandlers> W addAction(final Action<T> action, final Provider<T> selectedProvider) {
         final ExtendedAnchorListItem actionWidget = actionBuilder.build(action);
-        if (action.getType().equals(Action.ACTION_TYPE.SCRIPT)) {
-            actionWidget.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    if (actionWidget.isEnabled()) {
-                        action.perform(getSelectedObject());
-                    }
-                }
-            });
-        }
         actionMap.put(action, actionWidget);
         toolbar.addAction(action, actionWidget);
+
+        return (W) actionWidget;
     }
 
     @Override

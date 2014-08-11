@@ -17,7 +17,7 @@ public class PlaceManagerHelper {
     }
 
 
-    public static  <F extends BaseFilter> PlaceRequest buildFilterRequest(F filter, AbstractFilterHandler<F> handler,
+    public static <F extends BaseFilter> PlaceRequest buildFilterRequest(F filter, AbstractFilterHandler<F> handler,
                                                                            String placeToken) {
         PlaceRequest.Builder builder = new PlaceRequest.Builder();
         builder.nameToken(placeToken);

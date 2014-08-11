@@ -19,6 +19,7 @@ public interface ListUiHandler<T, F extends Filter> extends UiHandlers, PerformF
 
     void onSelectionChanged(T selection);
 
+    T getSelectedObject();
 
 //    CRUD
 

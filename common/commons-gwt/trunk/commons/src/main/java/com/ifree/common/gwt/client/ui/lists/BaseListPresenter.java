@@ -7,6 +7,9 @@ package com.ifree.common.gwt.client.ui.lists;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
@@ -245,7 +248,19 @@ public abstract class BaseListPresenter<T,
             for (final Action<T> action : actions) {
                 actionList.add(action);
 
-                getView().addAction(action, selectedProvider);
+                final HasClickHandlers actionWidget = getView().addAction(action, selectedProvider);
+
+                if (action.getType().equals(Action.ACTION_TYPE.SCRIPT)) {
+                    registerHandler(actionWidget.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            if (action.isEnabled(getSelectedObject())) {
+                                action.perform(getSelectedObject());
+                            }
+                        }
+                    }));
+                }
+
             }
         }
     }
