@@ -70,6 +70,18 @@ public class BaseSpecifications {
         };
     }
 
+
+    public static <T, E extends Enum<E>> Specification<T> enumSpecification(final E value, final String field) {
+        return new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get(field), value);
+            }
+
+
+        };
+    }
+
     public static <T> Specification<T> dateIntervalSpecification(@Nonnull DateInterval interval, String field) {
         if (interval.getFrom() == null && interval.getTo() == null) {
             return null;

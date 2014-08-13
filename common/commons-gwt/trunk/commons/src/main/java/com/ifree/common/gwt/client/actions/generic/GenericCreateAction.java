@@ -16,7 +16,11 @@ public class GenericCreateAction<T> extends SimpleAction<T> {
     private final String token;
 
     public GenericCreateAction(PlaceManager placeManager, String token) {
-        super("Создать");
+        this(placeManager, token, "Создать");
+    }
+
+    public GenericCreateAction(PlaceManager placeManager, String token, String caption) {
+        super(caption);
         this.placeManager = placeManager;
         this.token = token;
 
