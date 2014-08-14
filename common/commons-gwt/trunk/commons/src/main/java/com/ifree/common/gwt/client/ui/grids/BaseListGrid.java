@@ -70,6 +70,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public static final int PSIZE_100 = 100;
     public static final int PSIZE_200 = 200;
     public static final IntegerProperty PAGE_SIZE = new IntegerProperty("pageSize");
+    public static final NumberFormat NUMBER_FORMAT = NumberFormat.getFormat("#.##");
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -225,7 +226,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
                 if (object != null) {
                     Number value = valueProvider.getValue(object);
                     if (value != null) {
-                        return String.valueOf(value);
+//                        return NUMBER_FORMAT.format(value);
+                        return NumberFormat.getDecimalFormat().format(value);
+
                     }
 
                 }

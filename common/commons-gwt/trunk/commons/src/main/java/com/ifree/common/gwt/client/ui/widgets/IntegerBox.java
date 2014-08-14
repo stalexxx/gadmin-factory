@@ -20,23 +20,8 @@ package com.ifree.common.gwt.client.ui.widgets;
  * #L%
  */
 
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.text.client.IntegerParser;
-import com.google.gwt.text.shared.AbstractRenderer;
-import org.gwtbootstrap3.client.ui.base.ValueBoxBase;
-import org.gwtbootstrap3.client.ui.constants.Styles;
+@Deprecated
+public class IntegerBox extends org.gwtbootstrap3.client.ui.IntegerBox {
 
-public class IntegerBox extends ValueBoxBase<Integer> {
 
-    public static final AbstractRenderer<Integer> RENDERER = new AbstractRenderer<Integer>() {
-        @Override
-        public String render(Integer object) {
-            return object != null ? String.valueOf(object) : "";
-        }
-    };
-
-    public IntegerBox() {
-        super(Document.get().createTextInputElement(), RENDERER, IntegerParser.instance());
-        addStyleName(Styles.FORM_CONTROL);
-    }
 }
