@@ -69,6 +69,15 @@ public class BaseSpecifications {
 
         };
     }
+    public static <T, N extends Number > Specification<T> numberSpecification(final N value, final String field) {
+        return new Specification<T>() {
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                return cb.equal(root.get(field), value);
+            }
+
+        };
+    }
 
 
     public static <T, E extends Enum<E>> Specification<T> enumSpecification(final E value, final String field) {

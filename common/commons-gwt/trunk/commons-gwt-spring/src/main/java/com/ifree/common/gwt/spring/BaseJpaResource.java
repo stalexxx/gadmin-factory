@@ -47,8 +47,15 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     @Override
     protected Specification<Entity_> integerSpecification(FilterConfig filter, String type) {
         Integer value = getFilterHelper().<Integer>getValue(type, filter.getValue());
+        return BaseSpecifications.numberSpecification(value, filter.getField());
+    }
 
-        return BaseSpecifications.integerSpecification(value, filter.getField());
+    @Override
+    protected Specification<Entity_> longSpecification(FilterConfig filter, String type) {
+
+        Long value = getFilterHelper().<Long>getValue(type, filter.getValue());
+
+        return BaseSpecifications.numberSpecification(value, filter.getField());
     }
 
     @Override

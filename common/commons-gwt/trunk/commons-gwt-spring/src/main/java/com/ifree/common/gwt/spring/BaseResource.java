@@ -142,6 +142,10 @@ public abstract class BaseResource<Entity_, EntityDto_> {
 
                 return booleanSpecification(filter, type);
 
+            } else if (type.equals(BaseFilterHelper.LONG_TYPE)) {
+
+                return longSpecification(filter, type);
+
             } else if (type.equals(BaseFilterHelper.INTEGER_TYPE)) {
 
                 return integerSpecification(filter, type);
@@ -177,6 +181,8 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     protected abstract Specification<Entity_> booleanSpecification(FilterConfig filter, String type);
 
     protected abstract Specification<Entity_> integerSpecification(FilterConfig filter, String type);
+
+    protected abstract Specification<Entity_> longSpecification(FilterConfig filter, String type);
 
     protected abstract BaseFilterHelper getFilterHelper();
 
