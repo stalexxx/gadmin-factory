@@ -30,7 +30,7 @@ public class DateIntervalEditor extends Composite implements LeafValueEditor<Dat
     private final DateTimePicker from;
     private final DateTimePicker to;
     public static final String DATE_PATTERN = "dd-mm-yy";
-    public static final String DATE_TIME_PATTERN = "dd-mm-yy HH:ii";
+    public static final String DATE_TIME_PATTERN = "dd-mm-yy hh:ii";
     public static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(DATE_PATTERN);
 
     private static final int DAY = 24 * 60 * 60 * 1000;
