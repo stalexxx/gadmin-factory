@@ -19,16 +19,18 @@ public abstract class BaseFilterHelper {
     public static final String STRING_TYPE = "string";
     public static final String FLOAT_TYPE = "float";
     public static final String INTEGER_TYPE = "integer";
+    public static final String LONG_TYPE = "long";
     public static final String DATE_INTERVAL_TYPE = "dateint";
 
 
 
     private static BooleanFilterHandler booleanFilterHandler;
 
-    private static StringFilterHandler stringFilterHandler;
+    private static FilterHandler<String> stringFilterHandler;
 
     private static NumberFilterHandler<Float> floatNumberFilterHandler;
     private static NumberFilterHandler<Integer> integerFilterHandler;
+    private static NumberFilterHandler<Long> longFilterHandler;
 
     private Map<String, FilterHandler> handlerMap = Maps.newHashMap();
     private Map<Class, String> typeMap = Maps.newHashMap();
@@ -37,7 +39,17 @@ public abstract class BaseFilterHelper {
 
     static {
         booleanFilterHandler = new BooleanFilterHandler();
-        stringFilterHandler = new StringFilterHandler();
+        stringFilterHandler = new FilterHandler<String>() {
+            @Override
+            public String convertToObject(String value) {
+                return value == null || value.isEmpty() ? null : value;
+            }
+
+            @Override
+            public String convertToString(String object) {
+                return object == null || object.isEmpty() ? null : object;
+            }
+        };
         floatNumberFilterHandler = new NumberFilterHandler<Float>(new Parser<Float>() {
             @Override
             public Float parse(CharSequence text) throws ParseException {
@@ -50,6 +62,12 @@ public abstract class BaseFilterHelper {
                 return Integer.parseInt(text.toString());
             }
         });
+        longFilterHandler = new NumberFilterHandler<>(new Parser<Long>() {
+            @Override
+            public Long parse(CharSequence text) throws ParseException {
+                return Long.parseLong(text.toString());
+            }
+        });
         dateIntervalFilterHandler = new DateIntervalFilterHandler();
     }
 
@@ -59,12 +77,14 @@ public abstract class BaseFilterHelper {
         handlerMap.put(BOOLEAN_TYPE, booleanFilterHandler);
         handlerMap.put(FLOAT_TYPE, floatNumberFilterHandler);
         handlerMap.put(INTEGER_TYPE, integerFilterHandler);
+        handlerMap.put(LONG_TYPE, longFilterHandler);
         handlerMap.put(DATE_INTERVAL_TYPE, dateIntervalFilterHandler);
 
         typeMap.put(String.class, STRING_TYPE);
         typeMap.put(Boolean.class, BOOLEAN_TYPE);
         typeMap.put(Float.class, FLOAT_TYPE);
         typeMap.put(Integer.class, INTEGER_TYPE);
+        typeMap.put(Long.class, LONG_TYPE);
         typeMap.put(DateInterval.class, DATE_INTERVAL_TYPE);
 
         registerCustom();
