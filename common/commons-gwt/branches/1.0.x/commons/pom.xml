@@ -6,11 +6,11 @@
     <parent>
         <groupId>com.ifree.common</groupId>
         <artifactId>commons-gwt-parent</artifactId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>1.0.3</version>
     </parent>
 
     <artifactId>commons-gwt</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
 
     <properties>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.ifree.common</groupId>
             <artifactId>infrastucture-gwt</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.3</version>
             <type>pom</type>
         </dependency>
 
@@ -130,8 +130,8 @@
 
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/commons</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/commons</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/commons</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/commons</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/commons</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/commons</url>
     </scm>
 </project>
