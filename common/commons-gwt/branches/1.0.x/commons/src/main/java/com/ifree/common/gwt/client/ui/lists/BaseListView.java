@@ -205,7 +205,7 @@ public abstract class BaseListView<
             listItem.setVisible(visible);
             listItem.setIcon(displayIcon);
 
-            if (action.hasHistoryToken()) {
+            if (enabled && visible && action.hasHistoryToken()) {
                 listItem.setTargetHistoryToken(action.actualHistoryToken(getSelectedObject()));
 
             }
