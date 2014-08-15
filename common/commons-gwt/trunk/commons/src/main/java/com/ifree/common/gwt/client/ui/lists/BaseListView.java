@@ -198,19 +198,21 @@ public abstract class BaseListView<
             listItem.setVisible(visible);
             listItem.setIcon(displayIcon);
 
+            if (visible && enabled) {
+                Action.ACTION_TYPE type = action.getType();
+                if (HISTORY_TOKEN.equals(type)) {
+                    listItem.setTargetHistoryToken(action.actualHistoryTokenOrLink(getSelectedObject()));
+                }
 
-            Action.ACTION_TYPE type = action.getType();
-            if (HISTORY_TOKEN.equals(type)) {
-                listItem.setTargetHistoryToken(action.actualHistoryTokenOrLink(getSelectedObject()));
+                if (LINK.equals(type) || type.equals(LINK_BLANK)) {
+                    listItem.setHref(action.actualHistoryTokenOrLink(getSelectedObject()));
+                }
+
+                if (LINK_BLANK.equals(type)) {
+                    listItem.setTarget("_blank");
+                }
             }
 
-            if (LINK.equals(type) || type.equals(LINK_BLANK)) {
-                listItem.setHref(action.actualHistoryTokenOrLink(getSelectedObject()));
-            }
-
-            if (LINK_BLANK.equals(type)) {
-                listItem.setTarget("_blank");
-            }
 
         }
     }
