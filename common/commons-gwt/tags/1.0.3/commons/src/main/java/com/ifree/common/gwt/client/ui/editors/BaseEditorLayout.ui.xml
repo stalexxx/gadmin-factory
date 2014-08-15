@@ -1,0 +1,52 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b="urn:import:org.gwtbootstrap3.client.ui"
+
+
+        >
+    <ui:style>
+
+        .left {
+            padding-left: 49px;
+        }
+
+        .zindex {
+            z-index: 999;
+        }
+    </ui:style>
+
+    <ui:with field="msg" type="com.ifree.common.gwt.client.ui.constants.BaseMessages"/>
+
+    <g:FlowPanel>
+        <g:SimplePanel addStyleNames="well {style.zindex}" ui:field="toolbar">
+            <g:LayoutPanel height="40px" width="100%" ui:field="layoutPanel">
+                <g:layer left="0" width="30px">
+                    <b:Anchor icon="ARROW_CIRCLE_LEFT" iconSize="LARGE" ui:field="back"
+                                      addStyleNames="icon-alone pull-left"/>
+                </g:layer>
+
+                <g:layer left="30px" right="250px">
+                    <g:SimplePanel ui:field="controlGroup">
+
+                    </g:SimplePanel>
+                </g:layer>
+
+                <g:layer right="0" width="250px">
+                    <g:SimplePanel ui:field="buttonGroupContainer">
+
+                    </g:SimplePanel>
+                </g:layer>
+            </g:LayoutPanel>
+        </g:SimplePanel>
+
+
+        <b:Row>
+            <b:Column size="4" ui:field="left" addStyleNames="{style.left}">
+            </b:Column>
+            <b:Column size="8" ui:field="right"/>
+        </b:Row>
+
+    </g:FlowPanel>
+
+
+</ui:UiBinder>
