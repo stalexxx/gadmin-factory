@@ -265,14 +265,16 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
     protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
+        return addDateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_SHORT, header, width, sortable);
 
-        return addColumn(dateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_SHORT),
+    }
+    protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, DateTimeFormat.PredefinedFormat format, String header, int width, boolean sortable) {
+        return addColumn(dateColumn(provider, format),
                 header, width, sortable, sortable ? provider.getPath() : null);
     }
 
     protected Column<T, String> addDateTimeColumn(final ValueProvider<T, Date> provider, String header, int width, boolean sortable) {
-        return addColumn(dateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT),
-                header, width, sortable, sortable ? provider.getPath() : null);
+        return addDateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_TIME_SHORT, header, width, sortable);
     }
 
     protected Column<T, T> addBooleanColumn(final ValueProvider<T, Boolean> field,
