@@ -5,13 +5,13 @@
     <parent>
         <groupId>com.ifree.common</groupId>
         <artifactId>commons-gwt-parent</artifactId>
-        <version>1.0.3-SNAPSHOT</version>
+        <version>1.0.3</version>
 
     </parent>
 
 
     <artifactId>infrastucture-gwt</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -170,9 +170,9 @@
     </dependencies>
 
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/infrastructure</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/infrastructure</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/branches/1.0.x/infrastructure</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/infrastructure</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/infrastructure</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.0.3/infrastructure</url>
     </scm>
 
 </project>
