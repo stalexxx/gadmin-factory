@@ -1,0 +1,14 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+
+        >
+
+
+    <ui:with field="msg" type="com.ifree.common.gwt.client.ui.constants.BaseMessages"/>
+
+
+    <g:FlowPanel addStyleNames="alert-panel" ui:field="container">
+
+    </g:FlowPanel>
+
+</ui:UiBinder>
