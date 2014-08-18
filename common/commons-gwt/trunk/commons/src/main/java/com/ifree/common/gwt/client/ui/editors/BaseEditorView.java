@@ -12,17 +12,19 @@ import com.google.gwt.editor.client.IsEditor;
 import com.google.gwt.editor.client.SimpleBeanEditorDriver;
 import com.google.gwt.editor.client.impl.DelegateMap;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Widget;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
+import com.ifree.common.gwt.client.gwtbootstrap3.ExtendedAnchorListItem;
 import com.ifree.common.gwt.client.ui.validation.DefaultEditorError;
-import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.constants.IconSize;
+import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.ValidationState;
 
 import javax.validation.ConstraintViolation;
@@ -41,8 +43,11 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
     @UiField
     public BaseEditorLayout layout;
-    @UiField
-    public Button save;
+
+    protected ExtendedAnchorListItem save;
+
+    protected ExtendedAnchorListItem back;
+
     private Widget[] validationFields;
 
     private Map<Editor, FormGroup> groupMap = Maps.newHashMap();
@@ -60,7 +65,42 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     protected void initWidget(Widget widget) {
         super.initWidget(widget);
 
+
         initFieldvalidation();
+
+        layout.hideSearchPanel();
+
+        initActions();
+    }
+
+    protected void initActions() {
+
+        layout.addAction(save = new ExtendedAnchorListItem(), 0);
+
+        save.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().onSave();
+            }
+        });
+        save.setIcon(IconType.SAVE);
+        save.setIconSize(IconSize.LARGE);
+        save.setText("Сохранить");
+
+
+        layout.addAction(back = new ExtendedAnchorListItem(), 0);
+        back.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().onBack();
+            }
+        });
+        back.setIcon(IconType.ARROW_CIRCLE_LEFT);
+       // back.setText("Назад");
+        back.setIconSize(IconSize.TIMES2);
+
+
+
     }
 
     private void initFieldvalidation() {
@@ -94,11 +134,6 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     @Override
     public SimpleBeanEditorDriver<T, E> getDriver() {
         return driver;
-    }
-
-    @UiHandler("save")
-    public final void onSave(ClickEvent event) {
-        getUiHandlers().onSave();
     }
 
     protected abstract Widget[] validationFields();

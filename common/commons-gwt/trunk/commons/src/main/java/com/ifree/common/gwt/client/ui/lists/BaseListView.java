@@ -26,7 +26,6 @@ import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Provider;
 import java.util.List;
 import java.util.Map;
 
@@ -181,7 +180,7 @@ public abstract class BaseListView<
     }
 
     @Override
-    public <W extends HasClickHandlers> W addAction(final Action<T> action, final Provider<T> selectedProvider) {
+    public <W extends HasClickHandlers> W addAction(final Action<T> action) {
         final ExtendedAnchorListItem actionWidget = actionBuilder.build(action);
         actionMap.put(action, actionWidget);
         toolbar.addAction(action, actionWidget);

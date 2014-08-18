@@ -248,7 +248,7 @@ public abstract class BaseListPresenter<T,
             for (final Action<T> action : actions) {
                 actionList.add(action);
 
-                final HasClickHandlers actionWidget = getView().addAction(action, selectedProvider);
+                final HasClickHandlers actionWidget = getView().addAction(action);
 
                 if (action.getType().equals(Action.ACTION_TYPE.SCRIPT)) {
                     registerHandler(actionWidget.addClickHandler(new ClickHandler() {

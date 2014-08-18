@@ -18,8 +18,6 @@ import com.ifree.common.gwt.client.ui.grids.BaseListGrid;
 import com.ifree.common.gwt.shared.loader.LoadHandler;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 
-import javax.inject.Provider;
-
 /**
  *
  */
@@ -49,7 +47,7 @@ public interface ListView<M, F extends Filter> extends View, CustomizedWithRoles
 
     void clearFilter();
 
-    <W extends HasClickHandlers> W addAction(Action<M> action, Provider<M> selectedProvider);
+    <W extends HasClickHandlers> W addAction(Action<M> action);
 
     void updateAction(Action<M> action, boolean enabled, boolean visible, String displayText, IconType displayIcon);
 
