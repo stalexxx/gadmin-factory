@@ -10,18 +10,18 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.AbstractPager;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
 import com.ifree.common.gwt.client.ui.lists.BaseFilterPanel;
+import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.*;
+import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.constants.NavbarType;
@@ -54,6 +54,10 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     ListDropDown elseDropdown;
     @UiField
     NavbarBrand header;
+    @UiField
+    HTML rowCounter;
+    @UiField
+    NavbarText rowCounterNavbarText;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -194,6 +198,11 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     public void setSearchFieldText(String value) {
         search.setText(value);
+    }
+
+    public void setRowCount(int newRowCount) {
+        rowCounterNavbarText.setVisible(true);
+        rowCounter.setText("Элементов: " + NumberFormat.getDecimalFormat().format(newRowCount));
     }
 
     @SuppressWarnings("PackageVisibleInnerClass")

@@ -3,7 +3,6 @@ package com.ifree.common.gwt.client.ui.grids;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.AbstractPager;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.view.client.HasRows;
 import com.google.gwt.view.client.Range;
 import org.gwtbootstrap3.client.ui.AnchorListItem;

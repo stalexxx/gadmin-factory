@@ -157,6 +157,11 @@ public interface BaseMessages extends Messages {
 
     @DefaultMessage("Сохранен")
     String savedSuccessfull();
+
+    @DefaultMessage("Количество элементов:")
+    String totalElements();
+
+
 }
 
 
