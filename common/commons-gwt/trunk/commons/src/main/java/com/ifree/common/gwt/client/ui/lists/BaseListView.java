@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.cellview.client.ColumnSortList;
 import com.google.gwt.user.client.TakesValue;
+import com.google.gwt.view.client.RowCountChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.ifree.common.gwt.client.actions.Action;
@@ -80,6 +81,15 @@ public abstract class BaseListView<
         BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar);
         viewPanel.addPager(dataGrid.getPager());
         viewPanel.addPageSizeWidget(dataGrid.getPageSizeWidget());
+
+        dataGrid.addRowCountChangeHandler(new RowCountChangeEvent.Handler() {
+            @Override
+            public void onRowCountChange(RowCountChangeEvent event) {
+                int newRowCount = event.getNewRowCount();
+                toolbar.setRowCount(newRowCount);
+
+            }
+        });
 
         initWidget(viewPanel);
     }

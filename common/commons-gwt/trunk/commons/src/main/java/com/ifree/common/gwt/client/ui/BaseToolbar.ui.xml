@@ -42,15 +42,14 @@
 
                 <b:NavbarForm pull="RIGHT">
                     <b:InputGroup addStyleNames="pull-right" ui:field="searchAddOn">
+
+
+
                         <b:InputGroupButton>
                             <b:Anchor icon="SEARCH" ui:field="extendSearch" iconSize="TIMES2" visible="false"/>
                         </b:InputGroupButton>
 
-
-
                         <b:TextBox ui:field="search" placeholder="{msg.searchPlaceholder}" />
-
-
 
                         <b:InputGroupButton>
                             <b:Anchor icon="ANDROID" ui:field="remove" iconSize="LARGE"/>
@@ -59,6 +58,10 @@
 
                 </b:NavbarForm>
 
+
+                <b:NavbarText pull="RIGHT" visible="false" ui:field="rowCounterNavbarText">
+                    <g:HTML text="Signed in as" ui:field="rowCounter"/>
+                </b:NavbarText>
             </b:NavbarCollapse>
             <!--<b:NavForm size="1"/>-->
 

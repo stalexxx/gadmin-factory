@@ -58,7 +58,8 @@ import java.util.Date;
  * @since 08.07.13
  */
 @SuppressWarnings({"UnusedDeclaration", "SpringJavaAutowiringInspection"})
-public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler {
+public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite implements
+        SelectionChangeEvent.HasSelectionChangedHandlers, ProvidesKey<T>, ColumnSortEvent.Handler {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
 
@@ -70,7 +71,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public static final int PSIZE_100 = 100;
     public static final int PSIZE_200 = 200;
     public static final IntegerProperty PAGE_SIZE = new IntegerProperty("pageSize");
-    public static final NumberFormat NUMBER_FORMAT = NumberFormat.getFormat("#.##");
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -89,7 +89,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected BasePager pager;
     protected ValueListBox<Integer> itemsPerPage;
-
 
     @Inject
     protected EventBus eventBus;
@@ -418,7 +417,6 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
                 }
             });
-
         }
 
         selectionModel = new SingleSelectionModel<T>(this);
@@ -588,5 +586,10 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
             return SafeHtmlUtils.EMPTY_SAFE_HTML;
         }
+    }
+
+
+    public HandlerRegistration addRowCountChangeHandler(RowCountChangeEvent.Handler handler) {
+        return dataGrid.addRowCountChangeHandler(handler);
     }
 }
