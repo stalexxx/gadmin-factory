@@ -6,19 +6,17 @@
 package com.ifree.common.gwt.client.ui.editors;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.*;
-import org.gwtbootstrap3.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
+import com.ifree.common.gwt.client.gwtbootstrap3.ExtendedAnchorListItem;
+import com.ifree.common.gwt.client.ui.BaseToolbar;
 import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.FormGroup;
+import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 
 import java.util.Iterator;
 
@@ -36,20 +34,20 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
     @UiField
-    SimplePanel toolbar;
-    @UiField
+    BaseToolbar toolbar;
+   /* @UiField
     SimplePanel controlGroup;
     @UiField
     SimplePanel buttonGroupContainer;
     @UiField
-    Anchor back;
+    Anchor back;*/
     @UiField
     Column left;
     @UiField
     Column right;
-    @UiField
+   /* @UiField
     LayoutPanel layoutPanel;
-
+*/
 
     private BaseEditorUiHandlers uiHandlers;
 
@@ -75,11 +73,11 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
 
     /*===========================================[ CLASS METHODS ]================*/
 
-    @UiHandler("back")
+  /*  @UiHandler("back")
     public void onBackClick(ClickEvent clickEvent) {
         uiHandlers.onBack();
     }
-
+*/
     /*===========================================[ INTERFACE METHODS ]============*/
 
     @Override
@@ -89,30 +87,24 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
             left.add(w);
         } else if (w instanceof Right) {
             right.add(w);
-        } else if (w instanceof ButtonGroup) {
-            buttonGroupContainer.setWidget(w);
-            buttonGroup = ((ButtonGroup) w);
-            w.addAttachHandler(new AttachEvent.Handler() {
-                @Override
-                public void onAttachOrDetach(AttachEvent event) {
-                    scheduleUpdateToolbarSize(w);
-                }
-            });
-        } else if (w instanceof FormGroup) {
-            controlGroup.setWidget(w);
+        } else if (w instanceof AbstractListItem) {
+            toolbar.addAction(false, (AbstractListItem) w);
         } else {
             throw new UnsupportedOperationException("unsupprted widget");
         }
     }
 
 
+
+
     public void scheduleUpdateToolbarSize() {
-        scheduleUpdateToolbarSize(buttonGroupContainer);
+       // scheduleUpdateToolbarSize(buttonGroupContainer);
 
     }
 
     private void scheduleUpdateToolbarSize(final Widget w) {
 
+/*
         Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
             @Override
             public void execute() {
@@ -125,6 +117,7 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
 
 
         });
+*/
 
 
     }
@@ -172,8 +165,13 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
         this.uiHandlers = uiHandlers;
     }
 
-    public void hideBackButton() {
-        back.setVisible(false);
+    public void hideSearchPanel() {
+        toolbar.setSearchPanelVisible(false);
+    }
+
+    public void addAction(ExtendedAnchorListItem widgets, int beforeIndex) {
+        toolbar.addAction(false, widgets, beforeIndex);
+
     }
 
     /*===========================================[ INNER CLASSES ]================*/

@@ -102,12 +102,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
             //pagerContainer.add(w);
         } else if (w instanceof BaseFilterPanel) {
             setFilterPanel(w);
-
-        } else {
-            if (w instanceof Action) {
-                Action action = (Action) w;
-                
-            }
+        } else {////ignore
         }
     }
 
@@ -169,12 +164,19 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     }
 
     public <T> void addAction(Action<T> action, AbstractListItem actionWidget) {
+        addAction(action.isAdditional(), actionWidget);
+    }
 
-        if (action.isAdditional()) {
+    public void addAction(boolean addition, AbstractListItem actionWidget) {
+        addAction(addition, actionWidget, listItemContainer.getWidgetCount() - 1);
+    }
+    public void addAction(boolean addition, AbstractListItem actionWidget, int beforeIndex) {
+
+        if (addition) {
             elseDropdown.setVisible(true);
             elseSubmenu.add(actionWidget);
         } else {
-            listItemContainer.insert(actionWidget, listItemContainer.getWidgetCount() - 1);
+            listItemContainer.insert(actionWidget, beforeIndex);
         }
     }
 
