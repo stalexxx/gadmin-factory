@@ -47,6 +47,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
     private Map<String, T> replacementMap = Maps.newHashMap();
     private Button removeButton;
     private boolean shortListExpected = true;
+    private InputGroup inputGroup;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -123,7 +124,7 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
     }
 
     private InputGroup createGroup(SuggestBox widget) {
-        InputGroup inputGroup = new InputGroup();
+        inputGroup = new InputGroup();
         InputGroupButton inputGroupButton = new InputGroupButton();
         removeButton = new Button();
         removeButton.addClickHandler(new ClickHandler() {
@@ -137,8 +138,15 @@ public class SuggestedEditor<T> extends Composite implements LeafValueEditor<T>,
 
         removeButton.setIcon(IconType.TIMES);
         inputGroupButton.add(removeButton);
+        
+        
+        
         inputGroup.add(widget);
         inputGroup.add(inputGroupButton);
+        return inputGroup;
+    }
+
+    public InputGroup getInputGroup() {
         return inputGroup;
     }
 

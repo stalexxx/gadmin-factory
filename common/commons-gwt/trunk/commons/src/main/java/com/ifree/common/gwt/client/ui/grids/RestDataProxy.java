@@ -76,7 +76,7 @@ public class RestDataProxy<T,
 
         if (sortColumn != null) {
 
-            List<SortInfoBean> sortInfo = config.getSortInfo();
+            List<SortInfoBean> sortInfo = config != null ? config.getSortInfo() : null;
             if (sortInfo == null) {
                 sortInfo = Lists.newArrayList();
 
