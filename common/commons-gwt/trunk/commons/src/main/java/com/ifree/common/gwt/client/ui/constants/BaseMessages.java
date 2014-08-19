@@ -47,6 +47,9 @@ public interface BaseMessages extends Messages {
     @DefaultMessage("{0} / {1}")
     SafeHtml bySlash(String name, String fullName);
 
+    @DefaultMessage("{0} / {1}")
+    String bySlash(String name, Integer fullName);
+
     //@DefaultMessage("<div>{0}<div style=\"color:#000000;font-style: italic;\">{1}</div></div>")
     @DefaultMessage("{0}</br><i>{1}</i>")
     SafeHtml twoLines(String name, String fullName);
