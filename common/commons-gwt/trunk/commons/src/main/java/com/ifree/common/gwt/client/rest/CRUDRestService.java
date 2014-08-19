@@ -1,6 +1,7 @@
 package com.ifree.common.gwt.client.rest;
 
 import com.gwtplatform.dispatch.rest.shared.RestAction;
+import com.ifree.common.gwt.shared.RemovingResult;
 import com.ifree.common.gwt.shared.SavingResult;
 
 import javax.ws.rs.*;
@@ -18,5 +19,5 @@ public interface CRUDRestService<T, ID extends Serializable> {
     RestAction<SavingResult<ID>> save(T dto);
 
     @DELETE @Path("/{id}")
-    RestAction<Boolean> delete(@PathParam("id") ID id);
+    RestAction<RemovingResult> delete(@PathParam("id") ID id);
 }
