@@ -157,7 +157,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
      public Response delete(ID id) {
          try {
              getJpaRepository().delete(id);
-             return Response.ok(true).build();
+             return Response.ok(new SavingResult<>()).build();
          } catch (Exception e) {
              getLogger().error(String.format("cant remove %d", id), e);
 

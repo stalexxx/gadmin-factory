@@ -6,6 +6,7 @@ import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.ifree.common.gwt.client.actions.SingleItemAlwaysVisibleAction;
 import com.ifree.common.gwt.client.events.ShowAlertEvent;
 import com.ifree.common.gwt.client.ui.AbstractAsyncCallback;
+import com.ifree.common.gwt.shared.RemovingResult;
 import com.ifree.common.gwt.shared.ValueProvider;
 import org.gwtbootstrap3.client.ui.constants.AlertType;
 import org.gwtbootstrap3.client.ui.constants.IconType;
@@ -38,11 +39,15 @@ public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisible
             public void callback(boolean b) {
                 if (b) {
                     ID id = getId(item);
-                    dispatch.execute(createAction(id), new AbstractAsyncCallback<Boolean>() {
+                    dispatch.execute(createAction(id), new AbstractAsyncCallback<RemovingResult>() {
                         @Override
-                        public void onSuccess(Boolean result) {
-                            eventBus.fireEvent(new ShowAlertEvent("Успешно удален", AlertType.SUCCESS));
-                            onDeleted(item);
+                        public void onSuccess(RemovingResult result) {
+                            if (result.isRemoved()) {
+                                eventBus.fireEvent(new ShowAlertEvent("Успешно удален", AlertType.SUCCESS));
+                                onDeleted(item);
+                            } else {
+                                eventBus.fireEvent(new ShowAlertEvent("Не удалось удалить: " + result.getErrorMessage(), AlertType.WARNING));
+                            }
                         }
                     });
 
@@ -54,7 +59,7 @@ public abstract class GenericRemoveAction<T, ID> extends SingleItemAlwaysVisible
 
     protected abstract void onDeleted(T item);
 
-    protected abstract RestAction<Boolean> createAction(ID id);
+    protected abstract RestAction<RemovingResult> createAction(ID id);
 
     protected ID getId(T item) {
         return item != null ? idProvider.getValue(item) : null;
