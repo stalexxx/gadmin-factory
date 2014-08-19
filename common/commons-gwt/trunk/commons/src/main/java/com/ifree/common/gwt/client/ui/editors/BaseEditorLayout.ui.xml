@@ -43,7 +43,7 @@
 
         <w:BaseToolbar ui:field="toolbar" />
 
-        <b:Row>
+        <b:Row marginTop="60" addStyleNames="gridAfterFixedBar">
             <b:Column size="4" ui:field="left" addStyleNames="{style.left}">
             </b:Column>
             <b:Column size="8" ui:field="right"/>
