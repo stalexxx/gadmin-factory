@@ -19,8 +19,6 @@ public class CachingDataProxy implements DataProxy {
     }
 
     public <C, R extends PagingLoadResult> void load(Class<R> type, Callback<R, Throwable> callback) {
-        BaseDataProxy<R> baseDataProxy = dataProxyMap.get(type);
-//        baseDataProxy.instantLoad(null, callback);
     }
 
     @Override

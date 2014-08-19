@@ -83,10 +83,7 @@ public abstract class AbstractFilterHandler<T extends BaseFilter> extends Filter
             bean.setType(fieldType[1]);
             bean.setValue(keyvalue[1]);
 
-        } else {
-            int i = 0;
         }
-
 
         return bean;
     }
