@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.Presenter;
@@ -237,13 +236,6 @@ public abstract class BaseListPresenter<T,
 
     public void addActions(List<Action<T>> actions) {
         if (actions != null) {
-
-            Provider<T> selectedProvider = new Provider<T>() {
-                @Override
-                public T get() {
-                    return getSelectedObject();
-                }
-            };
 
             for (final Action<T> action : actions) {
                 actionList.add(action);

@@ -99,9 +99,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     //  @Override
     public SavingResult<ID> create(EntityDto_ dto, Entity_ entity) {
 
-        Entity_ result = null;
-
-        SavingResult<ID> savingResult;
+        Entity_ result;
 
         try {
             validateOnCreation(dto);
