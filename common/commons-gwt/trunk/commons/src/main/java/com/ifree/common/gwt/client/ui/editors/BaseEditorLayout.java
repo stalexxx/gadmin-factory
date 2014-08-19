@@ -14,7 +14,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.ifree.common.gwt.client.gwtbootstrap3.ExtendedAnchorListItem;
 import com.ifree.common.gwt.client.ui.BaseToolbar;
-import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.Column;
 import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 
@@ -35,23 +34,12 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
 
     @UiField
     BaseToolbar toolbar;
-   /* @UiField
-    SimplePanel controlGroup;
-    @UiField
-    SimplePanel buttonGroupContainer;
-    @UiField
-    Anchor back;*/
     @UiField
     Column left;
     @UiField
     Column right;
-   /* @UiField
-    LayoutPanel layoutPanel;
-*/
 
     private BaseEditorUiHandlers uiHandlers;
-
-    private ButtonGroup buttonGroup;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
@@ -120,23 +108,6 @@ public class BaseEditorLayout extends Composite implements HasWidgets {
 */
 
 
-    }
-
-    private int getBtnGroupWidth() {
-        if (buttonGroup != null) {
-            int count = buttonGroup.getWidgetCount();
-
-            int size = 0;
-
-            for (int i = 0; i < count; i++) {
-                Widget btn = buttonGroup.getWidget(i);
-                if (btn.isVisible()) {
-                    size += btn.getOffsetWidth();
-                }
-            }
-            return size;
-        }
-        return 0;
     }
 
     @Override

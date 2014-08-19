@@ -97,10 +97,7 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
         });
         back.setIcon(IconType.ARROW_CIRCLE_LEFT);
        // back.setText("Назад");
-        back.setIconSize(IconSize.TIMES2);
-
-
-
+        back.setIconSize(IconSize.LARGE);
     }
 
     private void initFieldvalidation() {
