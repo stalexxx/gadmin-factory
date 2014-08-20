@@ -54,13 +54,7 @@ public class ListLoadConfigBean implements ListLoadConfig {
   public void setSortInfo(List<SortInfoBean> info) {
     sortInfo.clear();
     for (SortInfoBean i : info) {
-      if (i instanceof SortInfoBean) {
-        sortInfo.add((SortInfoBean) i);
-      } else {
-        sortInfo.add(new SortInfoBean(i.getSortField(), i.getSortDir()));
-      }
+        sortInfo.add(i);
     }
   }
-
-
 }

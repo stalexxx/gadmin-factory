@@ -44,7 +44,7 @@ import java.util.logging.Logger;
  * @since 25.03.13
  */
 
-@SuppressWarnings("TypeParameterNamingConvention")
+@SuppressWarnings({"TypeParameterNamingConvention", "SpringJavaAutowiringInspection"})
 public abstract class BaseEditorPresenter<
         T, ID extends Serializable,
         View_ extends EditorView<T> & HasUiHandlers<?>,

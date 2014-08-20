@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 /**
 * Created by alex on 13.05.14.
 */
-@SuppressWarnings("Convert2Diamond")
+//@SuppressWarnings("Convert2Diamond")
 class BaseSuggestOracle<T> extends SuggestOracle {
 
     private final BaseDataProxy<T> dataProxy;

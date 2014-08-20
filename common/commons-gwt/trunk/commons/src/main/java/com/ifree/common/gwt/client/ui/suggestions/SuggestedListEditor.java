@@ -87,7 +87,6 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     private IsWidget createAddRemoveAll(final BaseDataProxy<T> dataProxy) {
         org.gwtbootstrap3.client.ui.gwt.FlowPanel panel = new org.gwtbootstrap3.client.ui.gwt.FlowPanel();
         InputGroupButton button = new InputGroupButton();
-        ;
         button.add(new Button("Все", IconType.PLUS_CIRCLE, new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {

@@ -9,15 +9,15 @@ import javax.annotation.Nullable;
  */
 public abstract class BaseAction<T> implements Action<T> {
 
-    protected String text;
+    String text;
     private boolean additional;
     private IconType iconType;
 
-    public BaseAction(String text) {
+    BaseAction(String text) {
         this.text = text;
     }
 
-    protected BaseAction(String text, boolean additional) {
+    BaseAction(String text, boolean additional) {
         this.text = text;
         this.additional = additional;
     }
@@ -33,8 +33,8 @@ public abstract class BaseAction<T> implements Action<T> {
     }
 
     @Override
-    public Action<T> setAdditional(boolean additional) {
-        this.additional = additional;
+    public Action<T> setAdditional() {
+        this.additional = true;
         return this;
     }
 

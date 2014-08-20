@@ -20,6 +20,7 @@ public class CustomRemoteLoggingServiceImpl extends RemoteLoggingServiceImpl {
 
     private static final long serialVersionUID = 2471029272551816601L;
 
+    @SuppressWarnings("ConstantConditions")
     public CustomRemoteLoggingServiceImpl() {
         try {
             String path = Thread.currentThread().getContextClassLoader().getResource("logback.xml").getPath();

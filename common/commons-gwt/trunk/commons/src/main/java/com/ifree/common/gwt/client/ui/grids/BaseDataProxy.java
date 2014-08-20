@@ -13,11 +13,11 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.gwtplatform.dispatch.rest.shared.RestDispatch;
 import com.gwtplatform.mvp.client.proxy.NotifyingAsyncCallback;
-import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Alexander Ostrovskiy (a.ostrovskiy)
@@ -26,13 +26,13 @@ import java.util.List;
 public abstract class BaseDataProxy<T>
         implements DataProxy<FilterPagingLoadConfig, PagingLoadResult<T>> {
 
-    public static final int DELAY_MILLIS = 500;
+    private static final int DELAY_MILLIS = 500;
 
     @Inject
     private EventBus eventBus;
 
     @Inject
-    protected RestDispatch restDispatch;
+    RestDispatch restDispatch;
 
     private FilterPagingLoadConfig loadConfig;
 
@@ -49,7 +49,7 @@ public abstract class BaseDataProxy<T>
     protected static String findValueByKey(List<FilterConfig> filters, Enum field) {
         if (filters != null) {
             for (FilterConfig filter : filters) {
-                if (filter.getField() == field.name()) {
+                if (Objects.equals(filter.getField(), field.name())) {
                     return filter.getValue();
                 }
             }
@@ -67,7 +67,7 @@ public abstract class BaseDataProxy<T>
         timer.schedule(DELAY_MILLIS);
     }
 
-    protected FilterPagingLoadConfig prepareLoadConfig(FilterPagingLoadConfig loadConfig) {
+    FilterPagingLoadConfig prepareLoadConfig(FilterPagingLoadConfig loadConfig) {
         return loadConfig;
     }
 
@@ -114,42 +114,6 @@ public abstract class BaseDataProxy<T>
     }
 
     private String filter;
-
-    private SortInfoBean defaultSortInfo;
-
-
-    public void setDefaultSortInfo(SortInfoBean defaultSortInfo) {
-        this.defaultSortInfo = defaultSortInfo;
-    }
-
-/*
-    @NotNull
-    protected List<SortInfo> getSortInfos(PagingLoadConfig loadConfig, RequestContext request) {
-        List<? extends SortInfo> sortInfos = loadConfig.getSortInfo();
-
-        if (sortInfos != null && !sortInfos.isEmpty()) {
-            ArrayList<SortInfo> target = new ArrayList<SortInfo>(sortInfos.size());
-
-            for (SortInfo info : sortInfos) {
-
-                target.add(getSortInfo(request, info));
-            }
-
-            return target;
-        }
-
-        if (defaultSortInfo != null) {
-            return Lists.newArrayList(getSortInfo(request, defaultSortInfo));
-        }
-
-        return Lists.newArrayList();
-    }
-*/
-
-    /*private static SortInfo getSortInfo(RequestContext request, SortInfo info) {
-        SortInfo sortInfo = new SortInfoBean(info.getSortField(), info.getSortDir());
-        return sortInfo;
-    }*/
 
     protected String buildQuery(List<FilterConfig> filters) {
         if (filters != null && !filters.isEmpty()) {

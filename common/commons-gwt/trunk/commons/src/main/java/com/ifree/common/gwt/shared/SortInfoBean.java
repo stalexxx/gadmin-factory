@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * Aggregates sort field and sort direction.
  */
-public class SortInfoBean implements Serializable {
+public final class SortInfoBean implements Serializable {
 
   private String sortField;
   private SortDir sortDir = SortDir.ASC;

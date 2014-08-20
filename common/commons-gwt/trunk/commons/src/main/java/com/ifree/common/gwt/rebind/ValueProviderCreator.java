@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("UnusedAssignment")
 public class ValueProviderCreator extends AbstractCreator {
   public enum RequiredReadability {
     BOTH, SET, GET, NEITHER
@@ -265,7 +266,7 @@ public class ValueProviderCreator extends AbstractCreator {
     return params[1];
   }
 
-  private final String getValueTypeName() {
+  private String getValueTypeName() {
     return getValueType().getParameterizedQualifiedSourceName();
   }
 }

@@ -226,19 +226,21 @@ public class SuggestionDisplayImpl extends SuggestBox.SuggestionDisplay implemen
         handlerRegistrations.clear();
 
 
-        for (final SuggestOracle.Suggestion curSuggestion : suggestions) {
-            final SuggestionMenuItem menuItem = new SuggestionMenuItem(
-                    curSuggestion, isDisplayStringHTML);
-            handlerRegistrations.add(menuItem.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                    callback.onSuggestionSelected(curSuggestion);
+        if (suggestions != null) {
+            for (final SuggestOracle.Suggestion curSuggestion : suggestions) {
+                final SuggestionMenuItem menuItem = new SuggestionMenuItem(
+                        curSuggestion, isDisplayStringHTML);
+                handlerRegistrations.add(menuItem.addClickHandler(new ClickHandler() {
+                    @Override
+                    public void onClick(ClickEvent event) {
+                        callback.onSuggestionSelected(curSuggestion);
 
-                }
-            }));
+                    }
+                }));
 
 
-            suggestionMenu.addItem(menuItem);
+                suggestionMenu.addItem(menuItem);
+            }
         }
 
         if (isAutoSelectEnabled && anySuggestions) {

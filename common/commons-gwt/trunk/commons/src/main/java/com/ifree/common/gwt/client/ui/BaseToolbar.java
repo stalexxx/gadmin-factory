@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.cellview.client.AbstractPager;
 import com.google.gwt.user.client.ui.*;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ifree.common.gwt.client.actions.Action;
@@ -102,11 +101,8 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     @Override
     public void add(Widget w) {
-        if (w instanceof AbstractPager) {
-            //pagerContainer.add(w);
-        } else if (w instanceof BaseFilterPanel) {
+        if (w instanceof BaseFilterPanel) {
             setFilterPanel(w);
-        } else {////ignore
         }
     }
 
