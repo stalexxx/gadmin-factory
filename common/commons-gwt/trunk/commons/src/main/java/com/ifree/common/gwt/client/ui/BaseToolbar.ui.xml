@@ -33,7 +33,7 @@
 
 
                     <b:ListDropDown ui:field="elseDropdown" visible="false">
-                        <b:AnchorButton dataToggle="DROPDOWN">Еще</b:AnchorButton>
+                        <b:AnchorButton icon="FOLDER_OPEN" dataToggle="DROPDOWN">Еще</b:AnchorButton>
                         <b:DropDownMenu ui:field="elseSubmenu">
 
                         </b:DropDownMenu>
@@ -96,8 +96,5 @@
 
         -->
 
-
-        <b:Column size="MD_2" addStyleNames="{style.filter_panel}" ui:field="filterPanel" visible="false">
-        </b:Column>
     </g:FlowPanel>
 </ui:UiBinder>

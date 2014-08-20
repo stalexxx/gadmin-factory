@@ -63,11 +63,11 @@ public abstract class BaseListView<
         dataGrid.addStyleName("gridAfterFixedBar");
         this.filterPanel = filterPanel;
 
+
         toolbar = new BaseToolbar();
         toolbar.setExtendSearch(false);
-
         if (filterPanel != null) {
-            toolbar.add(filterPanel);
+            toolbar.hideSearch();
         }
 
 
@@ -78,7 +78,9 @@ public abstract class BaseListView<
             }
         });
 
-        BaseViewPanel<T, _Filter> viewPanel = new BaseViewPanel<T, _Filter>(dataGrid, toolbar);
+        BaseViewPanel<T, _Filter> viewPanel =
+                new BaseViewPanel<T, _Filter>(dataGrid, toolbar, filterPanel);
+
         viewPanel.addPager(dataGrid.getPager());
         viewPanel.addPageSizeWidget(dataGrid.getPageSizeWidget());
 

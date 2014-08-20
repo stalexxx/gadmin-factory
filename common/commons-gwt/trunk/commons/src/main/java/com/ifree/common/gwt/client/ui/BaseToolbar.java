@@ -13,17 +13,16 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.*;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasWidgets;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 import com.ifree.common.gwt.client.actions.Action;
 import com.ifree.common.gwt.client.events.PerformFilterEvent;
-import com.ifree.common.gwt.client.ui.lists.BaseFilterPanel;
-import org.gwtbootstrap3.client.ui.Anchor;
 import org.gwtbootstrap3.client.ui.*;
-import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.base.AbstractListItem;
 import org.gwtbootstrap3.client.ui.constants.IconType;
-import org.gwtbootstrap3.client.ui.constants.NavbarType;
 
 import java.util.Iterator;
 
@@ -46,8 +45,6 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     @UiField
     NavbarNav listItemContainer;
     @UiField
-    Column filterPanel;
-    @UiField
     DropDownMenu elseSubmenu;
     @UiField
     ListDropDown elseDropdown;
@@ -67,8 +64,6 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     protected void init() {
         initWidget(binder.createAndBindUi(this));
-        filterPanel.addStyleName(NavbarType.DEFAULT.getCssName());
-
 
         remove.addClickHandler(new ClickHandler() {
             @Override
@@ -101,9 +96,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     @Override
     public void add(Widget w) {
-        if (w instanceof BaseFilterPanel) {
-            setFilterPanel(w);
-        }
+        listItemContainer.add(w);
     }
 
     @Override
@@ -120,7 +113,6 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     public Iterator<Widget> iterator() {
         return listItemContainer.iterator();
     }
-
 
 
     @Override
@@ -149,9 +141,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
 
     private static final Binder binder = GWT.create(Binder.class);
 
-    public void setFilterPanel(IsWidget panel) {
-        filterPanel.setVisible(true);
-        filterPanel.add(panel);
+    public void hideSearch() {
         search.setVisible(false);
     }
 
@@ -170,6 +160,7 @@ public class BaseToolbar extends Composite implements HasWidgets, PerformFilterE
     public void addAction(boolean addition, AbstractListItem actionWidget) {
         addAction(addition, actionWidget, listItemContainer.getWidgetCount() - 1);
     }
+
     public void addAction(boolean addition, AbstractListItem actionWidget, int beforeIndex) {
 
         if (addition) {
