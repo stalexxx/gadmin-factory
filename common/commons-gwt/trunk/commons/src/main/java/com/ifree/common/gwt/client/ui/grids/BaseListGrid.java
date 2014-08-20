@@ -71,6 +71,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public static final int PSIZE_100 = 100;
     public static final int PSIZE_200 = 200;
     public static final IntegerProperty PAGE_SIZE = new IntegerProperty("pageSize");
+    public static final String TABLE_LINK_SELECTED = "table-link-selected";
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -283,8 +284,16 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             public SafeHtml render(T object) {
                 Boolean b = field.getValue(object);
                 if (b != null) {
+                    boolean selected = isSelected(object);
+                    String color;
+
+                    if (selected) {
+                        color = TABLE_LINK_SELECTED;
+                    } else {
+                        color = b ? "icon-yes" : "icon-no";
+                    }
                     return templates.icon(Styles.FONT_AWESOME_BASE,
-                            b ? yes.getCssName() : no.getCssName(), b ? "icon-yes" : "icon-no");
+                            b ? yes.getCssName() : no.getCssName(), color);
 
                 } else {
                     return SafeHtmlUtils.EMPTY_SAFE_HTML;
@@ -554,7 +563,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    protected class LinkRenderer<T, V, ID extends Serializable> extends AbstractSafeHtmlRenderer<T> {
+    protected class LinkRenderer< V, ID extends Serializable> extends AbstractSafeHtmlRenderer<T> {
         private final PlaceManager placeManager;
         private final Renderer<V> renderer;
         private final ValueProvider<T, V> provider;
@@ -571,6 +580,9 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
         @Override
         public SafeHtml render(T object) {
+
+            boolean isSelected = selectionModel.isSelected(object);
+
             V value = provider.getValue(object);
             if (value != null) {
                 PlaceRequest pr = new PlaceRequest.Builder().nameToken(nameToken).with(BaseNameTokes.ID_PARAM, String.valueOf(idProvider.getValue(value))).build();
@@ -581,7 +593,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
                 if (rendered == null) {
                     rendered = "???";
                 }
-                return templates.historyTokenHref(token, rendered);
+                return templates.historyTokenHref(token, rendered, isSelected ? TABLE_LINK_SELECTED : "");
             }
 
             return SafeHtmlUtils.EMPTY_SAFE_HTML;
