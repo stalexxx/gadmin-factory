@@ -157,7 +157,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
              getJpaRepository().delete(id);
              return Response.ok(new SavingResult<>()).build();
          } catch (Exception e) {
-             getLogger().error(String.format("cant remove %d", id), e);
+             getLogger().error(String.format("cant remove %s", String.valueOf(id)), e);
 
              return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
          }
@@ -179,7 +179,7 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     @Override
      @GET
      public Response getItems() {
-         List<EntityDto_> dtos = getConversionService().transformToList(getJpaRepository().findAll(), getDtoClazz());
+         List<EntityDto_> dtos = getConversionService().transformToListNotNull(getJpaRepository().findAll(), getDtoClazz());
          return Response.ok(new PagingLoadResultBean<EntityDto_>(dtos, dtos.size(), 0)).build();
      }
 

@@ -28,7 +28,6 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
 
     public final SimpleBeanEditorDriver<F, E> driver = createDriver();
 
-    private Button reset;
     private Button apply;
 
     @UiField
@@ -52,8 +51,7 @@ public abstract class BaseFilterPanel<F extends BaseFilter, E extends Editor<? s
 
         buttonGroup.addStyleName(Styles.CLEARFIX);
 
-//        buttonGroup.add(apply = initApply());
-        buttonGroup.add(reset = initReset());
+        buttonGroup.add(initReset());
 
     }
 

@@ -37,7 +37,7 @@ import java.util.Set;
  * @author Alexander Ostrovskiy (a.ostrovskiy)
  * @since 26.04.13
  */
-public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extends Editor<T>> extends ViewWithUiHandlers<C> implements EditorView<T> {
+public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extends Editor<T>> extends ViewWithUiHandlers<C> implements EditorView<T>, Editor<T> {
 
     /*===========================================[ INSTANCE VARIABLES ]===========*/
 
@@ -47,8 +47,6 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     protected ExtendedAnchorListItem save;
 
     protected ExtendedAnchorListItem back;
-
-    private Widget[] validationFields;
 
     private Map<Editor, FormGroup> groupMap = Maps.newHashMap();
 
@@ -116,14 +114,19 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
 
             ///add change handler
-            if (widget instanceof HasValueChangeHandlers) {
-                ((HasValue) widget).addValueChangeHandler(new ValueChangeHandler() {
-                    @Override
-                    public void onValueChange(ValueChangeEvent event) {
-                        getUiHandlers().validate();
-                    }
-                });
-            }
+            setupChangeHandler(widget);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setupChangeHandler(Widget widget) {
+        if (widget instanceof HasValueChangeHandlers) {
+            ((HasValue) widget).addValueChangeHandler(new ValueChangeHandler() {
+                @Override
+                public void onValueChange(ValueChangeEvent event) {
+                    getUiHandlers().validate();
+                }
+            });
         }
     }
 
@@ -169,6 +172,7 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initializeDriver() {
         getDriver().initialize((E) this);
@@ -184,13 +188,11 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
         ArrayList<EditorError> errors = new ArrayList<EditorError>(violations.size());
 
-        if (violations != null) {
-            for (ConstraintViolation<T> violation : violations) {
-                final List<Editor<?>> editorsByPath = delegateMap.getEditorByPath(violation.getPropertyPath().toString());
+        for (ConstraintViolation<T> violation : violations) {
+            final List<Editor<?>> editorsByPath = delegateMap.getEditorByPath(violation.getPropertyPath().toString());
 
-                for (Editor<?> editor : editorsByPath) {
-                    errors.add(new DefaultEditorError(editor, violation.getMessage(), violation.getInvalidValue()));
-                }
+            for (Editor<?> editor : editorsByPath) {
+                errors.add(new DefaultEditorError(editor, violation.getMessage(), violation.getInvalidValue()));
             }
         }
 

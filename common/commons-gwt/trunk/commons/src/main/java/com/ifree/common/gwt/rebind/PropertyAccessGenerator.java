@@ -28,6 +28,7 @@ import java.io.PrintWriter;
 /**
  *
  */
+@SuppressWarnings("ALL")
 public class PropertyAccessGenerator extends Generator {
   private JClassType propertyAccessInterface;
   private JClassType modelKeyProviderInterface;

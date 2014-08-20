@@ -44,7 +44,7 @@ public class BagePanel<T> extends FlowPanel implements HasEnabled, HasValue<List
 
     @Override
     public List<T> getValue() {
-        return list != null ? Lists.newArrayList(list) : list;
+        return list != null ? Lists.newArrayList(list) : null;
     }
 
     public void setValue(List<T> value) {
@@ -70,7 +70,7 @@ public class BagePanel<T> extends FlowPanel implements HasEnabled, HasValue<List
         }
     }
 
-    public void addItem(T item) {
+    void addItem(T item) {
         FlowPanel panel = new FlowPanel();
 
         panel.addStyleName("pull-left");

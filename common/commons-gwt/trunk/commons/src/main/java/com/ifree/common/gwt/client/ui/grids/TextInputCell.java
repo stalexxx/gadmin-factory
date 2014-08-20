@@ -125,7 +125,7 @@ public class TextInputCell extends
     }
 
     private boolean equalsOrNull(Object a, Object b) {
-      return (a != null) ? a.equals(b) : ((b == null) ? true : false);
+      return (a != null) ? a.equals(b) : ((b == null));
     }
   }
 
@@ -223,6 +223,6 @@ public class TextInputCell extends
 
   @Override
   protected InputElement getInputElement(Element parent) {
-    return super.getInputElement(parent).<InputElement> cast();
+    return super.getInputElement(parent).cast();
   }
 }

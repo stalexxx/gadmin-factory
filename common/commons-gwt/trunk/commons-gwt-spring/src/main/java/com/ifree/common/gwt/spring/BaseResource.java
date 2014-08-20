@@ -27,6 +27,16 @@ import java.util.List;
  */
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class BaseResource<Entity_, EntityDto_> {
+    public static final Function<SortInfoBean, Sort.Order> SORT_INFO_BEAN_ORDER_FUNCTION = new Function<SortInfoBean, Sort.Order>() {
+        @Nullable
+        @Override
+        public Sort.Order apply(SortInfoBean input) {
+            Sort.Direction direction = SortDir.ASC.equals(input.getSortDir()) ? Sort.Direction.ASC : Sort.Direction.DESC;
+            return new Sort.Order(
+                    direction,
+                    input.getSortField());
+        }
+    };
     public final Specification<Entity_> NONE_SPECIFICATION = null;
 
     protected PagingLoadResultBean<EntityDto_> getPagingLoadResultBean(FilterPagingLoadConfigBean config) {
@@ -56,12 +66,12 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     }
 
     /**
-     *
      * @return
      */
     protected Specification<Entity_> postProcessSpecifications() {
         return null;
     }
+
     protected Specifications<Entity_> createInitSpecification() {
         return null;
     }
@@ -105,17 +115,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     }
 
     private Sort sort(FilterPagingLoadConfigBean config) {
-        return new Sort(Lists.transform(config.getSortInfo(), new Function<SortInfoBean, Sort.Order>() {
-            @Nullable
-            @Override
-            public Sort.Order apply(@Nullable SortInfoBean input) {
-                Sort.Direction direction = SortDir.ASC.equals(input.getSortDir()) ? Sort.Direction.ASC : Sort.Direction.DESC;
-                return input != null ? new Sort.Order(
-                        direction,
-                        input.getSortField())
-                        : null;
-            }
-        }));
+        return new Sort(Lists.transform(config.getSortInfo(), SORT_INFO_BEAN_ORDER_FUNCTION));
     }
 
 
@@ -166,6 +166,7 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     /**
      * This method intended to be overriden when exact type of specification should be provided;
      * Использовать этот метод, когда надо переопределить спецификацию для определенного поля фильтрации
+     *
      * @param field
      * @param filter
      * @return

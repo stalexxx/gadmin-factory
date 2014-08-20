@@ -1,6 +1,5 @@
 package com.ifree.common.gwt.client.ui.grids;
 
-import com.google.common.collect.Lists;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ProvidesKey;
@@ -8,6 +7,7 @@ import com.google.gwt.view.client.Range;
 import com.ifree.common.gwt.shared.loader.*;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,11 +15,11 @@ import java.util.List;
  */
 public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHandler<FilterPagingLoadConfig,PagingLoadResult<T>> {
 
-    protected PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
+    private PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader;
 
     protected ProvidesKey<T> providesKey;
 
-    protected List<T> currentData;
+    private List<T> currentData;
 
     public BaseDataProvider(PagingLoader<FilterPagingLoadConfig, PagingLoadResult<T>> loader, ProvidesKey<T> providesKey) {
         this.loader = loader;
@@ -30,7 +30,7 @@ public class BaseDataProvider<T> extends AsyncDataProvider<T> implements LoadHan
         if (currentData != null) {
             int i = currentData.indexOf(model);
             if (i != -1) {
-                updateRowData(i, Lists.newArrayList(model));
+                updateRowData(i, Collections.singletonList(model));
             }
         }
 

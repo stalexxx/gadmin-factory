@@ -26,7 +26,7 @@ public interface Action<T> {
 
     boolean isAdditional();
 
-    Action<T> setAdditional(boolean additional);
+    Action<T> setAdditional();
 
     Action<T> action();
 

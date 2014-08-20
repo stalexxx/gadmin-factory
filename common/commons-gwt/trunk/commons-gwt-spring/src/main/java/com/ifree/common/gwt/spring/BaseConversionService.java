@@ -73,6 +73,7 @@ public class BaseConversionService extends GenericConversionService {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nonnull
     public <F, T> List<T> transformToListNotNull(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
@@ -82,6 +83,7 @@ public class BaseConversionService extends GenericConversionService {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Nonnull
     public <F, T> Set<T> transformToSetNotNull(@Nullable Collection<F> fromCollection, Class<T> dest) {
         if (fromCollection != null) {
