@@ -247,4 +247,9 @@ public abstract class BaseListView<
     public void postConstruct() {
         dataGrid.postConstruct();
     }
+
+    @Override
+    public void scrollToSelected() {
+        dataGrid.scrollToSelected();
+    }
 }

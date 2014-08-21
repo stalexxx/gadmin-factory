@@ -10,6 +10,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.gwt.cell.client.*;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.TableRowElement;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -556,6 +557,27 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     public void setSecondSortingField(ValueProvider<T, ?> secondSortingField) {
         this.secondSortingField = secondSortingField;
+    }
+
+    public void scrollToSelected() {
+
+        int visibleSelectedIndex = getVisibleSelectedIndex();
+        if (visibleSelectedIndex != -1) {
+            TableRowElement rowElement = dataGrid.getRowElement(visibleSelectedIndex);
+            rowElement.scrollIntoView();
+        }
+    }
+
+    private int getVisibleSelectedIndex() {
+        int visibleItemCount = dataGrid.getVisibleItemCount();
+        for (int i = 0; i < visibleItemCount; i++) {
+            T visibleItem = dataGrid.getVisibleItem(i);
+            if (selectionModel.isSelected(visibleItem)) {
+                return i;
+            }
+
+        }
+        return -1;
     }
 
     public HandlerRegistration addLoadHandler(LoadHandler handler) {
