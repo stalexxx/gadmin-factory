@@ -45,6 +45,7 @@ import org.gwtbootstrap3.client.ui.constants.IconType;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -85,6 +86,7 @@ public abstract class BaseListPresenter<T,
     protected final Properties_ properties;
 
     private List<Action<T>> actionList = Lists.newArrayList();
+    private String lastFilterString;
 
     protected BaseListPresenter(EventBus eventBus, View_ view, Proxy_ proxy,
                                 GwtEvent.Type<RevealContentHandler<?>> slot,
@@ -124,6 +126,8 @@ public abstract class BaseListPresenter<T,
         getView().setupRoles(currentUser.getRoles());
         getView().updateToolbar();
         getView().updateHeader(getDisplayHeader());
+
+        getView().scrollToSelected();
     }
 
     @Override
@@ -133,15 +137,24 @@ public abstract class BaseListPresenter<T,
         updateActions();
     }
 
+    /**
+     *
+     * @return if filterChanged
+     */
     private void setupFilter() {
         PlaceRequest request = placeManager.getCurrentPlaceRequest();
         String filter = request.getParameter(BaseNameTokes.FILTER, null);
-        AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
-        if (filterHandler != null && filter != null && !filter.isEmpty()) {
-            Filter_ filter_ = filterHandler.convertToObject(filter);
-            getView().setFilter(filter_);
-        } else {
-            getView().clearFilter();
+
+        if (!Objects.equals(lastFilterString, filter)) {
+            AbstractFilterHandler<Filter_> filterHandler = getFilterHandler();
+            if (filterHandler != null && filter != null && !filter.isEmpty()) {
+                Filter_ filter_ = filterHandler.convertToObject(filter);
+                getView().setFilter(filter_);
+            } else {
+                getView().clearFilter();
+            }
+
+            lastFilterString = filter;
         }
 
     }
@@ -196,6 +209,7 @@ public abstract class BaseListPresenter<T,
             if (filter != null) {
                 String filterString = filterHandler.convertToString(filter);
                 builder.with(BaseNameTokes.FILTER, filterString).build();
+                lastFilterString = filterString;
             }
 
             placeManager.updateHistory(builder.build(), true);
