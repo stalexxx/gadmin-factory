@@ -31,7 +31,7 @@ public abstract class SinglePlaceRequestAction<T> extends SingleItemAlwaysVisibl
     public String actualHistoryTokenOrLink(@Nullable T item) {
         if (item != null) {
             PlaceRequest placeRequest = buildToken(item);
-            return placeManager.buildHistoryToken(placeRequest);
+            return placeRequest != null ? placeManager.buildHistoryToken(placeRequest) : null;
         }
         return null;
     }

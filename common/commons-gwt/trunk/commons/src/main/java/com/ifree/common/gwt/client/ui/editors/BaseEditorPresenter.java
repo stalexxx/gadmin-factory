@@ -178,7 +178,7 @@ public abstract class BaseEditorPresenter<
     }
 
     @Override
-    public void onSave() {
+    public void onSave(final boolean close) {
         getView().setSaveButtonEnabled(false);
 
         final T dto = getView().getDriver().flush();
@@ -203,7 +203,11 @@ public abstract class BaseEditorPresenter<
                 @Override
                 public void success(SavingResult<ID> result) {
                     if (result.isSaved()) {
-                        onSaved();
+                        if (close) {
+                            onBack();
+                        } else {
+                            onSaved();
+                        }
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
                         getView().setSaveButtonEnabled(true);
@@ -222,68 +226,6 @@ public abstract class BaseEditorPresenter<
             callback.checkLoading();
         }
 
-/*
-        RequestContext flush = getView().getDriver().flush();
-        flush.fire(new Receiver<Void>() {
-
-            @Override
-            public void onConstraintViolation(Set<ConstraintViolation<?>> violations) {
-                //getView().getDriver().setConstraintViolations(violations);
-                List<EditorError> errors = ValidationUtils.getEditorErrors(violations, getView().getDriver());
-                getView().showErrors(errors);
-            }
-
-
-            @Override
-            public void onSuccess(Void response) {
-                List<EditorError> errors = makeCustomValidation(currentDto);
-
-                if (!errors.isEmpty()) {
-                    instantLoad(currentDto);
-
-                    getView().showErrors(errors);
-                } else {
-                    if (getId(currentDto) == null) {
-                        createContext().create(currentDto).fire(new BlockingReciever<Void>(blockingOverlay) {
-
-                            @Override
-                            public void onActionFailure(ServerFailure error) {
-                                instantLoad(currentDto);
-                                onShowFailure(error);
-                            }
-
-
-                            @Override
-                            public void onActionSuccess(Void response) {
-                                alertsPanel.addAlert(messages.entityCreated(getEntityDisplayName()), AlertType.SUCCESS);
-                                instantLoad(currentDto);
-
-                                onBack();
-                            }
-                        });
-                    } else {
-                        createContext().update(currentDto).fire(new BlockingReciever<Void>(blockingOverlay) {
-                            @Override
-                            public void onActionFailure(ServerFailure error) {
-                                instantLoad(currentDto);
-                                onShowFailure(error);
-                            }
-
-
-                            @Override
-                            public void onActionSuccess(Void response) {
-                                alertsPanel.addAlert(messages.entityUpdated(), AlertType.SUCCESS);
-                                instantLoad(currentDto);
-
-                                onBack();
-                            }
-                        });
-                    }
-                }
-
-            }
-        });
-*/
     }
 
 
@@ -324,11 +266,6 @@ public abstract class BaseEditorPresenter<
         getView().setSaveButtonEnabled(true);
     }
 
-    /*protected void onShowFailure(ServerFailure error) {
-        *//*if (ValidationUtils.isValidationException(error)) {
-            alertsPanel.addAlert(messages.validationError(error.getMessage()), AlertType.ERROR);
-        }*//*
-    }*/
 
     @Override
     public void onBack() {
@@ -336,7 +273,8 @@ public abstract class BaseEditorPresenter<
     }
 
     protected void onSaved() {
-        onBack();
+        getView().setSaveButtonEnabled(true);
+        alert(messages.savedSuccessfull(), AlertType.SUCCESS);
     }
 
     protected abstract String getListPlace();

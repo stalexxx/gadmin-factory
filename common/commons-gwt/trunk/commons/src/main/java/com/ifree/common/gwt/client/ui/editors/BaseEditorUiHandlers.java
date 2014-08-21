@@ -18,7 +18,7 @@ public interface BaseEditorUiHandlers extends UiHandlers {
 
     void onBack();
 
-    void onSave();
+    void onSave(boolean close);
 
     void validate();
 
