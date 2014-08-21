@@ -93,6 +93,7 @@ public abstract class BaseListView<
             }
         });
 
+
         initWidget(viewPanel);
     }
 

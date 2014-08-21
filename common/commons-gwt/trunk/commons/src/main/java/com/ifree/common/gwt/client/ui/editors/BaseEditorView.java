@@ -45,8 +45,8 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     public BaseEditorLayout layout;
 
     protected ExtendedAnchorListItem save;
-
     protected ExtendedAnchorListItem back;
+    protected ExtendedAnchorListItem saveAndback;
 
     private Map<Editor, FormGroup> groupMap = Maps.newHashMap();
 
@@ -73,12 +73,21 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
 
     protected void initActions() {
 
+        layout.addAction(saveAndback = new ExtendedAnchorListItem(), 0);
+        saveAndback.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                getUiHandlers().onSave(true);
+            }
+        });
+        saveAndback.setText("Сохранить и выйти");
+
         layout.addAction(save = new ExtendedAnchorListItem(), 0);
 
         save.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-                getUiHandlers().onSave();
+                getUiHandlers().onSave(false);
             }
         });
         save.setIcon(IconType.SAVE);
@@ -94,8 +103,10 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
             }
         });
         back.setIcon(IconType.ARROW_CIRCLE_LEFT);
-       // back.setText("Назад");
+        // back.setText("Назад");
         back.setIconSize(IconSize.LARGE);
+
+
     }
 
     private void initFieldvalidation() {
@@ -181,6 +192,7 @@ public abstract class BaseEditorView<T, C extends BaseEditorUiHandlers, E extend
     @Override
     public void setSaveButtonEnabled(boolean enabled) {
         save.setEnabled(enabled);
+        saveAndback.setEnabled(enabled);
     }
 
     private List<EditorError> getEditorErrors(Set<ConstraintViolation<T>> violations, SimpleBeanEditorDriver<T, ?> driver) {
