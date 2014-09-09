@@ -39,9 +39,14 @@ public abstract class ModalPopupView extends ViewImpl implements PopupView {
                 hide();
             }
         });
+        onFooterCreated(footer);
         footer.add(button);
 
         return footer;
+    }
+
+    protected void onFooterCreated(ModalFooter footer) {
+
     }
 
     private ModalBody createBody() {
