@@ -98,4 +98,12 @@ public class BaseConversionService extends GenericConversionService {
     public <F, T> List<T> transformToListNotNull(@Nonnull Iterable<F> fromCollection, Class<T> dest) {
         return Lists.newArrayList(Collections2.transform(Lists.newArrayList(fromCollection), getConvertFuction(dest)));
     }
+
+
+    protected <T extends Enum<T>, S extends Enum<S>> T safeEnumTransform(S sourceEnum, Class<T> destEnumType) {
+        return safeEnumTransform(sourceEnum, destEnumType, null);
+    }
+    protected <T extends Enum<T>, S extends Enum<S>> T safeEnumTransform(S sourceEnum, Class<T> destEnumType, T defaultValue) {
+        return sourceEnum != null ? Enum.valueOf(destEnumType, sourceEnum.name()) : defaultValue;
+    }
 }
