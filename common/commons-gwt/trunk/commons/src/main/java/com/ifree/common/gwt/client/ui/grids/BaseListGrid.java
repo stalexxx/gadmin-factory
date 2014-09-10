@@ -251,7 +251,10 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat dateShort) {
+    private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat predefinedFormat) {
+        return dateColumn(provider, DateTimeFormat.getFormat(predefinedFormat));
+    }
+    private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat format) {
         return new TextColumn<T>() {
             @Override
             public String getValue(T object) {
@@ -259,7 +262,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
                     Date date = provider.getValue(object);
                     if (date != null) {
-                        return DateTimeFormat.getFormat(dateShort).format(date);
+                        return format.format(date);
                     }
                 }
                 return null;
@@ -272,6 +275,10 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     }
     protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, DateTimeFormat.PredefinedFormat format, String header, int width, boolean sortable) {
+        return addColumn(dateColumn(provider, format),
+                header, width, sortable, sortable ? provider.getPath() : null);
+    }
+    protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, DateTimeFormat format, String header, int width, boolean sortable) {
         return addColumn(dateColumn(provider, format),
                 header, width, sortable, sortable ? provider.getPath() : null);
     }
