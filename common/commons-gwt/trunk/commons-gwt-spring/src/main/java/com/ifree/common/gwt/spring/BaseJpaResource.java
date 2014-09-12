@@ -8,6 +8,7 @@ import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
 import com.ifree.common.gwt.shared.types.DateInterval;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -167,14 +168,33 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
     protected abstract Logger getLogger();
 
     @Override
-     protected Page<Entity_> findAll(FilterPagingLoadConfigBean config) {
-         return getJpaRepository().findAll(pageable(config));
-     }
+    protected Page<Entity_> findAll(FilterPagingLoadConfigBean config) {
+        if (config.getLimit() > 0) {
+            return getJpaRepository().findAll(pageable(config));
+        } else {
+            List<Entity_> all = hasSortInfo(config) ?
+                    getJpaRepository().findAll( sort(config)) :
+                    getJpaRepository().findAll();
+
+            return new PageImpl<Entity_>(all);
+        }
+    }
 
     @Override
-     protected Page<Entity_> findAll(Specifications<Entity_> spec, FilterPagingLoadConfigBean config) {
-         return getJpaRepository().findAll(spec, pageable(config));
-     }
+    protected Page<Entity_> findAll(Specifications<Entity_> spec, FilterPagingLoadConfigBean config) {
+
+        if (config.getLimit() > 0) {
+            return getJpaRepository().findAll(spec, pageable(config));
+        } else {
+
+            List<Entity_> all = hasSortInfo(config) ?
+                getJpaRepository().findAll(spec, sort(config)) :
+                getJpaRepository().findAll(spec);
+
+            return new PageImpl<Entity_>(all);
+        }
+
+    }
 
     @Override
      @GET

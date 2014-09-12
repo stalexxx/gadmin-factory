@@ -1,6 +1,7 @@
 package com.ifree.common.gwt.spring;
 
 import com.google.common.base.Function;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.ifree.common.gwt.client.ui.grids.BaseFilterHelper;
 import com.ifree.common.gwt.shared.SortDir;
@@ -100,6 +101,8 @@ public abstract class BaseResource<Entity_, EntityDto_> {
     protected abstract Page<Entity_> findAll(Specifications<Entity_> spec, FilterPagingLoadConfigBean config);
 
     protected Pageable pageable(FilterPagingLoadConfigBean config) {
+        Preconditions.checkArgument(config.getLimit() > 0);
+
         int page = config.getOffset() / config.getLimit();
         int additional = config.getOffset() % config.getLimit();
 
@@ -110,11 +113,11 @@ public abstract class BaseResource<Entity_, EntityDto_> {
         }
     }
 
-    private boolean hasSortInfo(FilterPagingLoadConfigBean config) {
+    protected boolean hasSortInfo(FilterPagingLoadConfigBean config) {
         return config.getSortInfo() != null && !config.getSortInfo().isEmpty();
     }
 
-    private Sort sort(FilterPagingLoadConfigBean config) {
+    protected Sort sort(FilterPagingLoadConfigBean config) {
         return new Sort(Lists.transform(config.getSortInfo(), SORT_INFO_BEAN_ORDER_FUNCTION));
     }
 
