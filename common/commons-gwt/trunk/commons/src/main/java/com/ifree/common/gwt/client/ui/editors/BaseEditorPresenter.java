@@ -207,6 +207,7 @@ public abstract class BaseEditorPresenter<
                             onBack();
                         } else {
                             onSaved();
+                            load(result.getId());
                         }
                     } else {
                         getEventBus().fireEvent(new ShowAlertEvent(messages.validationFailed(result.getErrorMessage()), AlertType.WARNING));
@@ -273,7 +274,6 @@ public abstract class BaseEditorPresenter<
     }
 
     protected void onSaved() {
-        getView().setSaveButtonEnabled(true);
         alert(messages.savedSuccessfull(), AlertType.SUCCESS);
     }
 
