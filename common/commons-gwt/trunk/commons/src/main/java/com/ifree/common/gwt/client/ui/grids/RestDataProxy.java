@@ -38,6 +38,8 @@ public class RestDataProxy<T,
     protected final RestAction<PagingLoadResultBean<T>> getAction() {
 
         FilterPagingLoadConfigBean loadConfig = new FilterPagingLoadConfigBean();
+        loadConfig.setLimit(0);
+
         applyConstraints(loadConfig);
 
         return restSerivce.getItems(loadConfig);
