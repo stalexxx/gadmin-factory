@@ -55,6 +55,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author Alexander Ostrovskiy (a.ostrovskiy)
@@ -73,6 +74,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     public static final int PSIZE_50 = 50;
     public static final int PSIZE_100 = 100;
     public static final int PSIZE_200 = 200;
+    public static final Integer PSIZE_ALL = PAGE_SIZE_UNLIMIT;
     public static final IntegerProperty PAGE_SIZE = new IntegerProperty("pageSize");
     public static final String TABLE_LINK_SELECTED = "table-link-selected";
 
@@ -419,12 +421,19 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
             itemsPerPage = new ValueListBox<Integer>(new AbstractRenderer<Integer>() {
                 @Override
                 public String render(Integer object) {
-                    return object != null ? object.toString() : null;
+                    if (object != null) {
+                        if (!Objects.equals(object, PSIZE_ALL)) {
+                            return String.valueOf(object.toString());
+                        } else {
+                            return "Все";
+                        }
+                    }
+                    return "null";
                 }
             });
 
             itemsPerPage.setValue(defaultPageSize);
-            itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200));
+            itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200, PSIZE_ALL));
             itemsPerPage.addValueChangeHandler(new ValueChangeHandler<Integer>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<Integer> event) {
@@ -461,7 +470,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected int pageSize() {
 
-        if (defaultPageSize != null) {
+        if (!Objects.equals(defaultPageSize, PSIZE_ALL)) {
             if (storageService != null) {
                 Integer loadedPageSize = storageService.getValue(PAGE_SIZE, getViewName());
                 return loadedPageSize != null ? loadedPageSize : defaultPageSize;
