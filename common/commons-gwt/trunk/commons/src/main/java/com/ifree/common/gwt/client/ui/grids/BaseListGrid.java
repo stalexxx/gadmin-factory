@@ -470,7 +470,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected int pageSize() {
 
-        if (!Objects.equals(defaultPageSize, PSIZE_ALL)) {
+        if (defaultPageSize != null) {
             if (storageService != null) {
                 Integer loadedPageSize = storageService.getValue(PAGE_SIZE, getViewName());
                 return loadedPageSize != null ? loadedPageSize : defaultPageSize;

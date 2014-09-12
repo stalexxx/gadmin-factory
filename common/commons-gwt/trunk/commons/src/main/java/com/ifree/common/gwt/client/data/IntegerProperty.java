@@ -19,6 +19,14 @@ public class IntegerProperty extends StorageService.Property<Integer> {
 
     @Override
     protected Integer parseNonNull(@Nonnull String value) {
-        return !Objects.equals(value, "null") ? Integer.parseInt(value) : null;
+        return !Objects.equals(value, "null") ? safeParse(value) : null;
+    }
+
+    private Integer safeParse(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
