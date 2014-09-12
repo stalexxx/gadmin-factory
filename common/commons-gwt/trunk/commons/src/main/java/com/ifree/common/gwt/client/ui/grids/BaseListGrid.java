@@ -91,7 +91,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     private final FilterPagingLoader<T, _Filter> loader;
 
 
-    private Integer defaultPageSize;
+    private int defaultPageSize;
 
     protected BasePager pager;
     protected ValueListBox<Integer> itemsPerPage;
@@ -102,18 +102,17 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     protected BaseTemplates templates;
 
     @Inject
-    protected  StorageService storageService;
+    protected StorageService storageService;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     protected BaseListGrid(CellTable.Resources resources,
                            ModelKeyProvider<T> key,
                            BaseDataProxy<T> dataProxy,
-                        //   StorageService storageService,
+                           //   StorageService storageService,
                            Integer defaultPageSize) {
         this.resources = resources;
         this.keyProvider = key;
-        this.storageService = storageService;
         this.defaultPageSize = defaultPageSize;
 
         loader = new FilterPagingLoader<T, _Filter>(dataProxy);
@@ -122,6 +121,12 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         init();
     }
 
+
+    protected BaseListGrid(CellTable.Resources resources,
+                           ModelKeyProvider<T> key,
+                           BaseDataProxy<T> dataProxy) {
+        this(resources, key, dataProxy, PSIZE_ALL);
+    }
 
 
     @PostConstruct
@@ -134,15 +139,8 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     }
 
-
     private String getViewName() {
         return getClass().getSimpleName();
-    }
-
-    protected BaseListGrid(CellTable.Resources resources,
-                           ModelKeyProvider<T> key,
-                           BaseDataProxy<T> dataProxy) {
-        this(resources, key, dataProxy, null);
     }
 
     protected Column<T, String> addTextEditColumn(FieldUpdater<T, String> updater,
@@ -256,6 +254,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat.PredefinedFormat predefinedFormat) {
         return dateColumn(provider, DateTimeFormat.getFormat(predefinedFormat));
     }
+
     private TextColumn<T> dateColumn(final ValueProvider<T, Date> provider, final DateTimeFormat format) {
         return new TextColumn<T>() {
             @Override
@@ -276,10 +275,12 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         return addDateColumn(provider, DateTimeFormat.PredefinedFormat.DATE_SHORT, header, width, sortable);
 
     }
+
     protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, DateTimeFormat.PredefinedFormat format, String header, int width, boolean sortable) {
         return addColumn(dateColumn(provider, format),
                 header, width, sortable, sortable ? provider.getPath() : null);
     }
+
     protected Column<T, String> addDateColumn(final ValueProvider<T, Date> provider, DateTimeFormat format, String header, int width, boolean sortable) {
         return addColumn(dateColumn(provider, format),
                 header, width, sortable, sortable ? provider.getPath() : null);
@@ -413,39 +414,38 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
         dataGrid.setLoadingIndicator(createLoadingWidget());
 
 
-        if (pageSize() != PAGE_SIZE_UNLIMIT) {
-            pager = new BasePager();
-            pager.addStyleName(Styles.PULL_LEFT);
-            pager.setDisplay(dataGrid);
+        //     if (pageSize() != PAGE_SIZE_UNLIMIT) {
+        pager = new BasePager();
+        pager.addStyleName(Styles.PULL_LEFT);
+        pager.setDisplay(dataGrid);
 
-            itemsPerPage = new ValueListBox<Integer>(new AbstractRenderer<Integer>() {
-                @Override
-                public String render(Integer object) {
-                    if (object != null) {
-                        if (!Objects.equals(object, PSIZE_ALL)) {
-                            return String.valueOf(object.toString());
-                        } else {
-                            return "Все";
-                        }
+        itemsPerPage = new ValueListBox<Integer>(new AbstractRenderer<Integer>() {
+            @Override
+            public String render(Integer object) {
+                if (object != null) {
+                    if (!Objects.equals(object, PSIZE_ALL)) {
+                        return String.valueOf(object.toString());
+                    } else {
+                        return "Все";
                     }
-                    return "null";
                 }
-            });
+                return "null";
+            }
+        });
 
-            itemsPerPage.setValue(defaultPageSize);
-            itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200, PSIZE_ALL));
-            itemsPerPage.addValueChangeHandler(new ValueChangeHandler<Integer>() {
-                @Override
-                public void onValueChange(ValueChangeEvent<Integer> event) {
-                    Integer value = event.getValue();
-                    if (value != null) {
-                        dataGrid.setVisibleRange(new Range(0, value));
-                    }
-                    storageService.putValue(PAGE_SIZE, value, getViewName());
-
+        itemsPerPage.setValue(defaultPageSize);
+        itemsPerPage.setAcceptableValues(Lists.newArrayList(PSIZE_15, PSIZE_25, PSIZE_50, PSIZE_100, PSIZE_200, PSIZE_ALL));
+        itemsPerPage.addValueChangeHandler(new ValueChangeHandler<Integer>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Integer> event) {
+                Integer value = event.getValue();
+                if (value != null) {
+                    dataGrid.setVisibleRange(new Range(0, value));
                 }
-            });
-        }
+                storageService.putValue(PAGE_SIZE, value, getViewName());
+
+            }
+        });
 
         selectionModel = new SingleSelectionModel<T>(this);
 
@@ -470,16 +470,12 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
 
     protected int pageSize() {
 
-        if (defaultPageSize != null) {
-            if (storageService != null) {
-                Integer loadedPageSize = storageService.getValue(PAGE_SIZE, getViewName());
-                return loadedPageSize != null ? loadedPageSize : defaultPageSize;
-            } else {
-                return defaultPageSize;
-            }
+        if (storageService != null) {
+            Integer loadedPageSize = storageService.getValue(PAGE_SIZE, getViewName());
+            return loadedPageSize != null ? loadedPageSize : defaultPageSize;
+        } else {
+            return defaultPageSize;
         }
-
-        return PAGE_SIZE_UNLIMIT;
     }
 
 
@@ -613,7 +609,7 @@ public abstract class BaseListGrid<T, _Filter extends Filter> extends Composite 
     }
 
 
-    protected class LinkRenderer< V, ID extends Serializable> extends AbstractSafeHtmlRenderer<T> {
+    protected class LinkRenderer<V, ID extends Serializable> extends AbstractSafeHtmlRenderer<T> {
         private final PlaceManager placeManager;
         private final Renderer<V> renderer;
         private final ValueProvider<T, V> provider;
