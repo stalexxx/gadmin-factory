@@ -17,7 +17,7 @@
 
     <groupId>com.ifree.common</groupId>
     <artifactId>commons-gwt-parent</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -220,9 +220,9 @@
         </pluginManagement>
     </build>
     <scm>
-        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</connection>
-        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/trunk/</developerConnection>
-        <url>https://dev.i-free.ru/svn/common/commons-gwt/trunk/</url>
+        <connection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.1.0</connection>
+        <developerConnection>scm:svn:https://dev.i-free.ru/svn/common/commons-gwt/tags/1.1.0</developerConnection>
+        <url>https://dev.i-free.ru/svn/common/commons-gwt/tags/1.1.0</url>
     </scm>
 
 
