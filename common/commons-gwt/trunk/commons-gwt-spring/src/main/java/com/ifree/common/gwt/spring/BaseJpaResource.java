@@ -1,6 +1,7 @@
 package com.ifree.common.gwt.spring;
 
 import com.ifree.common.gwt.client.rest.BaseResourcePaths;
+import com.ifree.common.gwt.shared.BaseFilterFields;
 import com.ifree.common.gwt.shared.SavingResult;
 import com.ifree.common.gwt.shared.loader.FilterConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
@@ -212,4 +213,16 @@ public abstract class BaseJpaResource<ID extends Serializable, Entity_, EntityDt
      }
 
     protected abstract R getJpaRepository();
+
+    @Override
+    protected Specification<Entity_> createExactSpecification(String field, FilterConfig filter) {
+        if (filter.getValue() != null) {
+            if (BaseFilterFields.EXCLUDE_ID_LIST.equals(field)) {
+                List<String> value = getFilterHelper().getValue(filter.getType(), filter.getValue());
+                return BaseSpecifications.excludeIdListSpecification(value, "id"); //todo
+            }
+        }
+
+        return super.createExactSpecification(field, filter);
+    }
 }

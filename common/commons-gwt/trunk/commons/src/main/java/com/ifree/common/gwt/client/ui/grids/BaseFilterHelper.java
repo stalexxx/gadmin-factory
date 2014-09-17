@@ -8,6 +8,7 @@ import com.ifree.common.gwt.shared.types.DateInterval;
 
 import java.text.ParseException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,8 +22,7 @@ public abstract class BaseFilterHelper {
     public static final String INTEGER_TYPE = "integer";
     public static final String LONG_TYPE = "long";
     public static final String DATE_INTERVAL_TYPE = "dateint";
-
-
+    public static final String STRING_LIST_TYPE = "string_list_type";
 
     private static BooleanFilterHandler booleanFilterHandler;
 
@@ -36,6 +36,7 @@ public abstract class BaseFilterHelper {
     private Map<Class, String> typeMap = Maps.newHashMap();
 
     private static DateIntervalFilterHandler dateIntervalFilterHandler;
+    public static StringListFilterHandler stringListFilterHandler;
 
     static {
         booleanFilterHandler = new BooleanFilterHandler();
@@ -69,6 +70,7 @@ public abstract class BaseFilterHelper {
             }
         });
         dateIntervalFilterHandler = new DateIntervalFilterHandler();
+        stringListFilterHandler = new StringListFilterHandler();
     }
 
     protected BaseFilterHelper()
@@ -79,6 +81,7 @@ public abstract class BaseFilterHelper {
         handlerMap.put(INTEGER_TYPE, integerFilterHandler);
         handlerMap.put(LONG_TYPE, longFilterHandler);
         handlerMap.put(DATE_INTERVAL_TYPE, dateIntervalFilterHandler);
+        handlerMap.put(STRING_LIST_TYPE, stringListFilterHandler);
 
         typeMap.put(String.class, STRING_TYPE);
         typeMap.put(Boolean.class, BOOLEAN_TYPE);
@@ -86,6 +89,7 @@ public abstract class BaseFilterHelper {
         typeMap.put(Integer.class, INTEGER_TYPE);
         typeMap.put(Long.class, LONG_TYPE);
         typeMap.put(DateInterval.class, DATE_INTERVAL_TYPE);
+        typeMap.put(List.class, STRING_LIST_TYPE);
 
         registerCustom();
     }

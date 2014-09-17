@@ -4,10 +4,8 @@ import com.ifree.common.gwt.shared.types.DateInterval;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.annotation.Nonnull;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.util.List;
 
 /**
  * Created by alex on 22.04.14.
@@ -79,6 +77,17 @@ public class BaseSpecifications {
         };
     }
 
+    public static <T> Specification<T> excludeIdListSpecification(final List<String> excludes, String field) {
+        return new Specification<T>() {
+
+            @Override
+            public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Path<Object> path = root.get(field);
+                return cb.not(path.in(excludes));
+            }
+        };
+
+    }
 
     public static <T, E extends Enum<E>> Specification<T> enumSpecification(final E value, final String field) {
         return new Specification<T>() {

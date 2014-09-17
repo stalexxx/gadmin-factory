@@ -1,17 +1,21 @@
 package com.ifree.common.gwt.client.ui.grids;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwtplatform.dispatch.rest.shared.RestAction;
 import com.ifree.common.gwt.client.rest.CRUDRestService;
 import com.ifree.common.gwt.client.rest.ListingRestService;
+import com.ifree.common.gwt.shared.BaseFilterFields;
 import com.ifree.common.gwt.shared.SortInfoBean;
 import com.ifree.common.gwt.shared.loader.FilterConfigBean;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfig;
 import com.ifree.common.gwt.shared.loader.FilterPagingLoadConfigBean;
 import com.ifree.common.gwt.shared.loader.PagingLoadResultBean;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +31,8 @@ public class RestDataProxy<T,
     public RestDataProxy(REST restSerivce) {
         this.restSerivce = restSerivce;
     }
+
+    private List<ID> excludeSet;
 
     @Override
     protected final RestAction<PagingLoadResultBean<T>> getAction(FilterPagingLoadConfigBean loadConfig) {
@@ -58,16 +64,25 @@ public class RestDataProxy<T,
     protected void applyConstraints(FilterPagingLoadConfigBean loadConfig) {
         List<FilterConfigBean> constraints = createConstraints();
 
-        if (constraints != null) {
-            for (FilterConfigBean constraint : constraints) {
-                loadConfig.addFilter(constraint);
-            }
+        for (FilterConfigBean constraint : constraints) {
+            loadConfig.addFilter(constraint);
         }
 
     }
 
+    @NotNull
     protected List<FilterConfigBean> createConstraints() {
-        return null;
+        ArrayList<FilterConfigBean> filterConfigBeans = Lists.newArrayList();
+
+        if (excludeSet != null && !excludeSet.isEmpty()) {
+            FilterConfigBean filterConfigBean = new FilterConfigBean();
+            filterConfigBean.setType(BaseFilterHelper.STRING_LIST_TYPE);
+            filterConfigBean.setValue(Joiner.on(",").join(excludeSet));
+            filterConfigBean.setField(BaseFilterFields.EXCLUDE_ID_LIST);
+            filterConfigBeans.add(filterConfigBean);
+        }
+
+        return filterConfigBeans;
     }
 
 
@@ -103,5 +118,10 @@ public class RestDataProxy<T,
             }
         }
         return false;
+    }
+
+    public void setExcluded(List<ID> list) {
+        excludeSet = list;
+
     }
 }

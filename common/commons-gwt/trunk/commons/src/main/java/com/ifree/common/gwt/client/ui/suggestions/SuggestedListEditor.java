@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.text.shared.Renderer;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.ifree.common.gwt.client.ui.grids.BaseDataProxy;
+import com.ifree.common.gwt.client.ui.grids.RestDataProxy;
 import com.ifree.common.gwt.client.ui.widgets.BagePanel;
 import com.ifree.common.gwt.shared.ValueProvider;
 import com.ifree.common.gwt.shared.loader.PagingLoadResult;
@@ -26,6 +28,8 @@ import org.gwtbootstrap3.client.ui.Well;
 import org.gwtbootstrap3.client.ui.constants.IconType;
 import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +37,7 @@ import java.util.Set;
  * Copyright (c) 2012, i-Free. All Rights Reserved.
  * Use is subject to license terms.
  */
-public class SuggestedListEditor<T> extends Composite implements LeafValueEditor<List<T>>, IsEditor<LeafValueEditor<List<T>>>,
+public class SuggestedListEditor<T, ID extends Serializable> extends Composite implements LeafValueEditor<List<T>>, IsEditor<LeafValueEditor<List<T>>>,
         HasValue<List<T>>, HasEnabled {
 
     /*===========================================[ STATIC VARIABLES ]=============*/
@@ -41,16 +45,20 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
     BagePanel<T> bagePanel;
 
     SuggestedEditor<T> suggestEditor;
+    private RestDataProxy<T, ID, ?> dataProxy;
+    private ValueProvider<T, ID> idValueProvider;
 
     /*===========================================[ CONSTRUCTORS ]=================*/
 
     @Deprecated
     public SuggestedListEditor(Renderer<T> renderer) {
-        this(renderer, null, null);
+        this(renderer, null, null, null);
     }
 
-    public SuggestedListEditor(Renderer<T> renderer, BaseDataProxy<T> dataProxy,
-                               ValueProvider<T, String> searchField) {
+    public SuggestedListEditor(Renderer<T> renderer, final RestDataProxy<T, ID, ?> dataProxy,
+                               ValueProvider<T, String> searchField, final ValueProvider<T, ID> idValueProvider) {
+        this.dataProxy = dataProxy;
+        this.idValueProvider = idValueProvider;
 
         bagePanel = new BagePanel<T>(renderer);
 
@@ -66,8 +74,16 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
 
                 if (item != null) {
                     value.add(item);
-                    setValue(Lists.newArrayList(value), true);
+                    ArrayList<T> list = Lists.newArrayList(value);
+                    setValue(list, true);
                 }
+            }
+        });
+
+        bagePanel.addValueChangeHandler(new ValueChangeHandler<List<T>>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<List<T>> event) {
+                updateExcluded(event.getValue());
             }
         });
 
@@ -121,17 +137,34 @@ public class SuggestedListEditor<T> extends Composite implements LeafValueEditor
         return panel;
     }
 
-
     /*===========================================[ INTERFACE METHODS ]============*/
-
-    @Override
-    public void setValue(List<T> value, boolean fireEvents) {
-        bagePanel.setValue(value, fireEvents);
-    }
 
     @Override
     public List<T> getValue() {
         return bagePanel.getValue();
+    }
+
+    private List<ID> createIdList( List<T> list) {
+        if (list != null) {
+            ArrayList<ID> ids = Lists.newArrayList();
+            for (T t : list) {
+                ids.add(idValueProvider.getValue(t));
+            }
+            return ids;
+        }
+        return null;
+    }
+
+    @Override
+    public void setValue(List<T> value, boolean fireEvents) {
+        bagePanel.setValue(value, fireEvents);
+
+        updateExcluded(value);
+    }
+
+    protected void updateExcluded(List<T> value) {
+        List<ID> idList = createIdList(value);
+        dataProxy.setExcluded(idList);
     }
 
     @Override
