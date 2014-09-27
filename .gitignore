@@ -8,6 +8,9 @@
 #idea files
 .idea/
 *.iml
+commons/target/
+commons-gwt-spring/target
+atlassian-ide-plugin.xml
 
 # Package Files #
 *.jar
