@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module>
+    <inherits name="org.gwtbootstrap3.client.NoThemeResources"/>
+
+    <public path="resources">
+        <include name="superhero/css/*.css"/>
+    </public>
+
+    <stylesheet src="superhero/css/superhero.css"/>
+</module>
